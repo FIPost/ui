@@ -5,6 +5,7 @@ import PakketOverzicht from "@/views/PakketOverzicht.vue";
 import PackagePage from "@/views/PackagePage.vue";
 import AddLocation from "@/views/AddLocation.vue";
 import LocationOverview from "@/views/LocationOverview.vue";
+import AddLocation from "@/views/AddLocation.vue";
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
         path: "/locatieOverzicht",
         name: "Locatie Overzicht",
         component: LocationOverview
+    },
+    {
+        path: "/addlocation",
+        name: "AddLocation",
+        component: AddLocation
     }
 ];
 
