@@ -4,6 +4,7 @@ import RegisterPackage from "@/views/RegisterPackage.vue";
 import Home from "@/views/Home.vue";
 import PakketOverzicht from "@/views/PakketOverzicht.vue";
 import PackagePage from "@/views/PackagePage.vue";
+import AddLocation from "@/views/AddLocation.vue";
 
 const routes = [
     {
@@ -25,6 +26,11 @@ const routes = [
         path: "/pakket/:id",
         name: "PackagePage",
         component: PackagePage
+    },
+    {
+        path: "/addlocation",
+        name: "AddLocation",
+        component: AddLocation
     }
 ];
 
