@@ -1,11 +1,12 @@
 <template>
-    <div id="LocationField">
+<div id="pageWrapper">
+    <div class="component-container" id="LocationField">
         <h2>Nieuw afhaalpunt toevoegen</h2>
-        <button class="addTypeButton" onclick="DisplayStadPage()">Stad</button>
-        <button class="addTypeButton" onclick="DisplayInstituutPage()">Instituut</button>
-        <button class="addTypeButton" onclick="DisplayAfhaalPuntPage()">Locatie</button>
+        <button class="addTypeButton" @click="DisplayStadPage()">Stad</button>
+        <button class="addTypeButton" @click="DisplayInstituutPage()">Instituut</button>
+        <button class="addTypeButton" @click="DisplayAfhaalPuntPage()">Locatie</button>
     </div>
-    <div id="inputField" >
+    <div class="component-container"  id="inputField" >
         <div id="stadPage">
             <h2>Vul de naam van de nieuwe stad in.</h2>
             <InputField 
@@ -20,7 +21,12 @@
         </div>
         <div id="instituutPage">
             <h2>Vul de naam van de nieuwe vestiging in.</h2>
-                <!-- hier moet een dynamische lijst maar vue is echt aids-->
+                <ComboBox
+                @inputChanged="assignCityToInstituteMethod"
+                :options="cities"
+                :placeholder="dropBoxCityString"
+                :input="institute.city"
+                />
                 <InputField 
                     @inputChanged="streetMethod"
                         label="straatnaam:"
@@ -48,6 +54,12 @@
         </div>
         <div id="afhaalPuntPage">
             <!--dynamische instituut lijst -->
+            <ComboBox
+            @inputChanged="assignInstituteToPointMethod"
+            :options="institutes"
+            :placeholder="dropBoxInstituteString"
+            :input="collectionPoint.institute"
+            />
             <InputField 
                     @inputChanged="afhaalNaamMethod"
                         label="naam afhaalpunt:"
@@ -59,6 +71,7 @@
             />
         </div>
     </div>
+</div>
 </template>
  
 
@@ -68,27 +81,49 @@ import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
 import City from "@/classes/City";
 import Institute from "@/classes/Institute";
-import CollectioPoint from "@/classes/CollectionPoint";
+import CollectionPoint from "@/classes/CollectionPoint";
+import ComboBox from "@/components/standardUi/ComboBox.vue";
 
  @Options({
         components: {
+            ComboBox,
             InputField,
             BtnFinish
         }
     })
 
 export default class AddLocation extends Vue{
+    private cities: Array<string> = new Array();
+    private institutes: Array<String> = new Array();
+    private dropBoxCityString: string = "Selecteer een stad";
+    private dropBoxInstituteString: string = "selecteer een instituut";
     private city: City = new City("");
     private institute: Institute = new Institute("","",0,"","");
-    private collectionPoint: CollectioPoint = new CollectioPoint("","","");
+    private collectionPoint: CollectionPoint = new CollectionPoint("","","");
 
     private cityValid: boolean = true;
+
+    created(){
+        //call backend for cities and institutes//
+        //hardcoded for now//
+        this.cities = ["Tilburg", "Breda", "Eindhoven", "Mocktown", "Testville"];
+        this.institutes = ["Aperture testfacility", "rachelsmolen", "Luigi's mansion"];
+    }
+
 
     cityMethod(input: string): void {
             this.city.City = input;
     }
 
-    displayStadPage(): void{
+    assignInstituteToPointMethod(input: string): void{
+        this.collectionPoint.Institute = input;
+    }
+
+    assignCityToInstituteMethod(input: string): void{
+        this.institute.City  = input
+    }
+
+    DisplayStadPage(): void{
         var x = document.getElementById("stadPage");
         var y = document.getElementById("instituutPage");
         var z = document.getElementById("afhaalPuntPage");
@@ -105,7 +140,7 @@ export default class AddLocation extends Vue{
        
     }
 
-    displayInstituutPage(): void{
+    DisplayInstituutPage(): void{
         var x = document.getElementById("stadPage");
         var y = document.getElementById("instituutPage");
         var z = document.getElementById("afhaalPuntPage");
@@ -120,7 +155,7 @@ export default class AddLocation extends Vue{
             }
         }
     }
-    displayAfhaalPuntPage(): void{
+    DisplayAfhaalPuntPage(): void{
         var x = document.getElementById("stadPage");
         var y = document.getElementById("instituutPage");
         var z = document.getElementById("afhaalPuntPage");
@@ -141,12 +176,38 @@ export default class AddLocation extends Vue{
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
 .addTypeButton{
-    background-color: $background-colour;
+    width: 50%;
+    height: 20%;
+    margin-top:20%;
+    margin-bottom: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: $background-color;
     text-decoration-color: $black-color;
 }
 .addTypeButton:focus{
-     background-color: $fontys-purple;
+    width: 50%;
+    height: 20%;
+    margin-top:20%;
+    margin-bottom: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: $fontys-purple;
     text-decoration-color: white;
+}
+#LocationField{
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+
+    box-shadow: $shadow;
+    border-radius: $border-radius;
+}
+#InputField{
+    display: flex;
+    flex-direction: column;
+    box-shadow: $shadow;
+    border-radius: $border-radius;
 }
 #stadPage{
     display: none;
@@ -154,7 +215,11 @@ export default class AddLocation extends Vue{
 #instituutPage{
     display: none;
 }
-#locatiePage{
+#afhaalPuntPage{
     display: none;
+}
+#pageWrapper{
+    display: flex;
+    padding: 5%;
 }
 </style>
