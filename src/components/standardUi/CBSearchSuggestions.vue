@@ -2,10 +2,10 @@
   <div class="cbsearch-container">
     <p class="header">{{ label }}</p>
 
-    <div class="custom-select">
+    <div :class="valid ? 'custom-select' : 'custom-select error'">
       <input
         type="text"
-        class="input"
+        :class="valid ? 'input' : 'input error'"
         v-on:input="updateSuggestions()"
         v-model="selectedOption"
         v-on:blur="loseFocus()"
@@ -32,15 +32,17 @@ import { Vue, Options } from "vue-class-component";
     placeholder: String,
     options: Array as () => Array<String>,
     label: String,
+    valid: Boolean
   },
   emits: ["select-changed"],
 })
 export default class CBSearchSuggestions extends Vue {
   private selectedOption: String = "";
-  private placeholder!: String;
+  private placeholder: String = "";
   private suggestions: Array<String> = [];
   private options!: Array<String>;
   private open: Boolean = false;
+  private valid: Boolean = true;
 
   private onChange(option: String): void {
     this.selectedOption = option;
@@ -57,6 +59,7 @@ export default class CBSearchSuggestions extends Vue {
   }
 
   private loseFocus(){
+    this.$emit("select-changed", this.selectedOption);
     this.open = false;
   }
 
@@ -100,6 +103,10 @@ export default class CBSearchSuggestions extends Vue {
   height: 100%;
   background-color: $background-color;
   padding: 0px 0px;
+}
+
+.error {
+  background: #ffc9cf;
 }
 
 .input:focus {
