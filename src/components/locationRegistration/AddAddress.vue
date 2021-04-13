@@ -51,8 +51,8 @@ export default class AddAddress extends Vue{
     
     async created(){
         //call backend for cities//
-        let result = await locatieService.getAllCities();
-        this.cities = result;
+    //    let result = await locatieService.getAllCities();
+    //    this.cities = result;
     }
 
     assignCityToAddress(input: string): void{

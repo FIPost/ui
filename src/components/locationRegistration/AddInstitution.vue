@@ -12,7 +12,7 @@
             :input="Address"
         />
         <select id="SelectedAddresses"></select>
-        <button (click)="resetAddressList()">Resetten</button>
+        <button @click="resetAddressList()">Resetten</button>
         <BtnFinish
         text="Bevestigen"
         v-on:click="addInstitute"
@@ -45,8 +45,8 @@ export default class AddInstitution extends Vue{
 
     async created(){
         //backend call for adresesses
-        let result = await locatieService.getAllAddresses();
-        this.addresses = result;
+  //      let result = await locatieService.getAllAddresses();
+  //      this.addresses = result;
     }
 
     assignNameToInstitue(input: string): void{

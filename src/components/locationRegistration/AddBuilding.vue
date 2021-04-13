@@ -42,8 +42,8 @@ export default class AddBuilding extends Vue{
 
     async created(){
         //backend call for adresesses
-        let result = await locatieService.getAllAddresses();
-        this.addresses = result;
+  //      let result = await locatieService.getAllAddresses();
+   //     this.addresses = result;
     }
 
     assignNameToBuilding(input: string): void{

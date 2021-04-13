@@ -43,8 +43,8 @@ export default class AddRoom extends Vue{
 
     async created(){
         //backend call for buildings//
-        let result = await locatieService.getAllBuildings();
-        this.buildings = result;
+//        let result = await locatieService.getAllBuildings();
+  //      this.buildings = result;
     }
 
     assignNameToRoom(input: string): void{
@@ -55,13 +55,12 @@ export default class AddRoom extends Vue{
     }
 
     async addRoom(){
-        let result = await locatieService.AddRoom(this.room);
+        let result = await locatieService.postRoom(this.room);
     }
 }
 </script>
 
-<style lang="import { locatieService } from "@/services/locatieservice"
-scss" scoped>
+<style lang="scss" scoped>
 @import "@/styling/main.scss";
 
 #InputField{

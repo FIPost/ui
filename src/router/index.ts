@@ -6,9 +6,6 @@ import PackagePage from "@/views/PackagePage.vue";
 import AddLocation from "@/views/AddLocation.vue";
 import LocationOverview from "@/views/LocationOverview.vue";
 
-=======
->>>>>>> locatie_toevoegen
-
 const routes = [
     {
         path: "/registratie",
