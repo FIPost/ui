@@ -13,8 +13,9 @@ export default class PakketService {
       const response = await http.post(`${this.baseUrl}/api/packages`, packageModel);
       return response.data;
    }
+  
    public async get(id): Promise<PackageModel> {
-      const response = await http.get(`${this.baseUrl}/api/packages/${id}`);
+      const response =  await http.get(`/api/packages/${id}`);
       return response.data;
    }
 }

@@ -5,7 +5,9 @@ import PakketOverzicht from "@/views/PakketOverzicht.vue";
 import PackagePage from "@/views/PackagePage.vue";
 import AddLocation from "@/views/AddLocation.vue";
 import LocationOverview from "@/views/LocationOverview.vue";
-import AddLocation from "@/views/AddLocation.vue";
+
+=======
+>>>>>>> locatie_toevoegen
 
 const routes = [
     {
@@ -38,11 +40,8 @@ const routes = [
         name: "Locatie Overzicht",
         component: LocationOverview
     },
-    {
-        path: "/addlocation",
-        name: "AddLocation",
-        component: AddLocation
-    }
+
+
 ];
 
 const router = createRouter({
