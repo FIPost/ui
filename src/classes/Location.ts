@@ -1,11 +1,13 @@
 export default class Location {
     public Id: Number;
-    public Name: String;
-    public Description: String;
+    public Stad: String;
+    public Locatie: String;
+    public Afhaalpunt: String;
 
-    constructor(id: Number, name: String, description: String){
+    constructor(id: Number, stad: String, locatie: String, afhaalpunt: String){ 
         this.Id = id;
-        this.Name = name;
-        this.Description = description;
+        this.Stad = stad;
+        this.Locatie = locatie;
+        this.Afhaalpunt = afhaalpunt;
     }
 }
