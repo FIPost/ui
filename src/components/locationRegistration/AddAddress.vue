@@ -1,4 +1,3 @@
-<!-- moet nog naar backend -->
 <template>
        <h2>Vul de naam van het nieuwe adres in.</h2>
                 <ComboBox
@@ -35,6 +34,7 @@ import BtnFinish from "@/components/BtnFinish.vue";
 import Address from "@/classes/Address";
 import City from "@/classes/City";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
+import { locatieService } from "@/services/locatieservice";
 
 @Options({
         components: {
@@ -49,10 +49,10 @@ export default class AddAddress extends Vue{
     private address: Address =  new Address("",0,"","","", "");
     private mockCity = new City("Tilburg", "gggheu");
     
-    created(){
+    async created(){
         //call backend for cities//
-        //hardcoded for now//
-        this.cities = [this.mockCity];
+        let result = await locatieService.getAllCities();
+        this.cities = result;
     }
 
     assignCityToAddress(input: string): void{

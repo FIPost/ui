@@ -1,4 +1,3 @@
-<!-- moet nog naar backend -->
 <template>
        <h2>Vul de naam van het nieuwe gebouw in.</h2>
          <InputField 
@@ -25,6 +24,7 @@ import BtnFinish from "@/components/BtnFinish.vue";
 import Address from "@/classes/Address";
 import Building from "@/classes/Building";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
+import { locatieService } from "@/services/locatieservice";
 
 @Options({
         components: {
@@ -40,9 +40,10 @@ export default class AddBuilding extends Vue{
     private mockAddress: Address = new Address("Kalverstraat", 2, "4444 NN", "Tilburg", "Nederland", "vvfgtr");
     private dropBoxAddressString: string = "Kies uw adres";
 
-    created(){
-        //hardcoded for now
-        this.addresses = new Array(this.mockAddress);
+    async created(){
+        //backend call for adresesses
+        let result = await locatieService.getAllAddresses();
+        this.addresses = result;
     }
 
     assignNameToBuilding(input: string): void{

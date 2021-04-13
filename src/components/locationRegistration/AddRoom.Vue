@@ -1,4 +1,3 @@
-<!--moet nog naar backend-->
 <template>
        <h2>Vul de naam van het nieuwe lokaal in.</h2>
             <InputField 
@@ -25,6 +24,7 @@ import BtnFinish from "@/components/BtnFinish.vue";
 import Building from "@/classes/Building";
 import Room from "@/classes/Room";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
+import { locatieService } from "@/services/locatieservice";
 
 @Options({
         components: {
@@ -41,20 +41,22 @@ export default class AddRoom extends Vue{
 
     private dropBoxBuildingString = "Kies uw gebouw";
 
-    created(){
-        //hardcoded for now//
-        this.buildings = new Array(this.mockBuilding);
+    async created(){
+        //backend call for buildings//
+        let result = await locatieService.getAllBuildings();
+        this.buildings = result;
     }
 
     assignNameToRoom(input: string): void{
         this.room.Name = input;
     }
     assignBuidlingToRoom(input: Building): void{
-        this.room.BuildingId = input.Id
+        this.room.BuildingId = input.Id;
     }
 
     addRoom(): void{
-        //tbd
+    //tobedone import LocatieService from "@/services/locatieservice"//
+
     }
 }
 </script>

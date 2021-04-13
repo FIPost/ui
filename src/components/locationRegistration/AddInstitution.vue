@@ -1,4 +1,3 @@
-<!--moet nog naar de backend-->
 <template>
 <h2>Voeg hier het instituut toe.</h2>
         <InputField 
@@ -27,6 +26,7 @@ import BtnFinish from "@/components/BtnFinish.vue";
 import Address from "@/classes/Address";
 import Institute from "@/classes/Institute";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
+import { locatieService } from "@/services/locatieservice";
 
 @Options({
         components: {
@@ -43,9 +43,10 @@ export default class AddInstitution extends Vue{
     private mockAddress: Address = new Address("Kalverstraat", 2, "4444 NN", "Tilburg", "Nederland", "vvfgtr");
     private dropBoxAddressString: string = "Kies uw adressen";
 
-    created(){
-        //hardcoded for now
-        this.addresses = new Array(this.mockAddress);
+    async created(){
+        //backend call for adresesses
+        let result = await locatieService.getAllAddresses();
+        this.addresses = result;
     }
 
     assignNameToInstitue(input: string): void{
