@@ -68,7 +68,8 @@ export default class InputField extends Vue {
   height: 2rem;
   margin: auto 0;
   max-width: 70%;
-  min-width: 200px;
+  width: 200px;
+  min-width: 150px;
 }
 
 .input-error {
