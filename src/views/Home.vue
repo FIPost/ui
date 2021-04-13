@@ -39,7 +39,7 @@ const Home = defineComponent({
       this.$router.push("/pakket/1");
     },
     locationClicked() : void {
-      alert("Nog niet beschikbaar.")
+      this.$router.push("/locatieOverzicht");
     },
   },
 });
