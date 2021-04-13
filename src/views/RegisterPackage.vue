@@ -15,8 +15,8 @@
       <div>
         <h3>Ontvanger</h3>
         <CBSearchSuggestions
-          :options="ontvangers"
-          label="Ontvanger"
+          :options="receivers"
+          label="Ontvanger:"
           @selectChanged="receiver"
           :valid="receiverValid"
         />
@@ -32,10 +32,10 @@
       </div>
       <div>
         <h3>Afhaalpunt</h3>
-        <InputField
-          @inputChanged="collectionPoint"
+        <CBSearchSuggestions
+          :options="locations"
           label="Afhaalpunt:"
-          :input="fpackage.CollectionPointId"
+          @selectChanged="collectionPoint"
           :valid="collectionPointValid"
         />
       </div>
@@ -91,14 +91,17 @@ export default class RegisterPackage extends Vue {
   private receiverValid: boolean = true;
   private nameValid: boolean = true;
   private collectionPointValid: boolean = true;
-  private ontvangers: Array<String> = [
-    "Jaap",
-    "Sverre",
-    "Aron",
-    "Kevin",
-    "Sjors",
-    "Robin",
+  private receivers: Array<String> = [
+    "Patrick de Beer",
+    "Jacques de Roij",
+    "Jaap van der Meer",
+    "Kevin Wieling",
+    "Sjors Scholten",
+    "Aron Heesakkers",
+    "Sverre van Gompel",
+    "Robin de Witte"
   ];
+  private locations: Array<String> = [];
 
   toggleStep() {
     // Basic model validation
