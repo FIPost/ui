@@ -72,13 +72,13 @@ export default class CBSearchSuggestions extends Vue {
   color: $black-color;
 
   border-radius: 0.4rem;
+  border-width: 0;
   width: 200px;
   max-width: 70%;
   min-width: 150px;
   height: 2rem;
   margin: auto 0;
-  padding-left: 0.8rem;
-  padding-right: 0.8rem;
+  padding: 1px 0.8rem;
 
   display: flex;
   flex-direction: row;
@@ -86,10 +86,9 @@ export default class CBSearchSuggestions extends Vue {
 
 .input {
   user-select: none;
-  width: 100%;
-  height: 80%;
   border: 0px;
   background-color: $background-color;
+  padding: 0px 0px;
 }
 
 .input:focus {
@@ -104,7 +103,9 @@ export default class CBSearchSuggestions extends Vue {
   position: absolute;
   background-color: $background-color;
   color: $black-color;
-  width: 260px;
+  width: 200px;
+  max-width: 70%;
+  min-width: 150px;
   z-index: 1;
   margin-left: -10px;
   margin-top: 25px;
