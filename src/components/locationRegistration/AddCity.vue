@@ -1,4 +1,3 @@
-<!-- moet nog naar backend -->
 <template>
       <h2>Vul de naam van de nieuwe stad in.</h2>
             <InputField 
@@ -17,6 +16,7 @@ import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
 import City from "@/classes/City";
+import { locatieService } from "@/services/locatieservice";
 
 @Options({
         components: {
