@@ -1,6 +1,6 @@
 <template>
   <div class="cbsearch-container">
-    <p>{{ label }}</p>
+    <p class="header">{{ label }}</p>
 
     <div class="custom-select">
       <input
@@ -70,12 +70,16 @@ export default class CBSearchSuggestions extends Vue {
   font-size: 15px;
   background-color: $background-color;
   color: $black-color;
+
   border-radius: 0.4rem;
-  width: 240px;
+  width: 200px;
+  max-width: 70%;
+  min-width: 150px;
   height: 2rem;
   margin: auto 0;
   padding-left: 0.8rem;
   padding-right: 0.8rem;
+
   display: flex;
   flex-direction: row;
 }
@@ -126,9 +130,16 @@ export default class CBSearchSuggestions extends Vue {
 .cbsearch-container {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-between;
   width: 440px;
   margin-bottom: 0.6rem;
   margin-top: 0.6rem;
+  max-width: 100%;
 }
+
+.header {
+  flex-basis: 100px;
+}
+
 </style>

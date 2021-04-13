@@ -64,7 +64,6 @@ export default class InputField extends Vue {
   background: $background-color;
   padding-left: 0.8rem;
   padding-right: 0.8rem;
-  width: 240px;
   height: 2rem;
   margin: auto 0;
   max-width: 70%;
