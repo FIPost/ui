@@ -30,7 +30,7 @@ import { Vue, Options } from "vue-class-component";
   props: {
     placeholder: String,
     options: Array as () => Array<String>,
-    label: String
+    label: String,
   },
   emits: ["select-changed"],
 })
@@ -71,10 +71,11 @@ export default class CBSearchSuggestions extends Vue {
   background-color: $background-color;
   color: $black-color;
   border-radius: 0.4rem;
-  width: 265px;
+  width: 240px;
   height: 2rem;
-   margin: auto 0;
-
+  margin: auto 0;
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
   display: flex;
   flex-direction: row;
 }
@@ -82,7 +83,7 @@ export default class CBSearchSuggestions extends Vue {
 .input {
   user-select: none;
   width: 100%;
-  height: 100%;
+  height: 80%;
   border: 0px;
   background-color: $background-color;
 }
