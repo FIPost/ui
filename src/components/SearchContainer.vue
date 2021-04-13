@@ -4,6 +4,7 @@
       <div class="search-title">Zoeken</div>
       <Search @valueChanged="valueChanged" />
       <QrReader />
+      <ComboBox :options="options" placeholder="Selecteer een veld" />
     </div>
   </div>
 </template>
@@ -12,11 +13,13 @@
 import { defineComponent } from "vue";
 import Search from "./Search.vue";
 import QrReader from "./QrReader.vue";
+import ComboBox from "@/components/standardUi/ComboBox.vue";
 
 const SearchContainer = defineComponent({
   components: {
     Search,
     QrReader,
+    ComboBox,
   },
   methods: {
     valueChanged(val) {
@@ -24,10 +27,11 @@ const SearchContainer = defineComponent({
       console.log(val);
     },
   },
-  data () {
+  data() {
     return {
-      result: ''
-    }
+      result: "",
+      options: ["Naam", "Afzender", "Ontvanger"],
+    };
   },
 });
 
