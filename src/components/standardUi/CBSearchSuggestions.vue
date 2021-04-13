@@ -15,7 +15,7 @@
         <div
           v-for="suggestion in suggestions"
           :key="suggestion"
-          @click="onChange(suggestion)"
+          @mousedown="onChange(suggestion)"
         >
           {{ suggestion }}
         </div>
