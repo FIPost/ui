@@ -8,6 +8,7 @@
         class="input"
         v-on:input="updateSuggestions()"
         v-model="selectedOption"
+        v-on:blur="loseFocus()"
       />
 
       <div class="items" :class="{ selectHide: !open }">
@@ -55,6 +56,10 @@ export default class CBSearchSuggestions extends Vue {
     this.open = true;
   }
 
+  private loseFocus(){
+    this.open = false;
+  }
+
   mounted() {
     this.selectedOption = this.placeholder;
   }
@@ -67,7 +72,7 @@ export default class CBSearchSuggestions extends Vue {
 .custom-select {
   border: none;
   font-family: $font-family;
-  font-size: 15px;
+  font-size: 12px;
   background-color: $background-color;
   color: $black-color;
 
@@ -82,11 +87,17 @@ export default class CBSearchSuggestions extends Vue {
 
   display: flex;
   flex-direction: row;
+
+  @media only screen and (max-width: 600px) {
+    width: 150px;
+  }
 }
 
 .input {
   user-select: none;
   border: 0px;
+  width: 100%;
+  height: 100%;
   background-color: $background-color;
   padding: 0px 0px;
 }
@@ -103,14 +114,23 @@ export default class CBSearchSuggestions extends Vue {
   position: absolute;
   background-color: $background-color;
   color: $black-color;
+
   width: 200px;
   max-width: 70%;
   min-width: 150px;
   z-index: 1;
-  margin-left: -10px;
-  margin-top: 25px;
+
+  margin: auto 0;
+  padding: 1px 0.8rem;
+  margin-top: 33px;
+  margin-left: -11px;
+
   max-height: 150px;
   overflow-y: auto;
+
+  @media only screen and (max-width: 600px) {
+    width: 150px;
+  }
 }
 
 .custom-select .items div {
@@ -142,5 +162,4 @@ export default class CBSearchSuggestions extends Vue {
 .header {
   flex-basis: 100px;
 }
-
 </style>
