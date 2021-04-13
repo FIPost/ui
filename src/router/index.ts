@@ -3,7 +3,7 @@ import RegisterPackage from "@/views/RegisterPackage.vue";
 import Home from "@/views/Home.vue";
 import PakketOverzicht from "@/views/PakketOverzicht.vue";
 import PackagePage from "@/views/PackagePage.vue";
-import LocatieOverzicht from "@/views/LocatieOverzicht.vue";
+import LocationOverview from "@/views/LocationOverview.vue";
 
 const routes = [
     {
@@ -29,7 +29,7 @@ const routes = [
     {
         path: "/locatieOverzicht",
         name: "Locatie Overzicht",
-        component: LocatieOverzicht
+        component: LocationOverview
     }
 ];
 

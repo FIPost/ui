@@ -17,7 +17,7 @@ import Location from '@/classes/Location'
 })
 export default class LocationOverviewTable extends Vue {
     //IMPORTANT! for sorting to work table headers need to have the same name as the objects properties 
-    private columns: String[] = ["Id", "Stad", "Locatie", "Afhaalpunt"];
+    private columns: String[] = ["Id", "City", "Location", "CollectionPoint"];
     private items: Array<Location> = [
         new Location(1, "stad2", "locatie3", "afhaalpunt4"),
         new Location(2, "stad3", "locatie4", "afhaalpunt1"),
