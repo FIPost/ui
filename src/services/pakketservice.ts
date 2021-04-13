@@ -3,7 +3,7 @@ import http from './http';
 
 export default class PakketService {
 
-   private baseUrl: String = process.env.VUE_APP_PAKKET_SERVICE;
+   private baseUrl: String = process.env.VUE_APP_APIGATEWAY;
 
    public async getAll(): Promise<Array<PackageModel>> {
       const response = await http.get(`${this.baseUrl}/api/packages`);
