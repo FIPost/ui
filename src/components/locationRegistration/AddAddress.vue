@@ -71,8 +71,8 @@ export default class AddAddress extends Vue{
         this.address.PostalCode = input;
     }
 
-    addAddress(): void{
-        //tbd
+    async addAddress(){
+        let result = await locatieService.postAddress(this.address);
     }
 }
 

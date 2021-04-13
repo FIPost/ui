@@ -33,8 +33,8 @@ export default class AddCity extends Vue{
         this.city.City = input;
     }
 
-    addCity(): void{
-        //tbd
+    async addCity(){
+        let result =  await locatieService.postCity(this.city);
     }
 
 } 

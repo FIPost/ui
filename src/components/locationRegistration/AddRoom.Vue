@@ -1,20 +1,20 @@
 <template>
-       <h2>Vul de naam van het nieuwe lokaal in.</h2>
-            <InputField 
-                @inputChanged="assignNameToRoom"
-                label="naam lokaal:"
-                :input="room.Name"
-            />
-            <ComboBox
-                @inputChanged="assignBuildingToRoom"
-                :options="buildings"
-                :placeholder="dropBoxBuildingString"
-                :input="building"
-            />
-            <BtnFinish
-                text="Bevestigen"
-                v-on:click="addRoom"
-            />
+    <h2>Vul de naam van het nieuwe lokaal in.</h2>
+        <InputField 
+            @inputChanged="assignNameToRoom"
+            label="naam lokaal:"
+            :input="room.Name"
+        />
+        <ComboBox
+            @inputChanged="assignBuildingToRoom"
+            :options="buildings"
+            :placeholder="dropBoxBuildingString"
+            :input="building"
+        />
+        <BtnFinish
+            text="Bevestigen"
+            v-on:click="addRoom"
+        />
 </template>
 
 <script lang="ts">
@@ -51,17 +51,17 @@ export default class AddRoom extends Vue{
         this.room.Name = input;
     }
     assignBuidlingToRoom(input: Building): void{
-        this.room.BuildingId = input.Id;
+        this.room.BuildingId = input.Guid;
     }
 
-    addRoom(): void{
-    //tobedone import LocatieService from "@/services/locatieservice"//
-
+    async addRoom(){
+        let result = await locatieService.AddRoom(this.room);
     }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="import { locatieService } from "@/services/locatieservice"
+scss" scoped>
 @import "@/styling/main.scss";
 
 #InputField{

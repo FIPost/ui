@@ -53,8 +53,8 @@ export default class AddBuilding extends Vue{
         this.building.AddressId = input.Guid;
     }
 
-    addBuilding(): void{
-        //tbd
+    async addBuilding(){
+        let result  =  locatieService.postBuidling(this.building);
     }
 }
 
