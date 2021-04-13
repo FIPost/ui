@@ -64,8 +64,8 @@ export default class AddInstitution extends Vue{
       
     }
 
-    addInstitute(): void{
-        //tbd
+    async addInstitute(){
+        let result = await locatieService.postInstitution(this.institute);
     }
 
     resetAddressList(){

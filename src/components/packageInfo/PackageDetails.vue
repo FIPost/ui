@@ -65,7 +65,8 @@ export default class PackageDetails extends Vue {
     1,
     "5022DM",
     "Tilburg",
-    "Nederland"
+    "Nederland",
+    ""
   );
 
   reciever: Contact = new Contact(
