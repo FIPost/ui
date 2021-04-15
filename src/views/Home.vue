@@ -40,7 +40,7 @@ const Home = defineComponent({
       this.$router.push("/pakket/1");
     },
     locationClicked() : void {
-      this.$router.push("/locatieOverzicht");
+      this.$router.push("/locaties");
     },
     addLocationClicked(): void{
       this.$router.push("/addlocation");
