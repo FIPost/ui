@@ -1,20 +1,34 @@
 <template>
-       <h2>Vul de naam van het nieuwe gebouw in.</h2>
-         <InputField 
-                    @inputChanged="assignNameToBuilding"
-                        label="naam gebouw:"
-                        :input="building.Name"
-                />
-            <ComboBox
-                @inputChanged="assignAddressToBuilding"
-                :options="addresses"
-                :placeholder="dropBoxAddressString"
-                :input="address"
-            />
-            <BtnFinish
-                text="Bevestigen"
-                v-on:click="addBuilding"
-            />
+  <div class="wrapper">
+    <div class="container-subheader">Voeg een gebouw toe</div>
+    <ComboBoxInput
+      @selectChange="assignCityToAddress"
+      :options="cities"
+      placeholder="selecteer een stad"
+      label="Stad:"
+    />
+    <InputField
+      @inputChanged="buildingChanged"
+      label="Gebouw:"
+      :input="gebouwNaam"
+    />
+    <InputField
+      @inputChanged="assignStreetToAddress"
+      label="Straatnaam:"
+      :input="address.Street"
+    />
+    <InputField
+      @inputChanged="assignStreetToAddress"
+      label="Huisnummer:"
+      :input="address.StreetNr"
+    />
+    <InputField
+      @inputChanged="assignPostalCodeToAddress"
+      label="Postcode:"
+      :input="address.PostalCode"
+    />
+    <BtnFinish text="Bevestigen" v-on:click="addAddress" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -22,51 +36,57 @@ import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
 import Address from "@/classes/Address";
-import Building from "@/classes/Building";
-import ComboBox from "@/components/standardUi/ComboBox.vue";
+import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
 import { locatieService } from "@/services/locatieservice";
 
 @Options({
-        components: {
-            ComboBox,
-            InputField,
-            BtnFinish
-        }
-    })
+  components: {
+    ComboBoxInput,
+    InputField,
+    BtnFinish,
+  },
+})
+export default class AddBuilding extends Vue {
+  private cities: Array<String> = new Array<String>("Tilburg", "Eindhoven");
+  private address: Address = new Address("", 0, "", "", "", "");
+  private gebouwNaam: String = "";
 
-export default class AddBuilding extends Vue{
-    private building: Building = new Building("","","");
-    private addresses: Array<Address> = new Array();
-    private mockAddress: Address = new Address("Kalverstraat", 2, "4444 NN", "Tilburg", "Nederland", "vvfgtr");
-    private dropBoxAddressString: string = "Kies uw adres";
+  async created() {
+    //call backend for cities//
+    //    let result = await locatieService.getAllCities();
+    //    this.cities = result;
+  }
 
-    async created(){
-        //backend call for adresesses
-  //      let result = await locatieService.getAllAddresses();
-   //     this.addresses = result;
-    }
+  assignCityToAddress(input: string): void {
+    this.address.City = input;
+  }
 
-    assignNameToBuilding(input: string): void{
-        this.building.Name = input;
-    }
-    assignAddressToBuilding(input: Address): void{
-        this.building.AddressId = input.Guid;
-    }
+  assignStreetToAddress(input: string): void {
+    this.address.Street = input;
+  }
 
-    async addBuilding(){
-        let result  =  locatieService.postBuidling(this.building);
-    }
+  assignStreetNrToAddress(input: number): void {
+    this.address.StreetNr = input;
+  }
+
+  assignPostalCodeToAddress(input: string): void {
+    this.address.PostalCode = input;
+  }
+
+  buildingChanged(input: string) : void {
+    this.gebouwNaam = input;
+  }
+
+  async addAddress() {
+    let result = await locatieService.postAddress(this.address);
+  }
 }
-
 </script>
 
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
 
-#InputField{
-    display: flex;
-    flex-direction: column;
-    box-shadow: $shadow;
-    border-radius: $border-radius;
+.wrapper {
+    margin-top: 1em;
 }
 </style>

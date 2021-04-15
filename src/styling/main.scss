@@ -19,9 +19,12 @@ $gradient: linear-gradient(90deg, rgba(193,71,153,1) 0%, rgba(79,60,201,1) 100%)
   background: white;
   overflow: hidden;
   padding: 3em;
-  margin: 1rem;
+  margin-bottom: 1rem;
   box-shadow: $shadow;
   border-radius: $border-radius;
+  @media only screen and (max-width: 600px) {
+    padding: 2em;
+  }
 }
 
 .container-header {
@@ -50,5 +53,10 @@ $gradient: linear-gradient(90deg, rgba(193,71,153,1) 0%, rgba(79,60,201,1) 100%)
 .error-text {
   color: #ff3e60;
   font-weight: normal;
+}
+
+input {
+  font-size: 12px;
+  font-family: $font-family;
 }
 

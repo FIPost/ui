@@ -1,20 +1,19 @@
 <template>
-    <h2>Vul de naam van het nieuwe lokaal in.</h2>
-        <InputField 
-            @inputChanged="assignNameToRoom"
-            label="naam lokaal:"
-            :input="room.Name"
-        />
-        <ComboBox
-            @inputChanged="assignBuildingToRoom"
-            :options="buildings"
-            :placeholder="dropBoxBuildingString"
-            :input="building"
-        />
-        <BtnFinish
-            text="Bevestigen"
-            v-on:click="addRoom"
-        />
+  <div class="wrapper">
+    <div class="container-subheader">Voeg een ruimte toe</div>
+    <ComboBoxInput
+      @selectChange="assignBuildingToRoom"
+      :options="buildings"
+      placeholder="Selecteer een gebouw"
+      label="Gebouw:"
+    />
+    <InputField
+      @inputChanged="assignNameToRoom"
+      label="Ruimte:"
+      :input="room.Name"
+    />
+    <BtnFinish text="Bevestigen" v-on:click="addRoom" />
+  </div>
 </template>
 
 <script lang="ts">
@@ -23,50 +22,47 @@ import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
 import Building from "@/classes/Building";
 import Room from "@/classes/Room";
-import ComboBox from "@/components/standardUi/ComboBox.vue";
+import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
 import { locatieService } from "@/services/locatieservice";
 
 @Options({
-        components: {
-            ComboBox,
-            InputField,
-            BtnFinish
-        }
-    })
+  components: {
+    ComboBoxInput,
+    InputField,
+    BtnFinish,
+  },
+})
+export default class AddRoom extends Vue {
+  private buildings: Array<String> = new Array<String>(
+    "P1 Tilburg",
+    "P2 Tilburg"
+  );
+  private mockBuilding: Building = new Building("bla", "kazhad dum", "ababab");
+  private room: Room = new Room("", "", "");
 
-export default class AddRoom extends Vue{
-    private buildings: Array<Building> = new Array();
-    private mockBuilding: Building = new Building("bla", "kazhad dum", "ababab");
-    private room: Room =  new Room("","","");
+  async created() {
+    //backend call for buildings//
+    //        let result = await locatieService.getAllBuildings();
+    //      this.buildings = result;
+  }
 
-    private dropBoxBuildingString = "Kies uw gebouw";
+  assignNameToRoom(input: string): void {
+    this.room.Name = input;
+  }
+  assignBuildingToRoom(input: string): void {
+    this.room.BuildingId = input;
+  }
 
-    async created(){
-        //backend call for buildings//
-//        let result = await locatieService.getAllBuildings();
-  //      this.buildings = result;
-    }
-
-    assignNameToRoom(input: string): void{
-        this.room.Name = input;
-    }
-    assignBuidlingToRoom(input: Building): void{
-        this.room.BuildingId = input.Guid;
-    }
-
-    async addRoom(){
-        let result = await locatieService.postRoom(this.room);
-    }
+  async addRoom() {
+    let result = await locatieService.postRoom(this.room);
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
 
-#InputField{
-    display: flex;
-    flex-direction: column;
-    box-shadow: $shadow;
-    border-radius: $border-radius;
+.wrapper {
+  margin-top: 1em;
 }
 </style>

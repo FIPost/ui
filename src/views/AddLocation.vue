@@ -1,4 +1,5 @@
 <template>
+  <BtnBack />
   <div class="page-wrapper">
     <div class="component-container">
       <div class="container-header">Locatie toevoegen</div>
@@ -7,13 +8,9 @@
         @selectChange="selectedLocationChange"
         placeholder="selecteer een optie"
       />
-    </div>
-    <div class="component-container" id="inputField">
-      <AddCity v-if="selectedLocation == 'stad'" />
-      <AddAddress v-if="selectedLocation == 'address'" />
-      <AddBuilding v-if="selectedLocation == 'gebouw'" />
-      <AddInstitution v-if="selectedLocation == 'instituut'" />
-      <AddRoom v-if="selectedLocation == 'ruimte'" />
+      <AddCity v-if="selectedLocation == 'Stad'" />
+      <AddBuilding v-if="selectedLocation == 'Gebouw'" />
+      <AddRoom v-if="selectedLocation == 'Ruimte'" />
     </div>
   </div>
 </template>
@@ -24,11 +21,10 @@ import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
 import AddCity from "@/components/locationRegistration/AddCity.vue";
-import AddAddress from "@/components/locationRegistration/AddAddress.vue";
 import AddBuilding from "@/components/locationRegistration/AddBuilding.vue";
-import AddInstitution from "@/components/locationRegistration/AddInstitution.vue";
 import AddRoom from "@/components/locationRegistration/AddRoom.vue";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
+import BtnBack from "@/components/BtnBack.vue";
 
 @Options({
   components: {
@@ -36,20 +32,17 @@ import ComboBox from "@/components/standardUi/ComboBox.vue";
     InputField,
     BtnFinish,
     AddCity,
-    AddAddress,
     AddBuilding,
-    AddInstitution,
     AddRoom,
+    BtnBack,
   },
 })
 export default class AddLocation extends Vue {
   private selectedLocation: String = "";
   private locationOptions: Array<String> = new Array<String>(
-    "stad",
-    "address",
-    "instituut",
-    "gebouw",
-    "ruimte"
+    "Stad",
+    "Gebouw",
+    "Ruimte"
   );
 
   selectedLocationChange(input: string): void {
@@ -60,27 +53,13 @@ export default class AddLocation extends Vue {
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
 
-#InputField {
-  display: flex;
-  flex-direction: column;
-  box-shadow: $shadow;
-  border-radius: $border-radius;
-}
-
-#LocationField {
-  display: flex;
-  flex-direction: column;
-  align-content: center;
-
-  box-shadow: $shadow;
-  border-radius: $border-radius;
-}
-
 .container-header {
-  margin-bottom: 2em;
+  margin-bottom: 1em;
 }
+
 .component-container {
   justify-content: flex-start;
+  row-gap: 1em;
 }
 
 .page-wrapper {
@@ -91,5 +70,9 @@ export default class AddLocation extends Vue {
   flex-wrap: wrap;
   justify-content: flex-start;
   column-gap: 1em;
+  padding: 2em 2em;
+    @media only screen and (max-width: 600px) {
+    padding: 0em 0em;
+  }
 }
 </style>

@@ -11,7 +11,7 @@ import { Options, Vue } from "vue-class-component";
   props: {
     text: String,
   },
-  emits: ['btn-clicked']
+  emits: ["btn-clicked"],
 })
 export default class BtnFinish extends Vue {
   text: string = "Voltooi";
@@ -27,8 +27,8 @@ export default class BtnFinish extends Vue {
 @import "@/styling/main.scss";
 
 .btn-finish {
-  width: 200px;
-  height: 50px;
+  width: 180px;
+  height: 45px;
 
   background: $gradient;
   color: #ffffff;
@@ -38,6 +38,12 @@ export default class BtnFinish extends Vue {
   box-shadow: $shadow;
 
   font-weight: bold;
-  font-size: 18px;
+  font-size: 16px;
+
+  @media only screen and (max-width: 600px) {
+    width: 150px;
+    font-size: 14px;
+    height: 35px;
+  }
 }
 </style>

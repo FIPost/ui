@@ -54,17 +54,23 @@ export default class ComboBox extends Vue {
 .custom-select {
   border: none;
   font-family: $font-family;
-  font-size: 15px;
+  font-size: 12px;
   background-color: $background-color;
   color: $black-color;
-  border-radius: $small-border-radius;
-  box-shadow: $shadow;
-  width: 300px;
-  padding: 10px;
+
+  border-radius: 0.4rem;
+  width: 200px;
+  max-width: 70%;
+  min-width: 150px;
+  height: 2rem;
+  padding: 1px 0.8rem;
+  
 
   display: flex;
   flex-direction: row;
-
+  @media only screen and (max-width: 600px) {
+    width: 150px;
+  }
 }
 
 .custom-select .selected {
@@ -73,6 +79,7 @@ export default class ComboBox extends Vue {
   user-select: none;
   width: 80%;
   height: 100%;
+  padding-top: 6px;
 }
 
 
@@ -83,11 +90,23 @@ export default class ComboBox extends Vue {
   position: absolute;
   background-color: $background-color;
   color: $black-color;
-  width: 320px;
-  z-index: 1;
-  margin-left: -10px;
-  margin-top: 30px;
 
+  width: 200px;
+  max-width: 70%;
+  min-width: 150px;
+  z-index: 1;
+
+  margin: auto 0;
+  padding: 1px 0.8rem;
+  margin-top: 33px;
+  margin-left: -11px;
+
+  max-height: 150px;
+  overflow-y: auto;
+
+  @media only screen and (max-width: 600px) {
+    width: 150px;
+  }
 }
 
 .custom-select .items div {
@@ -108,5 +127,6 @@ export default class ComboBox extends Vue {
 .arrow {
   color: $fontys-purple;
   position: absolute;
+  padding-top: 8px;
 }
 </style>
