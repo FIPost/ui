@@ -1,12 +1,7 @@
 <template>
   <div class="input-container">
     <p class="header">{{ label }}</p>
-    <input
-      :class="cssClass"
-      type="text"
-      v-model="text"
-      @change="changed"
-    />
+    <input :class="cssClass" type="text" v-model="text" @change="changed" />
   </div>
 </template>
 
@@ -64,12 +59,16 @@ export default class InputField extends Vue {
   background: $background-color;
   padding-left: 0.8rem;
   padding-right: 0.8rem;
-  width: 240px;
   height: 2rem;
   margin: auto 0;
   max-width: 70%;
   width: 200px;
   min-width: 150px;
+  @media only screen and (max-width: 600px) {
+    width: 150px;
+    left: 0px;
+    top: 0px;
+  }
 }
 
 .input-error {

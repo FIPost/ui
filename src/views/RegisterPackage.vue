@@ -14,10 +14,10 @@
       </div>
       <div>
         <h3>Ontvanger</h3>
-        <InputField
-          @inputChanged="receiver"
-          label="Ontvanger:"
-          :input="fpackage.ReceiverId"
+        <CBSearchSuggestions
+          :options="ontvangers"
+          label="Ontvanger"
+          @selectChanged="receiver"
           :valid="receiverValid"
         />
       </div>
@@ -64,6 +64,7 @@ import { Options, Vue } from "vue-class-component";
 import BtnBack from "@/components/BtnBack.vue";
 import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
+import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
 import RegisterPackageModel from "@/classes/RegisterPackageModel";
 import { pakketService } from "@/services/pakketservice";
 
@@ -72,6 +73,7 @@ import { pakketService } from "@/services/pakketservice";
     BtnBack,
     InputField,
     BtnFinish,
+    CBSearchSuggestions,
   },
 })
 export default class RegisterPackage extends Vue {
@@ -89,6 +91,14 @@ export default class RegisterPackage extends Vue {
   private receiverValid: boolean = true;
   private nameValid: boolean = true;
   private collectionPointValid: boolean = true;
+  private ontvangers: Array<String> = [
+    "Jaap",
+    "Sverre",
+    "Aron",
+    "Kevin",
+    "Sjors",
+    "Robin",
+  ];
 
   toggleStep() {
     // Basic model validation
@@ -118,24 +128,34 @@ export default class RegisterPackage extends Vue {
   async registerPackage() {
     // Call to backend. Package is filled by emitters.
     let response = await pakketService.post(this.fpackage);
-    window.alert("Registratie voltooid");
-    console.log(response); // Only for testing
     await this.$router.push("/");
   }
 
   sender(input: string): void {
+    if (!this.senderValid && input.length >= 1) {
+      this.senderValid = true;
+    }
     this.fpackage.Sender = input;
   }
 
   receiver(input: string): void {
+    if (!this.receiverValid && input.length >= 1) {
+      this.receiverValid = true;
+    }
     this.fpackage.ReceiverId = input;
   }
 
   name(input: string): void {
+    if (!this.nameValid && input.length >= 1) {
+      this.nameValid = true;
+    }
     this.fpackage.Name = input;
   }
 
   collectionPoint(input: string): void {
+    if (!this.collectionPointValid && input.length >= 1) {
+      this.collectionPointValid = true;
+    }
     this.fpackage.CollectionPointId = input;
   }
 }

@@ -9,7 +9,7 @@
 
 VueJS front-end for the logistal process of managing packages.
 
-# Getting Started
+## Getting Started
 Install node modules.
 ```zsh
 npm install
@@ -18,4 +18,12 @@ npm install
 Serve VueJS
 ```zsh
 npm run serve
+```
+
+## Getting Started with Docker
+The docker image used in this build uses a Nginx webserver to serve the SPA VueJS content on port `5001`.
+
+```zsh
+docker build -t ui .
+docker run -p 5001:5001 ui-app ui
 ```
