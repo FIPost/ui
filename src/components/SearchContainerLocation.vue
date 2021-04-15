@@ -3,10 +3,11 @@
     <div class="search-main">
       <div class="search-title">Zoeken</div>
       <Search @valueChanged="valueChanged" />
-      <font-awesome-icon @click="goToAddLocationPage()" class="plus-location"
+   
+      <ComboBox :options="options" placeholder="Selecteer een veld" />
+         <font-awesome-icon @click="goToAddLocationPage()" class="plus-location"
         icon="plus-square"
       />
-      <ComboBox :options="options" placeholder="Selecteer een veld" />
     </div>
   </div>
 </template>
