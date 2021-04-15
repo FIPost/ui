@@ -23,7 +23,6 @@ import BtnFinish from "@/components/BtnFinish.vue";
 import Building from "@/classes/Building";
 import Room from "@/classes/Room";
 import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
-import { locatieService } from "@/services/locatieservice";
 
 @Options({
   components: {
@@ -54,7 +53,7 @@ export default class AddRoom extends Vue {
   }
 
   async addRoom() {
-    let result = await locatieService.postRoom(this.room);
+      // add room call
   }
 }
 </script>

@@ -37,7 +37,6 @@ import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
 import Address from "@/classes/Address";
 import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
-import { locatieService } from "@/services/locatieservice";
 
 @Options({
   components: {
@@ -78,7 +77,7 @@ export default class AddBuilding extends Vue {
   }
 
   async addAddress() {
-    let result = await locatieService.postAddress(this.address);
+    //add
   }
 }
 </script>

@@ -11,7 +11,6 @@ import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
 import City from "@/classes/City";
-import { locatieService } from "@/services/locatieservice";
 
 @Options({
   components: {
@@ -27,8 +26,8 @@ export default class AddCity extends Vue {
   }
 
   async addCity() {
-    let result = await locatieService.postCity(this.city);
-  }
+    // add city call
+}
 }
 </script>
 
