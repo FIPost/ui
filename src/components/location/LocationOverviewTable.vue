@@ -7,7 +7,6 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
 import Table from '@/components/location/Table.vue'
-import locationservice from '@/services/locationservice'
 import Location from '@/classes/Location'
 
 @Options({

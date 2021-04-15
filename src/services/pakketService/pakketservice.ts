@@ -1,5 +1,5 @@
 import PackageModel from '@/classes/PackageModel';
-import http from './http';
+import http from '@/services/http';
 
 export default class PakketService {
 

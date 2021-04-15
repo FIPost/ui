@@ -8,8 +8,8 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import InputField from "@/components/InputField.vue";
-import BtnFinish from "@/components/BtnFinish.vue";
+import InputField from "@/components/standardUi/InputField.vue";
+import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 import CityRequest from "@/classes/requests/CityRequest"
 import { cityService } from "@/services/locatieService/cityservice";
 

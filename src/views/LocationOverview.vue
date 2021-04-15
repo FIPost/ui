@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import BtnBack from "@/components/BtnBack.vue";
+import BtnBack from "@/components/standardUi/BtnBack.vue";
 import LocationOverviewTable from "@/components/location/LocationOverviewTable.vue";
 import SearchContainerLocation from "@/components/SearchContainerLocation.vue";
 
