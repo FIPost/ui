@@ -8,7 +8,6 @@
         <Menu @click="searchClicked()" class="item" labelText="Zoeken" />
         <Menu @click="scanClicked()" class="item" labelText="Scannen" />
         <Menu @click="locationClicked()" class="item" labelText="Locaties" />
-        <Menu @click="addLocationClicked()" class="item" labelText="Locatie toevoegen" />
       </div>
     </div>
      <div class="container-group">
@@ -42,9 +41,6 @@ const Home = defineComponent({
     locationClicked() : void {
       this.$router.push("/locaties");
     },
-    addLocationClicked(): void{
-      this.$router.push("/addlocation");
-    }
   },
 });
 export default Home;

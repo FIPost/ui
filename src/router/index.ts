@@ -28,7 +28,7 @@ const routes = [
         component: PackagePage
     },
     {
-        path: "/addlocation",
+        path: "/locaties/nieuw",
         name: "AddLocation",
         component: AddLocation
     },

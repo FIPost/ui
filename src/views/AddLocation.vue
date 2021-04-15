@@ -60,6 +60,10 @@ export default class AddLocation extends Vue {
 .component-container {
   justify-content: flex-start;
   row-gap: 1em;
+  min-width: 500px;
+  @media only screen and (max-width: 600px) {
+    min-width: 0px;
+  }
 }
 
 .page-wrapper {
@@ -71,7 +75,7 @@ export default class AddLocation extends Vue {
   justify-content: flex-start;
   column-gap: 1em;
   padding: 2em 2em;
-    @media only screen and (max-width: 600px) {
+  @media only screen and (max-width: 600px) {
     padding: 0em 0em;
   }
 }
