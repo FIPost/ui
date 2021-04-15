@@ -20,9 +20,9 @@
 import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
-import Building from "@/classes/Building";
-import Room from "@/classes/Room";
+import RoomRequest from "@/classes/requests/RoomRequest";
 import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
+import { roomService } from "@/services/locatieService/roomservice"
 
 @Options({
   components: {
@@ -36,8 +36,7 @@ export default class AddRoom extends Vue {
     "P1 Tilburg",
     "P2 Tilburg"
   );
-  private mockBuilding: Building = new Building("bla", "kazhad dum", "ababab");
-  private room: Room = new Room("", "", "");
+  private room: RoomRequest = new RoomRequest("", "");
 
   async created() {
     //backend call for buildings//
@@ -53,7 +52,7 @@ export default class AddRoom extends Vue {
   }
 
   async addRoom() {
-      // add room call
+      await roomService.post(this.room);
   }
 }
 </script>

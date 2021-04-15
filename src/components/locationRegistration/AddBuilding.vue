@@ -10,24 +10,24 @@
     <InputField
       @inputChanged="buildingChanged"
       label="Gebouw:"
-      :input="gebouwNaam"
+      :input="building.Name"
     />
     <InputField
       @inputChanged="assignStreetToAddress"
       label="Straatnaam:"
-      :input="address.Street"
+      :input="building.Address.Street"
     />
     <InputField
-      @inputChanged="assignStreetToAddress"
+      @inputChanged="assignNrToAddress"
       label="Huisnummer:"
-      :input="address.StreetNr"
+      :input="building.Address.StreetNr"
     />
     <InputField
       @inputChanged="assignPostalCodeToAddress"
       label="Postcode:"
-      :input="address.PostalCode"
+      :input="building.Address.PostalCode"
     />
-    <BtnFinish text="Bevestigen" v-on:click="addAddress" />
+    <BtnFinish text="Bevestigen" v-on:click="addBuilding()" />
   </div>
 </template>
 
@@ -37,6 +37,8 @@ import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
 import Address from "@/classes/Address";
 import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
+import BuildingRequest from "@/classes/requests/BuildingRequest";
+import { buildingService } from "@/services/locatieService/buildingservice";
 
 @Options({
   components: {
@@ -47,8 +49,7 @@ import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
 })
 export default class AddBuilding extends Vue {
   private cities: Array<String> = new Array<String>("Tilburg", "Eindhoven");
-  private address: Address = new Address("", 0, "", "", "", "");
-  private gebouwNaam: String = "";
+  private building: BuildingRequest = new BuildingRequest("", new Address("", "", "", 0, ""));
 
   async created() {
     //call backend for cities//
@@ -57,27 +58,27 @@ export default class AddBuilding extends Vue {
   }
 
   assignCityToAddress(input: string): void {
-    this.address.City = input;
+    this.building.Address.CityId = input;
   }
 
   assignStreetToAddress(input: string): void {
-    this.address.Street = input;
+    this.building.Address.Street = input;
   }
 
-  assignStreetNrToAddress(input: number): void {
-    this.address.StreetNr = input;
+  assignNrToAddress(input: number): void {
+    this.building.Address.Number = input;
   }
 
   assignPostalCodeToAddress(input: string): void {
-    this.address.PostalCode = input;
+    this.building.Address.PostalCode = input;
   }
 
   buildingChanged(input: string) : void {
-    this.gebouwNaam = input;
+    this.building.Name = input;
   }
 
-  async addAddress() {
-    //add
+  async addBuilding() {
+    await buildingService.post(this.building);
   }
 }
 </script>

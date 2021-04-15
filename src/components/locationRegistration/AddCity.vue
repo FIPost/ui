@@ -10,6 +10,7 @@
 import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
+import CityRequest from "@/classes/requests/CityRequest"
 import { cityService } from "@/services/locatieService/cityservice";
 
 @Options({
@@ -19,10 +20,10 @@ import { cityService } from "@/services/locatieService/cityservice";
   },
 })
 export default class AddCity extends Vue {
-  private city: String = "";
+  private city: CityRequest = new CityRequest("");
 
   cityMethod(input: string): void {
-    this.city = input;
+    this.city.Name = input;
   }
 
   async addCity() {
