@@ -10,7 +10,7 @@
 import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/InputField.vue";
 import BtnFinish from "@/components/BtnFinish.vue";
-import City from "@/classes/City";
+import { cityService } from "@/services/locatieService/cityservice";
 
 @Options({
   components: {
@@ -19,15 +19,15 @@ import City from "@/classes/City";
   },
 })
 export default class AddCity extends Vue {
-  private city: City = new City("", "");
+  private city: String = "";
 
   cityMethod(input: string): void {
-    this.city.City = input;
+    this.city = input;
   }
 
   async addCity() {
-    // add city call
-}
+    await cityService.post(this.city);
+  }
 }
 </script>
 
@@ -35,7 +35,7 @@ export default class AddCity extends Vue {
 @import "@/styling/main.scss";
 
 .wrapper {
-    margin-top: 1em;
+  margin-top: 1em;
 }
 </style>
   
