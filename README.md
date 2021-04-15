@@ -25,5 +25,5 @@ The docker image used in this build uses a Nginx webserver to serve the SPA VueJ
 
 ```zsh
 docker build -t ui .
-docker run -p 5001:5001 ui-app ui
+docker run -p 80:80 --name ui-app ui
 ```
