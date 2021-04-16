@@ -22,7 +22,7 @@
                     <td>{{item.receiverId}}</td>
                     <td>{{item.status}}</td>
                     <td>{{item.collectionPointId}}</td>
-                    <td v-if="item.tickets !== null">{{item.tickets[0].createdAt}}</td>
+                    <td v-if="item.tickets[0]">{{ item.tickets[0].createdAt }}</td>
                     <td v-else>Geen Datum</td>
                 </tr>
             </tbody>
