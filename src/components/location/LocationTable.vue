@@ -14,7 +14,7 @@
     </thead>
     <tbody>
       <tr v-for="item in items" :key="item.id">
-        <td>{{ item.building.address.cityId }}</td>
+        <td>{{ item.building.address.city.name }}</td>
         <td>{{ item.building.name }}</td>
         <td>{{ item.name }}</td>
       </tr>

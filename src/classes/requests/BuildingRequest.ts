@@ -1,10 +1,10 @@
-import Address from "@/classes/Address";
+import AddressRequest from "@/classes/requests/AddressRequest";
 
 export default class BuildingRequest {
     public Name: string;
-    public Address: Address;
+    public Address: AddressRequest;
 
-    constructor(name: string, address: Address){
+    constructor(name: string, address: AddressRequest){
         this.Name = name;
         this.Address = address;
     }

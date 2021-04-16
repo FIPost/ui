@@ -40,11 +40,13 @@
 import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/standardUi/InputField.vue";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
-import Address from "@/classes/Address";
+import AddressRequest from "@/classes/requests/AddressRequest";
 import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
+
 import BuildingRequest from "@/classes/requests/BuildingRequest";
-import { buildingService } from "@/services/locatieService/buildingservice";
 import City from "@/classes/City";
+
+import { buildingService } from "@/services/locatieService/buildingservice";
 import { cityService } from "@/services/locatieService/cityservice";
 
 @Options({
@@ -58,31 +60,31 @@ export default class AddBuilding extends Vue {
   private cities: Array<String> = new Array<String>();
   private building: BuildingRequest = new BuildingRequest(
     "",
-    new Address("", "", "", 0, "")
+    new AddressRequest("", "", "", 0, "")
   );
   private allCities: Array<City> = new Array<City>();
 
   assignCityToAddress(input: string): void {
-    this.building.Address.cityId = input;
+    this.building.Address.CityId = input;
     var id = this.allCities.find(city => city.name == input)?.id;
     if(id != null)
-    this.building.Address.cityId = id;
+    this.building.Address.CityId = id;
   }
 
   assignStreetToAddress(input: string): void {
-    this.building.Address.street = input;
+    this.building.Address.Street = input;
   }
 
   assignNrToAddress(input: number): void {
-    this.building.Address.number = input;
+    this.building.Address.Number = input;
   }
 
   assignAdditionToAddress(input: string): void {
-    this.building.Address.addition = input;
+    this.building.Address.Addition = input;
   }
 
   assignPostalCodeToAddress(input: string): void {
-    this.building.Address.postalCode = input;
+    this.building.Address.PostalCode = input;
   }
 
   buildingChanged(input: string): void {
