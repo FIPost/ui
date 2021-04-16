@@ -23,6 +23,11 @@
       :input="building.Address.StreetNr"
     />
     <InputField
+      @inputChanged="assignAdditionToAddress"
+      label="Toevoeging:"
+      :input="building.Address.Addition"
+    />
+    <InputField
       @inputChanged="assignPostalCodeToAddress"
       label="Postcode:"
       :input="building.Address.PostalCode"
@@ -67,6 +72,10 @@ export default class AddBuilding extends Vue {
 
   assignNrToAddress(input: number): void {
     this.building.Address.Number = input;
+  }
+
+   assignAdditionToAddress(input: string): void {
+    this.building.Address.Addition = input;
   }
 
   assignPostalCodeToAddress(input: string): void {

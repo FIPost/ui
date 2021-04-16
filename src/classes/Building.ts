@@ -1,11 +1,13 @@
+import Address from "./Address";
+
 export default class Building{
     public Guid: string;
     public Name: string;
-    public AddressId: string;
+    public Address: Address;
 
-    constructor(id: string, name: string, addressId: string){
+    constructor(id: string, name: string, address: Address){
         this.Guid = id;
         this.Name = name;
-        this.AddressId = addressId;
+        this.Address = address;
     }
 }
