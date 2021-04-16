@@ -75,9 +75,9 @@ export default class AddBuilding extends Vue {
     this.building.Address.Street = input;
   }
 
-  assignNrToAddress(input: number): void {
-    this.building.Address.Number = input;
-  }
+  assignNrToAddress(input: Number): void {
+    this.building.Address.Number = Number(input)
+    }
 
   assignAdditionToAddress(input: string): void {
     this.building.Address.Addition = input;

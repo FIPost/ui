@@ -3,12 +3,12 @@ import City from "./City";
 export default class Address {
     public city: City;
     public street: string;
-    public number: number;
+    public number: Number;
     public addition: string;
     public postalCode: string;
 
 
-    constructor(city: City, street: string, postalCode: string, number: number, addition: string){
+    constructor(city: City, street: string, postalCode: string, number: Number, addition: string){
         this.city = city;
         this.street = street;
         this.postalCode = postalCode;
