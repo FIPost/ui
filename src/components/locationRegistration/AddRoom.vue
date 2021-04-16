@@ -22,7 +22,9 @@ import InputField from "@/components/standardUi/InputField.vue";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 import RoomRequest from "@/classes/requests/RoomRequest";
 import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
-import { roomService } from "@/services/locatieService/roomservice"
+import { roomService } from "@/services/locatieService/roomservice";
+import Building from "@/classes/Building";
+import { buildingService } from "@/services/locatieService/buildingservice";
 
 @Options({
   components: {
@@ -32,27 +34,26 @@ import { roomService } from "@/services/locatieService/roomservice"
   },
 })
 export default class AddRoom extends Vue {
-  private buildings: Array<String> = new Array<String>(
-    "P1 Tilburg",
-    "P2 Tilburg"
-  );
+  private buildings: Array<String> = new Array<String>();
+  private allBuildings: Array<Building> = new Array<Building>();
   private room: RoomRequest = new RoomRequest("", "");
-
-  async created() {
-    //backend call for buildings//
-    //        let result = await locatieService.getAllBuildings();
-    //      this.buildings = result;
-  }
 
   assignNameToRoom(input: string): void {
     this.room.Name = input;
   }
   assignBuildingToRoom(input: string): void {
-    this.room.BuildingId = input;
+    var id = this.allBuildings.find(building => building.name == input)?.id;
+    if(id != null)
+    this.room.BuildingId = id;
   }
 
   async addRoom() {
-      await roomService.post(this.room);
+    await roomService.post(this.room);
+  }
+
+  async mounted() {
+    this.allBuildings = await buildingService.getAll();
+    this.allBuildings.forEach((building) => this.buildings.push(building.name));
   }
 }
 </script>

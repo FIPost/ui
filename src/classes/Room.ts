@@ -1,11 +1,13 @@
-export default class Room{
-    public Guid: string;
-    public Name: string;
-    public BuildingId: string;
+import Building from "./Building";
 
-    constructor(id: string, name: string, buildingId: string){
-        this.Guid = id;
-        this.Name = name;
-        this.BuildingId = buildingId;
+export default class Room{
+    public id: string;
+    public name: string;
+    public building: Building;
+
+    constructor(id: string, name: string, building: Building){
+        this.id = id;
+        this.name = name;
+        this.building = building;
     }
 }

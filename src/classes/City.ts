@@ -1,9 +1,9 @@
 export default class City{
-    public Guid: string;
-    public City: String;
+    public id: string;
+    public name: string;
 
-    constructor(city: String, guid: string){
-        this.City = city;
-        this.Guid = guid;
+    constructor(name: string, id: string){
+        this.id = id;
+        this.name = name;
     }
 }

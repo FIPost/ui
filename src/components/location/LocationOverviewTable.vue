@@ -1,13 +1,14 @@
 <template>
     <div class="component-container" style="padding: 0 !important;">
-        <Table :columns="columns" :items="items"/>
+        <Table :columns="columns" :items="rooms"/>
     </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component'
-import Table from '@/components/location/Table.vue'
-import Location from '@/classes/Location'
+import Table from '@/components/location/LocationTable.vue'
+import Room from '@/classes/Room'
+import { roomService } from '@/services/locatieService/roomservice';
 
 @Options({
     components: {
@@ -16,17 +17,11 @@ import Location from '@/classes/Location'
 })
 export default class LocationOverviewTable extends Vue {
     //IMPORTANT! for sorting to work table headers need to have the same name as the objects properties 
-    private columns: String[] = ["Id", "City", "Location", "CollectionPoint"];
-    private items: Array<Location> = [
-        new Location(1, "stad2", "locatie3", "afhaalpunt4"),
-        new Location(2, "stad3", "locatie4", "afhaalpunt1"),
-        new Location(3, "stad4", "locatie1", "afhaalpunt2"),
-        new Location(4, "stad1", "locatie2", "afhaalpunt3")
-    ];
+    private columns: String[] = ["Stad", "Gebouw", "Ruimte"];
+    private rooms: Array<Room> = new Array<Room>();
 
-    async created(){
-        //let result = await locationservice.getAll();
-        //this.items = result;
+    async mounted(){
+        this.rooms = await roomService.getAll();
     }
 }
 </script>
