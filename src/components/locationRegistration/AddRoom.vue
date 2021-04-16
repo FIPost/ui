@@ -49,6 +49,7 @@ export default class AddRoom extends Vue {
 
   async addRoom() {
     await roomService.post(this.room);
+    this.$router.push("/locaties");
   }
 
   async mounted() {

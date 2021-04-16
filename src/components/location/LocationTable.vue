@@ -22,18 +22,22 @@
   </table>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
 
-export default defineComponent({
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
+import Room from "@/classes/Room";
+
+@Options({
   props: {
     items: Array,
     columns: String[0],
   },
-  created(){
-      console.log(this.items);
-  }
-});
+})
+export default class LocationTable extends Vue {
+  //IMPORTANT! for sorting to work table headers need to have the same name as the objects properties
+  private items!: Array<Room>;
+
+}
 </script>
 
 <style lang="scss" scoped>

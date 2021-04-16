@@ -91,6 +91,7 @@ export default class AddBuilding extends Vue {
 
   async addBuilding() {
     await buildingService.post(this.building);
+    this.$router.push("/locaties");
   }
 
   async mounted() {

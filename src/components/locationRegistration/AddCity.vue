@@ -28,6 +28,7 @@ export default class AddCity extends Vue {
 
   async addCity() {
     await cityService.post(this.city);
+    this.$router.push("/locaties");
   }
 }
 </script>
