@@ -3,7 +3,6 @@
     <div class="container-subheader">{{ title }}: <a href="">{{ locationName }}</a></div>
     <div class="cd-item">{{address.Street}} {{address.StreetNr}}</div>
     <div class="cd-item">{{address.PostalCode}}</div>
-    <div class="cd-item">{{address.City}}, {{address.Country}}</div>
   </div>
 </template>
 

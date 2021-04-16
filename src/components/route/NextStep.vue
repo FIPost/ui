@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import BtnFinish from "@/components/BtnFinish.vue";
+import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 import TicketModel from "@/classes/TicketModel";
 
 @Options({

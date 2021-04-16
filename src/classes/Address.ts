@@ -1,15 +1,16 @@
 export default class Address {
+    public CityId: string;
     public Street: string;
-    public StreetNr: number;
+    public Number: number;
+    public Addition: string;
     public PostalCode: string;
-    public City: string;
-    public Country: string;
 
-    constructor(street: string, streetNr: number, postalCode: string, city: string, country: string){
+
+    constructor(cityId: string, street: string, postalCode: string, number: number, addition: string){
+        this.CityId = cityId;
         this.Street = street;
-        this.StreetNr = streetNr;
         this.PostalCode = postalCode;
-        this.City = city;
-        this.Country = country;
+        this.Number = number;
+        this.Addition = addition;
     }
 }

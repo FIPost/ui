@@ -1,17 +1,26 @@
 <template>
-  <div class="custom-select">
-    <div class="selected" :class="{ open: open }" @click="toggle()">
-      {{ selectedOption }}
-    </div>
+  <div class="combobox-container">
+    <p class="header">{{ label }}</p>
+    <div class="custom-select">
+      <div class="selected" :class="{ open: open }" @click="toggle()">
+        {{ selectedOption }}
+      </div>
 
-    <div>
-      <font-awesome-icon v-if="open" icon="sort-up" size="2x" class="arrow" />
-      <font-awesome-icon v-else icon="sort-down" size="2x" class="arrow" style="margin-top:-10px"/>
-    </div>
+      <div>
+        <font-awesome-icon v-if="open" icon="sort-up" size="2x" class="arrow" />
+        <font-awesome-icon
+          v-else
+          icon="sort-down"
+          size="2x"
+          class="arrow"
+          style="margin-top: -10px"
+        />
+      </div>
 
-    <div class="items" :class="{ selectHide: !open }">
-      <div v-for="option in options" :key="option" @click="onChange(option)">
-        {{ option }}
+      <div class="items" :class="{ selectHide: !open }">
+        <div v-for="option in options" :key="option" @click="onChange(option)">
+          {{ option }}
+        </div>
       </div>
     </div>
   </div>
@@ -24,10 +33,11 @@ import { Vue, Options } from "vue-class-component";
   props: {
     placeholder: String,
     options: Array as () => Array<String>,
+    label: String,
   },
   emits: ["select-change"],
 })
-export default class ComboBox extends Vue {
+export default class ComboBoxInput extends Vue {
   private selectedOption: String = "";
   private placeholder!: String;
   private open: Boolean = false;
@@ -51,6 +61,21 @@ export default class ComboBox extends Vue {
 <style scoped lang="scss">
 @import "@/styling/main.scss";
 
+.combobox-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 440px;
+  margin-bottom: 0.6rem;
+  margin-top: 0.6rem;
+  max-width: 100%;
+}
+
+.header {
+  flex-basis: 100px;
+}
+
 .custom-select {
   border: none;
   font-family: $font-family;
@@ -63,25 +88,25 @@ export default class ComboBox extends Vue {
   max-width: 70%;
   min-width: 150px;
   height: 2rem;
+  margin: auto 0;
   padding: 1px 0.8rem;
-  
 
   display: flex;
   flex-direction: row;
+
   @media only screen and (max-width: 600px) {
     width: 150px;
+    
   }
 }
 
 .custom-select .selected {
-  padding-left: 1em;
   cursor: pointer;
   user-select: none;
-  width: 80%;
+  width: 90%;
   height: 100%;
   padding-top: 6px;
 }
-
 
 .items {
   border-radius: $small-border-radius;
@@ -109,6 +134,7 @@ export default class ComboBox extends Vue {
   }
 }
 
+
 .custom-select .items div {
   color: $black-color;
   padding: 0.5em 2em 0.5em 25px;
@@ -128,5 +154,7 @@ export default class ComboBox extends Vue {
   color: $fontys-purple;
   position: absolute;
   padding-top: 8px;
+
 }
+
 </style>

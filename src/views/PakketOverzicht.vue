@@ -14,10 +14,10 @@
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import PakketTable from "@/components/PakketTable.vue";
-import { pakketService } from "@/services/pakketservice";
-import PackageModel from "@/classes/RegisterPackageModel";
+import { pakketService } from "@/services/pakketService/pakketservice";
+import PackageModel from "@/classes/requests/PackageRequest";
 import SearchContainer from "@/components/SearchContainer.vue";
-import BtnBack from "@/components/BtnBack.vue";
+import BtnBack from "@/components/standardUi/BtnBack.vue";
 
 @Options({
   components: {

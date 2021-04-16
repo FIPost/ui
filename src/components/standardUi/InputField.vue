@@ -17,6 +17,8 @@ export default class InputField extends Vue {
   @Prop() public input!: String;
   @Prop() public color!: String;
   @Prop() public valid: Boolean = true; // Default true
+  private text: String = "";
+
 
   public get cssClass(): string {
     if (this.valid) {
@@ -25,11 +27,14 @@ export default class InputField extends Vue {
     return "input input-error";
   }
 
-  private text: String = this.input;
 
   @Emit("input-changed")
   changed() {
     return this.text;
+  }
+
+  mounted(){
+    this.text = this.input;
   }
 }
 </script>

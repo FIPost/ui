@@ -61,12 +61,12 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import BtnBack from "@/components/BtnBack.vue";
-import InputField from "@/components/InputField.vue";
-import BtnFinish from "@/components/BtnFinish.vue";
+import BtnBack from "@/components/standardUi/BtnBack.vue";
+import InputField from "@/components/standardUi/InputField.vue";
+import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
-import RegisterPackageModel from "@/classes/RegisterPackageModel";
-import { pakketService } from "@/services/pakketservice";
+import RegisterPackageModel from "@/classes/requests/PackageRequest";
+import { pakketService } from "@/services/pakketService/pakketservice";
 
 @Options({
   components: {

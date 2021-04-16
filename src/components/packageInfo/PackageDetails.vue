@@ -61,11 +61,11 @@ import PackageModel from "@/classes/PackageModel"
 export default class PackageDetails extends Vue {
   packageModel!: PackageModel;
   fAddress: Address = new Address(
+    "12341-20132-12301-12312",
     "Professor Goossenslaan",
-    1,
     "5022DM",
-    "Tilburg",
-    "Nederland"
+    1,
+    "",
   );
 
   reciever: Contact = new Contact(

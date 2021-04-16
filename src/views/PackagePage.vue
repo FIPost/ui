@@ -19,11 +19,11 @@ import { Options, Vue } from "vue-class-component";
 import PackageDetails from "@/components/packageInfo/PackageDetails.vue";
 import PrintQR from "@/components/PrintQR.vue";
 import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
-import NextStep from "@/components/NextStep.vue";
+import NextStep from "@/components/route/NextStep.vue";
 import TicketModel from "@/classes/TicketModel";
 import PackageModel from "@/classes/PackageModel";
-import { pakketService } from "@/services/pakketservice";
-import BtnBack from "@/components/BtnBack.vue";
+import { pakketService } from "@/services/pakketService/pakketservice";
+import BtnBack from "@/components/standardUi/BtnBack.vue";
 
 @Options({
   components: {

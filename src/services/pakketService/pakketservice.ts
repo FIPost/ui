@@ -1,20 +1,19 @@
 import PackageModel from '@/classes/PackageModel';
-import http from './http';
+import http from '@/services/http';
 
 export default class PakketService {
 
-   private baseUrl: String = process.env.VUE_APP_API_GATEWAY;
-
    public async getAll(): Promise<Array<PackageModel>> {
-      const response = await http.get(`${this.baseUrl}/api/packages`);
+      const response = await http.get(`/api/packages`);
       return response.data;
    }
    public async post(packageModel): Promise<PackageModel> {
-      const response = await http.post(`${this.baseUrl}/api/packages`, packageModel);
+      const response = await http.post(`/api/packages`, packageModel);
       return response.data;
    }
+  
    public async get(id): Promise<PackageModel> {
-      const response = await http.get(`${this.baseUrl}/api/packages/${id}`);
+      const response =  await http.get(`/api/packages/${id}`);
       return response.data;
    }
 }
