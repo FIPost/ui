@@ -27,7 +27,7 @@ const routes = [
         component: PackagePage
     },
     {
-        path: "/locatieOverzicht",
+        path: "/locaties",
         name: "Locatie Overzicht",
         component: LocationOverview
     }
