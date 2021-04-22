@@ -39,6 +39,7 @@ export default class BtnFinish extends Vue {
 
   font-weight: bold;
   font-size: 16px;
+  cursor: pointer;
 
   @media only screen and (max-width: 600px) {
     width: 150px;
