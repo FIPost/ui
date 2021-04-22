@@ -22,7 +22,7 @@ import InputField from "@/components/standardUi/InputField.vue";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 import AddCity from "@/components/locationRegistration/AddCity.vue";
 import AddBuilding from "@/components/locationRegistration/AddBuilding.vue";
-import AddRoom from "@/components/locationRegistration/AddRoom.vue";
+import AddRoom2 from "@/components/locationRegistration/AddRoom.vue";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 
@@ -33,7 +33,7 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
     BtnFinish,
     AddCity,
     AddBuilding,
-    AddRoom,
+    AddRoom2,
     BtnBack,
   },
 })
