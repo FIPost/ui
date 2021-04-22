@@ -54,8 +54,8 @@
       <h3>Afhaalpunt</h3>
       <p>{{ room }}</p>
     </div>
-    <BtnFinish :text="btnText" v-on:click="toggleStep" />
-    <BtnFinish text="Bevestigen" v-on:click="registerPackage" v-if="overview" />
+      <BtnFinish class="margin-button" :text="btnText" v-on:click="toggleStep" />
+      <BtnFinish class="margin-button" text="Bevestigen" v-on:click="registerPackage" v-if="overview" />
   </div>
 </template>
 
@@ -185,4 +185,8 @@ export default class RegisterPackage extends Vue {
 .align-left {
   text-align: left;
 }
+.margin-button{
+  margin-right: 5%;
+}
+
 </style>
