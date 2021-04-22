@@ -13,7 +13,13 @@ import { Options, Vue } from "vue-class-component";
     sender: String,
   },
 })
-export default class SenderDetails extends Vue {}
+export default class SenderDetails extends Vue {
+  public sender!: String;
+
+  mounted(){
+    console.log(this.sender);
+  }
+}
 </script>
 
 

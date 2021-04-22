@@ -1,21 +1,21 @@
 <template>
   <div class="cd-container">
     <div class="container-subheader">Ontvanger</div>
-    <div class="cd-item">{{ contact.Name }}</div>
-    <div class="cd-item">{{ contact.Email }}</div>
+    <div class="cd-item">{{ person.Name }}</div>
+    <div class="cd-item">{{ person.Email }}</div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Contact from "@/classes/Contact";
+import Person from "@/classes/Person";
 
 @Options({
   props: {
-    contact: Contact,
+    person: Person,
   },
 })
-export default class ContactDetails extends Vue {}
+export default class PersonDetails extends Vue {}
 </script>
 
 

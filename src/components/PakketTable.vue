@@ -31,9 +31,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
 import { defineComponent } from "vue";
-import PackageModel from "@/classes/PackageModel";
 import _ from 'lodash';
 
 const PakketTable = defineComponent({

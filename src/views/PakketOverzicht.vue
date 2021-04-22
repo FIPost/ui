@@ -6,7 +6,7 @@
     <PakketTable
       :columns="columns"
       :columnKeys="columnKeys"
-      v-bind:packages="packageModels"
+      v-bind:packages="packages"
     />
   </div>
 </template>
@@ -15,7 +15,7 @@
 import { Vue, Options } from "vue-class-component";
 import PakketTable from "@/components/PakketTable.vue";
 import { pakketService } from "@/services/pakketService/pakketservice";
-import PackageModel from "@/classes/requests/PackageRequest";
+import Package from "@/classes/Package";
 import SearchContainer from "@/components/SearchContainer.vue";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 
@@ -35,11 +35,11 @@ export default class PakketOverzicht extends Vue {
     "collectionPointId",
     "sender",
   ];
-  private packageModels: Array<PackageModel> = [];
+  private packages: Array<Package> = [];
 
   async created() {
     let result = await pakketService.getAll();
-    this.packageModels = result;
+    this.packages = result;
   }
 }
 </script>

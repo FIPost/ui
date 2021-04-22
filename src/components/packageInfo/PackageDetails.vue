@@ -1,11 +1,11 @@
 <template>
-  <div class="package-details">
+  <div v-if="!isLoading" class="package-details">
     <div class="container container-header">Pakketgegevens</div>
 
-    <ContactDetails v-bind:contact="reciever" />
+    <PersonDetails :person="reciever" />
 
     <div class="sd-container">
-      <SenderDetails :sender="packageModel.sender" />
+      <SenderDetails :sender="packageM.sender" />
       <div class="sd-img">
         <img alt="BoxQR" src="@/assets/BoxQR.png" />
       </div>
@@ -35,47 +35,36 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import Address from "@/classes/Address";
-import Contact from "@/classes/Contact";
 import City from "@/classes/City";
 import AddressBox from "@/components/packageInfo/AddressBox.vue";
-import ContactDetails from "@/components/packageInfo/ContactDetails.vue";
+import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
 import SenderDetails from "@/components/packageInfo/SenderDetails.vue";
 import PickupPoint from "@/components/packageInfo/pickupPoint.vue";
-import PackageModel from "@/classes/PackageModel"
+import Package from "@/classes/Package";
+import { pakketService } from "@/services/pakketService/pakketservice";
 
 @Options({
   props: {
-    reciever: Contact,
-    sender: String,
-    deliveryLocation: Object,
-    finalLocation: Object,
-    dropPoint: String,
-    packageModel: Object
+    packageId: String,
   },
   components: {
     AddressBox,
-    ContactDetails,
+    PersonDetails,
     SenderDetails,
     PickupPoint,
   },
 })
 export default class PackageDetails extends Vue {
-  packageModel!: PackageModel;
+  private packageM: Package = new Package("", "", "", "", "", "", false, []);
+  private isLoading: Boolean = true;
+
   fAddress: Address = new Address(
     new City("13123", "Tilburg"),
     "Professor Goossenslaan",
     "5022DM",
     1,
-    "",
+    ""
   );
-
-  reciever: Contact = new Contact(
-    "P. Makelaar",
-    "p.makelaar@fontys.nl",
-    "+31654963378"
-  );
-
-  sender: string = "Perfect Home Depot";
 
   deliveryLocation: object = {
     name: "Fontys Tilburg Stappengoor",
@@ -88,6 +77,17 @@ export default class PackageDetails extends Vue {
   };
 
   dropPoint: string = "P1 Receptie";
+
+  async mounted() {
+    try {
+      this.packageM = await pakketService.get(
+        this.$router.currentRoute.value.params.id
+      );
+    } catch (exception) {
+      console.log(exception);
+    }
+    this.isLoading = false;
+  }
 }
 </script>
 
