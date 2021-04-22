@@ -25,12 +25,14 @@ import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
 import { roomService } from "@/services/locatieService/roomservice";
 import Building from "@/classes/Building";
 import { buildingService } from "@/services/locatieService/buildingservice";
+import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 
 @Options({
   components: {
     ComboBoxInput,
     InputField,
     BtnFinish,
+    LinkOrStayModal,
   },
 })
 export default class AddRoom extends Vue {

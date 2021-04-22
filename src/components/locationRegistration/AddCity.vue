@@ -12,11 +12,13 @@ import InputField from "@/components/standardUi/InputField.vue";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 import CityRequest from "@/classes/requests/CityRequest"
 import { cityService } from "@/services/locatieService/cityservice";
+import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 
 @Options({
   components: {
     InputField,
     BtnFinish,
+    LinkOrStayModal,
   },
 })
 export default class AddCity extends Vue {

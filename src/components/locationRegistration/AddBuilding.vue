@@ -42,6 +42,7 @@ import InputField from "@/components/standardUi/InputField.vue";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 import AddressRequest from "@/classes/requests/AddressRequest";
 import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
+import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 
 import BuildingRequest from "@/classes/requests/BuildingRequest";
 import City from "@/classes/City";
@@ -54,6 +55,7 @@ import { cityService } from "@/services/locatieService/cityservice";
     ComboBoxInput,
     InputField,
     BtnFinish,
+    LinkOrStayModal,
   },
 })
 export default class AddBuilding extends Vue {
