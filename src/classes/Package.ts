@@ -1,8 +1,9 @@
 import TicketModel from "@/classes/TicketModel";
+import Person from "@/classes/Person";
 
 export default class Package {
     public id: String;
-    public receiverId: String;
+    public person: Person;
     public collectionPointId: String;
     public sender: String;
     public name: String;
@@ -11,9 +12,9 @@ export default class Package {
     public tickets: Array<TicketModel>;
 
 
-    constructor(id: String, receiverId: String, collectionPointId: String, sender: String, name: String, status: String, routeFinished: Boolean, tickets: Array<TicketModel>) {
+    constructor(id: String, person: Person, collectionPointId: String, sender: String, name: String, status: String, routeFinished: Boolean, tickets: Array<TicketModel>) {
         this.id = id;
-        this.receiverId = receiverId;
+        this.person = person;
         this.collectionPointId = collectionPointId;
         this.sender = sender;
         this.name = name;

@@ -2,7 +2,7 @@
   <div v-if="!isLoading" class="package-details">
     <div class="container container-header">Pakketgegevens</div>
 
-    <PersonDetails :person="reciever" />
+    <PersonDetails :person="packageM.receiver" />
 
     <div class="sd-container">
       <SenderDetails :sender="packageM.sender" />
@@ -42,6 +42,7 @@ import SenderDetails from "@/components/packageInfo/SenderDetails.vue";
 import PickupPoint from "@/components/packageInfo/pickupPoint.vue";
 import Package from "@/classes/Package";
 import { pakketService } from "@/services/pakketService/pakketservice";
+import Person from "@/classes/Person";
 
 @Options({
   props: {
@@ -55,7 +56,7 @@ import { pakketService } from "@/services/pakketService/pakketservice";
   },
 })
 export default class PackageDetails extends Vue {
-  private packageM: Package = new Package("", "", "", "", "", "", false, []);
+  private packageM: Package = new Package("", new Person("", "", ""), "", "", "", "", false, []);
   private isLoading: Boolean = true;
 
   fAddress: Address = new Address(

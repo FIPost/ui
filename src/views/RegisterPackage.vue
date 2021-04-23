@@ -15,9 +15,9 @@
       <div>
         <h3>Ontvanger</h3>
         <CBSearchSuggestions
-          :options="recievers"
+          :options="receivers"
           label="Ontvanger:"
-          @selectChanged="receiver"
+          @selectChanged="receiverChanged"
           :valid="receiverValid"
         />
       </div>
@@ -47,8 +47,8 @@
       <h1>Overzicht</h1>
       <h3>Afzender</h3>
       <p>{{ fpackage.Sender }}</p>
-      <h3>Ontvangstadres</h3>
-      <p>{{ reciever }}</p>
+      <h3>Ontvanger</h3>
+      <p>{{ receiver }}</p>
       <h3>Pakket</h3>
       <p>{{ fpackage.Name }}</p>
       <h3>Afhaalpunt</h3>
@@ -97,9 +97,9 @@ export default class RegisterPackage extends Vue {
   private nameValid: boolean = true;
   private collectionPointValid: boolean = true;
 
-  private reciever: string = "";
-  private recievers: Array<string> = new Array<string>();
-  private allRecievers: Array<Person> = new Array<Person>();
+  private receiver: string = "";
+  private receivers: Array<string> = new Array<string>();
+  private allreceivers: Array<Person> = new Array<Person>();
 
   private room: string = "";
   private rooms: Array<String> = new Array<String>();
@@ -120,18 +120,18 @@ export default class RegisterPackage extends Vue {
       this.error = "dit afhaalpunt bestaat niet";
     }
 
-    var recieverId = this.allRecievers.find((reciever) => reciever.Name == this.reciever)?.Id;
-    if (recieverId != null) {
+    var receiverId = this.allreceivers.find((receiver) => receiver.name == this.receiver)?.id;
+    if (receiverId != null) {
       this.receiverValid = true;
-      this.fpackage.ReceiverId = recieverId;
+      this.fpackage.ReceiverId = receiverId;
     } else {
       this.receiverValid = false;
       this.errorText = true;
       this.error = "deze ontvanger kan niet gevonden worden";
     }
 
-    if (this.senderValid && this.receiverValid && this.nameValid) {
-      if (this.collectionPointValid) {
+    if (this.senderValid  && this.nameValid) {
+      if (this.collectionPointValid && this.receiverValid) {
         this.errorText = false;
         this.error = "";
         this.overview = !this.overview;
@@ -160,8 +160,9 @@ export default class RegisterPackage extends Vue {
     this.fpackage.Sender = input;
   }
 
-  receiver(input: string): void {
-    this.reciever = input;
+  receiverChanged(input: string): void {
+    this.receiver = input;
+    console.log(this.receiver);
   }
 
   name(input: string): void {
@@ -178,8 +179,8 @@ export default class RegisterPackage extends Vue {
   async mounted() {
     this.allRooms = await roomService.getAll();
     this.allRooms.forEach((room) => this.rooms.push(room.name));
-    this.allRecievers = personeelService.getAll();
-    this.allRecievers.forEach(reciever => this.recievers.push(reciever.Name))
+    this.allreceivers = await personeelService.getAll();
+    this.allreceivers.forEach(receiver => this.receivers.push(receiver.name))
   }
 }
 </script>

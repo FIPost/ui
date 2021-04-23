@@ -1,13 +1,11 @@
 export default class Person {
-    public Id: String;
-    public Name: string;
-    public Email: string;
-    public Phone: string;
+    public id: String;
+    public name: string;
+    public email: string;
 
-    constructor(id: string, name: string, email: string, phone: string){
-        this.Id = id;
-        this.Name = name;
-        this.Email = email;
-        this.Phone = phone;
+    constructor(id: string, name: string, email: string){
+        this.id = id;
+        this.name = name;
+        this.email = email;
     }
 }

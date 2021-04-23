@@ -1,8 +1,8 @@
 <template>
   <div class="cd-container">
     <div class="container-subheader">Ontvanger</div>
-    <div class="cd-item">{{ person.Name }}</div>
-    <div class="cd-item">{{ person.Email }}</div>
+    <div class="cd-item">{{ person.name }}</div>
+    <div class="cd-item">{{ person.email }}</div>
   </div>
 </template>
 

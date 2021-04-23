@@ -1,18 +1,16 @@
 import Person from '@/classes/Person';
-import data from "@/data/person_mock";
+import http from '@/services/http';
 
 export default class PersoneelService {
 
-   public getAll(): Array<Person> {
-      return data;
+   public async getAll(): Promise<Array<Person>> {
+      const response = await http.get(`/api/persons`);
+      return response.data;
    }
 
-   public get(id): Person {
-      var result = data.find(person => person.Id == id);
-      if(result != null){
-        return result;
-      }
-      return (null as unknown) as Person;
+   public async get(id): Promise<Person> {
+      const response =  await http.get(`/api/persons/${id}`);
+      return response.data;
    }
 }
 
