@@ -1,8 +1,13 @@
 <template>
   <div class="cd-container">
     <div class="container-subheader">Ontvanger</div>
-    <div class="cd-item">{{ person.name }}</div>
-    <div class="cd-item">{{ person.email }}</div>
+    <div v-if="person">
+      <div class="cd-item">{{ person.name }}</div>
+      <div class="cd-item">{{ person.email }}</div>
+    </div>
+    <div v-else>
+      <div class="cd-item">De ontvanger kan niet worden opgehaald</div>
+    </div>
   </div>
 </template>
 
@@ -12,10 +17,12 @@ import Person from "@/classes/Person";
 
 @Options({
   props: {
-    person: Person,
+    person: Object,
   },
 })
-export default class PersonDetails extends Vue {}
+export default class PersonDetails extends Vue {
+  private person!: Person;
+}
 </script>
 
 

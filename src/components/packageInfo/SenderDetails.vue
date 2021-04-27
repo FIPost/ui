@@ -1,7 +1,7 @@
 <template>
     <div class="sd-content">
       <div class="container-subheader">Afzender</div>
-      <div class="sd-item">{{ sender }}</div>
+      <div class="sd-item">{{ sender.lentgh > 0 ? sender : 'De afzender kan niet worden opgehaald'}}</div>
     </div>
 </template>
 
@@ -15,10 +15,6 @@ import { Options, Vue } from "vue-class-component";
 })
 export default class SenderDetails extends Vue {
   public sender!: String;
-
-  mounted(){
-    console.log(this.sender);
-  }
 }
 </script>
 

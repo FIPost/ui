@@ -27,9 +27,9 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
   },
 })
 export default class PakketOverzicht extends Vue {
-  private columns: string[] = ["ID", "Ontvanger", "Status", "Locatie", "Datum"];
+  private columns: string[] = ["Naam", "Ontvanger", "Status", "Locatie", "Datum"];
   private columnKeys: string[] = [
-    "id",
+    "name",
     "receiverId",
     "status",
     "collectionPointId",

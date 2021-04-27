@@ -162,7 +162,6 @@ export default class RegisterPackage extends Vue {
 
   receiverChanged(input: string): void {
     this.receiver = input;
-    console.log(this.receiver);
   }
 
   name(input: string): void {
