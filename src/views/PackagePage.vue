@@ -88,17 +88,18 @@ export default class PackagePage extends Vue {
   );
   private isLoading: Boolean = true;
 
-  async created() {
-    try {
-      const result = await pakketService.get(
-        this.$router.currentRoute.value.params.id
-      );
-      this.packageModel = result;
-    } catch (exception) {
-      console.log(exception);
-    }
-    this.isLoading = false;
-  }
+//  DEZE METHODE GEEFT EEN ONNODIGE CALL in issue 325 vermeld, de bedoeling is voor mij onduidelijk
+ // async created() {
+ //   try {
+  //    const result = await pakketService.get(
+  //     this.$router.currentRoute.value.params.id
+  //    );
+  //    this.packageModel = result;
+  //  } catch (exception) {
+  //    console.log(exception);
+  //  }
+ //   this.isLoading = false;
+ // }
 }
 </script>
 
