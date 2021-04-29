@@ -18,10 +18,13 @@
             </thead>
             <tbody>
                 <tr v-for="item in sortedList" :key="item" @click="onClick(item.id)">
-                    <td>{{item.id}}</td>
-                    <td>{{item.receiverId}}</td>
-                    <td>{{item.status}}</td>
-                    <td>{{item.collectionPointId}}</td>
+                    <td>{{item.name}}</td>
+                    <td v-if="item.receiver">{{ item.receiver ? item.receiver.name : 'Kon niet worden opgehaald'}}</td>
+                    <td>{{ item.routeFinished ? 'afgeleverd' : 'In behandeling'}}</td>
+
+                    <td v-if="item.collectionPoint">{{item.collectionPoint.building.address.city.name}} {{item.collectionPoint.building.name}} {{item.collectionPoint.name}}</td>
+                    <td v-else>Kon niet worden opgehaald</td>
+
                     <td v-if="item.tickets[0]">{{ item.tickets[0].createdAt }}</td>
                     <td v-else>Geen Datum</td>
                 </tr>
@@ -31,9 +34,7 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
 import { defineComponent } from "vue";
-import PackageModel from "@/classes/PackageModel";
 import _ from 'lodash';
 
 const PakketTable = defineComponent({

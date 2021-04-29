@@ -12,13 +12,15 @@ import { Options, Vue } from "vue-class-component";
     text: String,
   },
 })
-export default class BtnBack extends Vue {
+class BtnBack extends Vue {
   text: string = "Terug";
 
   onClick(): void {
     this.$router.go(-1);
   }
 }
+
+export default BtnBack;
 </script>
 
 

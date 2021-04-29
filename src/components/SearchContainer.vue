@@ -30,7 +30,7 @@ const SearchContainer = defineComponent({
   data() {
     return {
       result: "",
-      options: ["Naam", "Afzender", "Ontvanger"],
+      options: ["Naam", "Ontvanger", "Status"],
     };
   },
 });

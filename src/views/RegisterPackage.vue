@@ -17,7 +17,7 @@
         <CBSearchSuggestions
           :options="receivers"
           label="Ontvanger:"
-          @selectChanged="receiver"
+          @selectChanged="receiverChanged"
           :valid="receiverValid"
         />
       </div>
@@ -47,15 +47,20 @@
       <h1>Overzicht</h1>
       <h3>Afzender</h3>
       <p>{{ fpackage.Sender }}</p>
-      <h3>Ontvangstadres</h3>
-      <p>{{ fpackage.ReceiverId }}</p>
+      <h3>Ontvanger</h3>
+      <p>{{ receiver.name }}</p>
       <h3>Pakket</h3>
       <p>{{ fpackage.Name }}</p>
       <h3>Afhaalpunt</h3>
-      <p>{{ room }}</p>
+      <p>{{ room.name }}</p>
     </div>
-      <BtnFinish class="margin-button" :text="btnText" v-on:click="toggleStep" />
-      <BtnFinish class="margin-button" text="Bevestigen" v-on:click="registerPackage" v-if="overview" />
+    <BtnFinish class="margin-button" :text="btnText" v-on:click="toggleStep" />
+    <BtnFinish
+      class="margin-button"
+      text="Bevestigen"
+      v-on:click="registerPackage"
+      v-if="overview"
+    />
   </div>
 </template>
 
@@ -69,6 +74,9 @@ import RegisterPackageModel from "@/classes/requests/PackageRequest";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
+import { personeelService } from "@/services/personeelService/personeelService";
+import Person from "@/classes/Person";
+import SelectOption from "@/classes/helpers/SelectOption";
 import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
@@ -80,8 +88,8 @@ import { getCurrentInstance } from "@vue/runtime-core";
   },
 })
 export default class RegisterPackage extends Vue {
-  private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
-
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
 
   private fpackage: RegisterPackageModel = new RegisterPackageModel(
     "",
@@ -89,7 +97,6 @@ export default class RegisterPackage extends Vue {
     "",
     ""
   );
-  private room: string = "";
 
   private overview: boolean = false;
   private btnText: string = "Volgende";
@@ -99,26 +106,21 @@ export default class RegisterPackage extends Vue {
   private receiverValid: boolean = true;
   private nameValid: boolean = true;
   private collectionPointValid: boolean = true;
-  private receivers: Array<String> = [
-    "Patrick de Beer",
-    "Jacques de Roij",
-    "Jaap van der Meer",
-    "Kevin Wieling",
-    "Sjors Scholten",
-    "Aron Heesakkers",
-    "Sverre van Gompel",
-    "Robin de Witte",
-  ];
-  private rooms: Array<String> = new Array<String>();
+
+  private receiver: SelectOption = new SelectOption("", "");
+  private receivers: Array<SelectOption> = new Array<SelectOption>();
+  private allreceivers: Array<Person> = new Array<Person>();
+
+  private room: SelectOption = new SelectOption("", "");
+  private rooms: Array<SelectOption> = new Array<SelectOption>();
   private allRooms: Array<Room> = new Array<Room>();
 
   toggleStep() {
     // Basic model validation
     this.senderValid = this.fpackage.Sender.length >= 1;
-    this.receiverValid = this.fpackage.ReceiverId.length >= 1;
     this.nameValid = this.fpackage.Name.length >= 1;
 
-    var roomId = this.allRooms.find((room) => room.name == this.room)?.id;
+    var roomId = this.allRooms.find((room) => room.id == this.room.id)?.id;
     if (roomId != null) {
       this.collectionPointValid = true;
       this.fpackage.CollectionPointId = roomId;
@@ -128,8 +130,20 @@ export default class RegisterPackage extends Vue {
       this.error = "dit afhaalpunt bestaat niet";
     }
 
-    if (this.senderValid && this.receiverValid && this.nameValid) {
-      if (this.collectionPointValid) {
+    var receiverId = this.allreceivers.find(
+      (receiver) => receiver.id == this.receiver.id
+    )?.id;
+    if (receiverId != null) {
+      this.receiverValid = true;
+      this.fpackage.ReceiverId = receiverId;
+    } else {
+      this.receiverValid = false;
+      this.errorText = true;
+      this.error = "deze ontvanger kan niet gevonden worden";
+    }
+
+    if (this.senderValid && this.nameValid) {
+      if (this.collectionPointValid && this.receiverValid) {
         this.errorText = false;
         this.error = "";
         this.overview = !this.overview;
@@ -158,33 +172,53 @@ export default class RegisterPackage extends Vue {
     this.fpackage.Sender = input;
   }
 
-  receiver(input: string): void {
-     if (!this.receiverValid && input.length >= 1) {
-      this.receiverValid = true;
-    }
-    this.fpackage.ReceiverId = input;
+  receiverChanged(input: SelectOption): void {
+    this.receiver = input;
   }
 
   name(input: string): void {
-     if (!this.nameValid && input.length >= 1) {
+    if (!this.nameValid && input.length >= 1) {
       this.nameValid = true;
     }
     this.fpackage.Name = input;
   }
 
-  collectionPoint(input: string): void {
+  collectionPoint(input: SelectOption): void {
     this.room = input;
   }
 
   async mounted() {
-    roomService.getAll()
+    roomService
+      .getAll()
       .then((res) => {
         this.allRooms = res;
+        this.allRooms.forEach((room) =>
+          this.rooms.push(
+            new SelectOption(
+              room.id,
+              room.building.address.city.name +
+                ", " +
+                room.building.name +
+                ", " +
+                room.name
+            )
+          )
+        );
       })
       .catch((err) => {
-        this.emitter.emit('err', err);
+        this.emitter.emit("err", err);
       });
-    this.allRooms.forEach((room) => this.rooms.push(room.name));
+    personeelService
+      .getAll()
+      .then((res) => {
+        this.allreceivers = res;
+        this.allreceivers.forEach((receiver) =>
+          this.receivers.push(new SelectOption(receiver.id, receiver.name))
+        );
+      })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
   }
 }
 </script>
@@ -195,8 +229,7 @@ export default class RegisterPackage extends Vue {
 .align-left {
   text-align: left;
 }
-.margin-button{
+.margin-button {
   margin-right: 5%;
 }
-
 </style>
