@@ -1,8 +1,9 @@
 import http from '@/services/http';
 import Building from "@/classes/Building"
+import BuildingRequest from '@/classes/requests/BuildingRequest';
 
 export default class BuildingService {
-    public async post(buildingModel): Promise<Boolean> {
+    public async post(buildingModel: BuildingRequest): Promise<Building> {
         const response = await http.post(`/api/locations/buildings`, buildingModel);
         return response.data;
      }

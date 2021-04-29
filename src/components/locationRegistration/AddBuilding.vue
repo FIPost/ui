@@ -7,34 +7,16 @@
       placeholder="selecteer een stad"
       label="Stad:"
     />
-    <InputField
-      @inputChanged="buildingChanged"
-      label="Gebouw:"
-      :input="building.Name"
-    />
-    <InputField
-      @inputChanged="assignStreetToAddress"
-      label="Straatnaam:"
-      :input="building.Address.Street"
-    />
-    <InputField
-      @inputChanged="assignNrToAddress"
-      label="Huisnummer:"
-      :input="building.Address.StreetNr"
-    />
-    <InputField
-      @inputChanged="assignAdditionToAddress"
-      label="Toevoeging:"
-      :input="building.Address.Addition"
-    />
-    <InputField
-      @inputChanged="assignPostalCodeToAddress"
-      label="Postcode:"
-      :input="building.Address.PostalCode"
-    />
+
+    <InputField label="Gebouw:" v-model:input="building.Name" />
+    <InputField label="Straatnaam:" v-model:input="building.Address.Street" />
+    <InputField label="Huisnummer:" v-model:input="building.Address.Number" />
+    <InputField label="Toevoeging:" v-model:input="building.Address.Addition" />
+    <InputField label="Postcode:" v-model:input="building.Address.PostalCode" />
+
     <BtnFinish text="Bevestigen" v-on:click="addBuilding()" />
     <transition name="modal" v-if="showModal" close="showModal = false">
-      <link-or-stay-modal link="locaties"  @close="showModal = false"/>
+      <link-or-stay-modal link="locaties" @close="showModal = false" />
     </transition>
   </div>
 </template>
@@ -63,46 +45,41 @@ import { getCurrentInstance } from "@vue/runtime-core";
   },
 })
 export default class AddBuilding extends Vue {
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
   private showModal: boolean = false;
   private cities: Array<String> = new Array<String>();
+  private allCities: Array<City> = new Array<City>();
+
   private building: BuildingRequest = new BuildingRequest(
     "",
     new AddressRequest("", "", "", 0, "")
   );
-  private allCities: Array<City> = new Array<City>();
-  private emitter = getCurrentInstance()?.appContext.config.globalProperties
-    .emitter;
 
-  assignCityToAddress(input: string): void {
+  private clearModel() {
+    this.building.Name = "";
+    this.building.Address.Street = "";
+    this.building.Address.Number = (null as unknown) as number;
+    this.building.Address.Addition = "";
+    this.building.Address.PostalCode = "";
+  }
+  public assignCityToAddress(input: string): void {
     this.building.Address.CityId = input;
     var id = this.allCities.find((city) => city.name == input)?.id;
     if (id != null) this.building.Address.CityId = id;
   }
 
-  assignStreetToAddress(input: string): void {
-    this.building.Address.Street = input;
-  }
-
-  assignNrToAddress(input: Number): void {
-    this.building.Address.Number = Number(input);
-  }
-
-  assignAdditionToAddress(input: string): void {
-    this.building.Address.Addition = input;
-  }
-
-  assignPostalCodeToAddress(input: string): void {
-    this.building.Address.PostalCode = input;
-  }
-
-  buildingChanged(input: string): void {
-    this.building.Name = input;
-  }
-
-  async addBuilding() {
-    await buildingService.post(this.building);
-    this.showModal = true;
-   
+  addBuilding() {
+    this.building.Address.Number = Number(this.building.Address.Number);
+    buildingService
+      .post(this.building)
+      .then(() => {
+        this.showModal = true;
+        this.clearModel();
+      })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
   }
 
   async mounted() {

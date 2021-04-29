@@ -6,9 +6,8 @@
       <div>
         <h3>Afzender</h3>
         <InputField
-          @inputChanged="sender"
           label="Afzender:"
-          :input="fpackage.Sender"
+          v-model:input="fpackage.Sender"
           :valid="senderValid"
         />
       </div>
@@ -24,9 +23,8 @@
       <div>
         <h3>Pakket</h3>
         <InputField
-          @inputChanged="name"
           label="Pakketnaam:"
-          :input="fpackage.Name"
+          v-model:input="fpackage.Name"
           :valid="nameValid"
         />
       </div>
@@ -165,22 +163,8 @@ export default class RegisterPackage extends Vue {
     await this.$router.push("/");
   }
 
-  sender(input: string): void {
-    if (!this.senderValid && input.length >= 1) {
-      this.senderValid = true;
-    }
-    this.fpackage.Sender = input;
-  }
-
   receiverChanged(input: SelectOption): void {
     this.receiver = input;
-  }
-
-  name(input: string): void {
-    if (!this.nameValid && input.length >= 1) {
-      this.nameValid = true;
-    }
-    this.fpackage.Name = input;
   }
 
   collectionPoint(input: SelectOption): void {

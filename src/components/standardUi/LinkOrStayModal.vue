@@ -31,7 +31,7 @@ import BtnFinish from "@/components/standardUi/BtnFinish.vue";
   props: {
     link: String,
   },
-  emits: ["modal-clicked"],
+  emits: ["close"],
 })
 export default class LinkOrStayModal extends Vue {
   private link!: string;

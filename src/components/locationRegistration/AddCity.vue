@@ -1,10 +1,10 @@
 <template>
   <div class="wrapper">
     <div class="container-subheader">Voeg een stad toe</div>
-    <InputField @inputChanged="cityMethod" label="Stad:" :input="city.City" />
+    <InputField label="Stad:" v-model:input="city.Name" />
     <BtnFinish text="Bevestigen" v-on:click="addCity" />
     <transition name="modal" v-if="showModal" close="showModal = false">
-      <link-or-stay-modal link="locaties"  @close="showModal = false"/>
+      <link-or-stay-modal link="locaties" @close="showModal = false" />
     </transition>
   </div>
 </template>   
@@ -32,18 +32,13 @@ export default class AddCity extends Vue {
   private city: CityRequest = new CityRequest("");
   private showModal: boolean = false;
 
-  cityMethod(input: string): void {
-    this.city.Name = input;
-  }
-
   async addCity() {
     cityService
       .post(this.city)
-      .then(() => 
-        {  
-          this.showModal = true;
-          this.cityMethod("");
-        })
+      .then(() => {
+        this.showModal = true;
+        this.city.Name = "";
+      })
       .catch((err) => {
         this.emitter.emit("err", err);
       });

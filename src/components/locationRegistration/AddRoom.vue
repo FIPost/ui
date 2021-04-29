@@ -7,14 +7,10 @@
       placeholder="Selecteer een gebouw"
       label="Gebouw:"
     />
-    <InputField
-      @inputChanged="assignNameToRoom"
-      label="Ruimte:"
-      :input="room.Name"
-    />
+    <InputField label="Ruimte:" v-model:input="room.Name" />
     <BtnFinish text="Bevestigen" v-on:click="addRoom" />
     <transition name="modal" v-if="showModal" close="showModal = false">
-      <link-or-stay-modal link="locaties"  @close="showModal = false"/>
+      <link-or-stay-modal link="locaties" @close="showModal = false" />
     </transition>
   </div>
 </template>
@@ -29,6 +25,7 @@ import { roomService } from "@/services/locatieService/roomservice";
 import Building from "@/classes/Building";
 import { buildingService } from "@/services/locatieService/buildingservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
+import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -39,29 +36,42 @@ import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
   },
 })
 export default class AddRoom extends Vue {
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
   private showModal: boolean = false;
   private buildings: Array<String> = new Array<String>();
   private allBuildings: Array<Building> = new Array<Building>();
   private room: RoomRequest = new RoomRequest("", "");
 
-  assignNameToRoom(input: string): void {
-    this.room.Name = input;
-  }
   assignBuildingToRoom(input: string): void {
-    var id = this.allBuildings.find(building => building.name == input)?.id;
-    if(id != null)
-    this.room.BuildingId = id;
+    var id = this.allBuildings.find((building) => building.name == input)?.id;
+    if (id != null) this.room.BuildingId = id;
   }
 
   async addRoom() {
-    await roomService.post(this.room);
-    this.showModal = true;
-    
+    roomService
+      .post(this.room)
+      .then(() => {
+        this.showModal = true;
+        this.room.Name = "";
+      })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
   }
 
   async mounted() {
-    this.allBuildings = await buildingService.getAll();
-    this.allBuildings.forEach((building) => this.buildings.push(building.name));
+    buildingService
+      .getAll()
+      .then((res) => {
+        this.allBuildings = res;
+        this.allBuildings.forEach((building) =>
+          this.buildings.push(building.name)
+        );
+      })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
   }
 }
 </script>

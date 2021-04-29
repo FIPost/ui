@@ -1,23 +1,22 @@
 <template>
   <div class="input-container">
     <p class="header">{{ label }}</p>
-    <input :class="cssClass" type="text" v-model="text" @change="changed" />
+    <input :class="cssClass" type="text" :value="input" @keyup="$emit('update:input', $event.target.value)"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { Emit, Prop } from "vue-property-decorator";
+import { Prop } from "vue-property-decorator";
 
 @Options({
-  emits: ["input-changed"],
+  emits: ["update:input"],
 })
 export default class InputField extends Vue {
   @Prop() public label!: String;
   @Prop() public input!: String;
   @Prop() public color!: String;
   @Prop() public valid: Boolean = true; // Default true
-  private text: String = "";
 
 
   public get cssClass(): string {
@@ -25,16 +24,6 @@ export default class InputField extends Vue {
       return "input";
     }
     return "input input-error";
-  }
-
-
-  @Emit("input-changed")
-  changed() {
-    return this.text;
-  }
-
-  mounted(){
-    this.text = this.input;
   }
 }
 </script>
