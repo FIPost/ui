@@ -1,19 +1,19 @@
 export default class TicketModel {
-    public Id: number;
-    public PackageId: number;
+    public Id: String;
+    public PackageId: String;
     public ToDoLocationId: number;
     public CreatedAt: String;
     public FinishedAt: String;
-    public CreatedByPCN: number;
-    public FinishedByPCN: number;
+    public CreatedByPCN: String;
+    public FinishedByPCN: String;
     public IsFinished: Boolean;
-    public NextTicketId: number;
+    public NextTicketId: String;
     public IsCurrent: Boolean;
     public Description: String;
     public IsLast: Boolean = false;
 
-    constructor(id: number, packageId: number, toDoLocationId: number, createdAt: String, createdByPCN: number, finishedByPCN: number
-        , isFinished: Boolean, nextTicketId: number, finishedAt: String, isCurrent: Boolean, description: String){
+    constructor(id: String, packageId: String, toDoLocationId: number, createdAt: String, createdByPCN: String, finishedByPCN: String
+        , isFinished: Boolean, nextTicketId: String, finishedAt: String, isCurrent: Boolean, description: String){
         this.Id = id;
         this.PackageId = packageId;
         this.ToDoLocationId = toDoLocationId;

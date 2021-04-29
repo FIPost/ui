@@ -1,93 +1,119 @@
 <template>
-  <div class="package-details">
-    <div class="container container-header">Pakketgegevens</div>
+  <div v-if="!isLoading">
+    <div v-if="!error" class="package-details">
+      <div class="container container-header">Pakketgegevens</div>
 
-    <ContactDetails v-bind:contact="reciever" />
+      <div class="pd-content">
+        <div class="container-subheader-small">Omschrijving</div>
+        <div class="pd-item">{{ packageM.name }}</div>
+      </div>
 
-    <div class="sd-container">
-      <SenderDetails :sender="packageModel.sender" />
-      <div class="sd-img">
-        <img alt="BoxQR" src="@/assets/BoxQR.png" />
+      <PersonDetails :person="packageM.receiver" />
+
+      <div class="pd-container">
+        <div class="pd-content">
+          <div class="container-subheader-small">Afzender</div>
+          <div class="pd-item">
+            {{
+              packageM.sender.length > 1
+                ? packageM.sender
+                : "De afzender kan niet worden opgehaald"
+            }}
+          </div>
+        </div>
+        <div class="sd-img">
+          <img alt="BoxQR" src="@/assets/BoxQR.png" />
+        </div>
+      </div>
+
+      <div>
+        <StatusBadge
+          completeText="20-apr-2021 asdasdasdaads"
+          inCompleteText="Niet binnen gekomen"
+          :complete="true"
+        />
+        <RoomDetails :room="deliveryLocation" title="Binnen gekomen bij" />
+      </div>
+
+      <div>
+        <StatusBadge
+          completeText="Aangekomen"
+          inCompleteText="nog niet binnen"
+          :complete="packageM.routeFinished"
+        />
+        <RoomDetails :room="packageM.collectionPoint" title="Af te halen op" />
       </div>
     </div>
-
-    <AddressBox
-      :address="deliveryLocation.address"
-      title="Bezorgadres"
-      :locationName="deliveryLocation.name"
-    />
-
-    <AddressBox
-      :address="finalLocation.address"
-      title="Eindadres"
-      :locationName="finalLocation.name"
-    />
-
-    <div class="sd-container">
-      <PickupPoint :pickupPoint="dropPoint" />
-      <div class="sd-img">
-        <img alt="BoxQR" src="@/assets/BoxLocatie.png" />
-      </div>
+    <div v-else class="package-details">
+      <div class="container container-header">Pakketgegevens</div>
+      Er ging iets mis bij het ophalen van de pakketgegevens. probeer het later
+      opnieuw.
     </div>
   </div>
+  <div v-else></div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
+import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
+import StatusBadge from "@/components/standardUi/StatusBadge.vue";
+import { pakketService } from "@/services/pakketService/pakketservice";
+import Person from "@/classes/Person";
+import Room from "@/classes/Room";
+import Package from "@/classes/Package";
 import Address from "@/classes/Address";
-import Contact from "@/classes/Contact";
 import City from "@/classes/City";
-import AddressBox from "@/components/packageInfo/AddressBox.vue";
-import ContactDetails from "@/components/packageInfo/ContactDetails.vue";
-import SenderDetails from "@/components/packageInfo/SenderDetails.vue";
-import PickupPoint from "@/components/packageInfo/pickupPoint.vue";
-import PackageModel from "@/classes/PackageModel"
+import Building from "@/classes/Building";
 
 @Options({
   props: {
-    reciever: Contact,
-    sender: String,
-    deliveryLocation: Object,
-    finalLocation: Object,
-    dropPoint: String,
-    packageModel: Object
+    packageId: String,
   },
   components: {
-    AddressBox,
-    ContactDetails,
-    SenderDetails,
-    PickupPoint,
+    PersonDetails,
+    RoomDetails,
+    StatusBadge,
   },
 })
 export default class PackageDetails extends Vue {
-  packageModel!: PackageModel;
-  fAddress: Address = new Address(
-    new City("13123", "Tilburg"),
-    "Professor Goossenslaan",
-    "5022DM",
-    1,
+  private packageM: Package = new Package(
     "",
+    (null as unknown) as Person,
+    (null as unknown) as Room,
+    "",
+    "",
+    "",
+    false,
+    []
+  );
+  private isLoading: Boolean = true;
+  private error: Boolean = false;
+
+  fAddress: Address = new Address(
+    new City("Tilburg", "1"),
+    "Professor Goossenslaan",
+    "1234AB",
+    1,
+    ""
   );
 
-  reciever: Contact = new Contact(
-    "P. Makelaar",
-    "p.makelaar@fontys.nl",
-    "+31654963378"
+  private deliveryLocation: Room = new Room(
+    "1",
+    "Postkamer",
+    new Building("1", "P8", this.fAddress)
   );
 
-  sender: string = "Perfect Home Depot";
-
-  deliveryLocation: object = {
-    name: "Fontys Tilburg Stappengoor",
-    address: this.fAddress,
-  };
-
-  finalLocation: Object = {
-    name: "Fontys HVK",
-    address: this.fAddress,
-  };
-
-  dropPoint: string = "P1 Receptie";
+  async mounted() {
+    try {
+      this.packageM = await pakketService.get(
+        this.$router.currentRoute.value.params.id
+      );
+    } catch (exception) {
+      this.error = true;
+    }
+    this.isLoading = false;
+  }
 }
 </script>
 
@@ -111,11 +137,25 @@ export default class PackageDetails extends Vue {
   }
 }
 
-.sd-container {
+.pd-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   column-gap: 0.5em;
+}
+
+.pd-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  row-gap: 0.2em;
+}
+
+.pd-item {
+  font-size: 16px;
+  @media only screen and (max-width: 600px) {
+    font-size: 12px;
+  }
 }
 
 .sd-img {
