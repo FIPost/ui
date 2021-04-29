@@ -1,129 +1,130 @@
-<!--
-    Table adapted from: https://vuejs.org/v2/examples/grid-component.html
-    IMPORTANT! for sorting to work table headers need to have the same name as the objects properties
--->
+<!-- Table adapted from: https://vuejs.org/v2/examples/grid-component.html -->
 
 <template>
-    <table>
-        <thead>
-            <tr>
-                <th v-for="key in columns" :key="key" 
-                    @click="sortBy(key)" 
-                    :class="{ active: sortKey == key}">
-                    {{key}}
-                    <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-                    </span>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="entry in filteredItems" :key="entry">
-                <td v-for="key in entry" :key="key">
-                    {{key}}
-                </td>
-            </tr>
-        </tbody>
-    </table>
+  <table>
+    <thead>
+      <tr>
+        <th v-for="(value, name, index) in items[0]" :key="value" @click="sortBy(index)" :class="{ active: sortKey === index }">
+          {{name}} <span class="arrow" :class="sortOrders[index] > 0 ? 'asc' : 'dsc'"/>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="entry in filteredItems" :key="entry">
+        <td v-for="key in entry" :key="key"> {{key}} </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue"
+import { defineComponent } from "vue";
 
-export default defineComponent ({
-    props: {
-        items: Object[0],
-        columns: String[0],
-        filterKey: String,
-    },
+export default defineComponent({
+  props: {
+    items: Array
+  },
 
-    data() {
-        var sortOrders = {};
-        var columns = this.columns;
-        columns.forEach(function(key) {sortOrders[key] = 1;});
-        return {sortKey: "", sortOrders: sortOrders};
-    },
+  data() {
+      return { sortKey: 0, sortOrders: Array<number>() };
+  },
 
-    computed: {
-        filteredItems(): Object[] {
-            var items = this.items;
-
-            //TODO: add filter rules here
-
-            //Sort the items
-            //IMPORTANT! for sorting to work table headers need to have the same name as the objects properties
-            var sortKey = this.sortKey;
-            var order = this.sortOrders[sortKey] || 1;
-            if(sortKey) {
-                items.sort(function(a, b) {
-                    a = a[sortKey];
-                    b = b[sortKey];
-                    return (a === b ? 0 : a > b ? 1 : -1) * order;
-                });
-            }
-
-            return items;
-        }
-    },
-
-    methods: {
-        sortBy(key) {
-            this.sortKey = key;
-            this.sortOrders[key] = this.sortOrders[key] * -1;
-        }
+  mounted() {
+    let items = this.items as Object[];
+    if(items.length > 0){
+      this.InitSortOrders(Object.keys(items[0]).length)
     }
+    else{
+      console.error("No items for table");
+    }
+  },
+
+  computed: {
+    filteredItems(): Object[] {
+      let filtered = this.items as Object[];
+
+      //TODO: filter items here
+
+      return this.sortedItems(filtered);
+    }
+  },
+
+  methods: {
+    InitSortOrders(amount: number){
+      for(let i = 0; i < amount; i++) this.sortOrders[i] = 1;
+    },
+
+    sortBy(key: number) {
+      this.sortKey = key;
+      this.sortOrders[key] = this.sortOrders[key] * -1;
+    },
+
+    sortedItems(items: Object[]): Object[] {
+      const sortKey = this.sortKey;
+      const order = this.sortOrders[sortKey] || 1;
+
+      items.sort(function(a, b) {
+        let x = a[Object.keys(a)[sortKey]];
+        let y = b[Object.keys(b)[sortKey]];
+        return (x === y ? 0 : x > y ? 1 : -1) * order;
+      });
+
+      return items;
+    }
+  }
 })
 </script>
 
 <style lang="scss" scoped>
-@import "@/styling/main.scss";
+@import '../../styling/main.scss';
 
 table {
-    border-collapse: collapse;
-    width: 100%;
-    table-layout: fixed;
+  border-collapse: collapse;
+  width: 100%;
+  table-layout: fixed;
 }
 
 thead tr {
-    box-shadow: $shadow;
+  box-shadow: $shadow;
 }
 
 th {
-    cursor: pointer;
-    color: $black-color;
-    text-decoration: none;
+  cursor: pointer;
+  color: $black-color;
+  text-decoration: none;
 }
 
 table td, th {
-    padding: 0.75em !important;
+  padding: 0.75em !important;
 }
 
 td:first-child {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .active {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .arrow {
-    display: inline-block;
-    vertical-align: middle;
-    width: 0;
-    height: 0;
-    margin-left: 5px;
-    opacity: 0.66;
+  display: inline-block;
+  vertical-align: middle;
+  width: 0;
+  height: 0;
+  margin-left: 5px;
+  opacity: 0.66;
 }
 
-.arrow.asc {
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-bottom: 4px solid $black-color;
+.asc {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-bottom: 4px solid $black-color;
 }
 
-.arrow.dsc {
-    border-left: 4px solid transparent;
-    border-right: 4px solid transparent;
-    border-top: 4px solid $black-color;
+.dsc {
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid $black-color;
 }
 
 </style>

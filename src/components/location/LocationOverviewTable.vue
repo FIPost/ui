@@ -1,29 +1,46 @@
 <template>
     <div class="component-container" style="padding: 0 !important;">
-        <Table :columns="columns" :items="rooms"/>
+        <Table :items="items"/>
     </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
-import Table from '@/components/location/LocationTable.vue'
+import { defineComponent } from "vue";
+import Table from '@/components/location/Table.vue'
 import Room from '@/classes/Room'
 import { roomService } from '@/services/locatieService/roomservice';
 
-@Options({
-    components: {
-            Table,
-        },
-})
-export default class LocationOverviewTable extends Vue {
-    //IMPORTANT! for sorting to work table headers need to have the same name as the objects properties 
-    private columns: String[] = ["Stad", "Gebouw", "Ruimte"];
-    private rooms: Array<Room> = new Array<Room>();
+export default defineComponent ({
+  components: {
+    Table,
+  },
 
-    async mounted(){
-        this.rooms = await roomService.getAll();
+  data(){
+    return {items: Array<Object>(), rooms: Array<Room>()};
+  },
+
+  beforeMount(){
+     this.GetRooms();
+  },
+
+  methods:{
+    async GetRooms(){
+      this.rooms = await roomService.getAll();
+      this.GenerateTableObjects(this.rooms);
+    },
+
+    //Format objects to display in the table
+    GenerateTableObjects(rooms: Room[]){
+      rooms.forEach(value => {
+        this.items.push({
+          Stad: value.building.address.city.name,
+          Gebouw: value.building.name,
+          Ruimte: value.name
+        });
+      });
     }
-}
+  }
+})
 </script>
 
 <style lang="scss" scoped>
