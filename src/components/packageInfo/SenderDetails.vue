@@ -1,7 +1,7 @@
 <template>
     <div class="sd-content">
       <div class="container-subheader">Afzender</div>
-      <div class="sd-item">{{ sender.lentgh > 0 ? sender : 'De afzender kan niet worden opgehaald'}}</div>
+      <div class="sd-item">{{ sender.length > 1 ? sender : 'De afzender kan niet worden opgehaald'}}</div>
     </div>
 </template>
 

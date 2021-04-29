@@ -7,7 +7,7 @@
         <RoutePackageInfo :ticketModels="ticketModels" />
       </div>
       <div class="pi-item-container">
-        <PrintQR />
+        <PrintQR :code="packageId"/>
         <PackageDetails :packageId="packageId" />
       </div>
     </div>
@@ -100,6 +100,7 @@ export default class PackagePage extends Vue {
 .pi-item-container {
   min-height: 100vh;
   min-width: 45vw;
+  max-width: 45vw;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

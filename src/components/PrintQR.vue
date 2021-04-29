@@ -207,10 +207,8 @@ import { defineComponent } from "vue";
 var pdfMake = require("pdfmake/build/pdfmake.js");
 
 const PrintQR = defineComponent({
-  data() {
-    return {
-      code: "3SFGCN764862135",
-    };
+  props: {
+    code: String
   },
   methods: {
     onClick(): void {
@@ -242,7 +240,7 @@ export default PrintQR;
 }
 
 .text {
-  width: 50%;
+  width: 55%;
   color: $black-color;
   text-align: left;
   display: flex;

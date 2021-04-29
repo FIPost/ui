@@ -1,27 +1,34 @@
 <template>
-  <div v-if="!isLoading" class="package-details">
-    <div class="container container-header">Pakketgegevens</div>
+  <div v-if="!isLoading">
+    <div v-if="!error" class="package-details">
+      <div class="container container-header">Pakketgegevens</div>
+      <PersonDetails :person="packageM.receiver" />
 
-    <PersonDetails :person="packageM.receiver" />
-
-    <div class="sd-container">
-      <SenderDetails :sender="packageM.sender" />
-      <div class="sd-img">
-        <img alt="BoxQR" src="@/assets/BoxQR.png" />
+      <div class="sd-container">
+        <SenderDetails :sender="packageM.sender" />
+        <div class="sd-img">
+          <img alt="BoxQR" src="@/assets/BoxQR.png" />
+        </div>
       </div>
+
+      <AddressBox
+        :address="deliveryLocation.address"
+        title="Bezorgadres"
+        :locationName="deliveryLocation.name"
+      />
+
+      <CollectionPointDetails
+        :room="packageM.collectionPoint"
+        title="Eindadres"
+      />
     </div>
-
-    <AddressBox
-      :address="deliveryLocation.address"
-      title="Bezorgadres"
-      :locationName="deliveryLocation.name"
-    />
-
-    <CollectionPointDetails
-      :room="packageM.collectionPoint"
-      title="Eindadres"
-    />
+    <div v-else class="package-details">
+      <div class="container container-header">Pakketgegevens</div>
+      Er ging iets mis bij het ophalen van de pakketgegevens. probeer het later
+      opnieuw.
+    </div>
   </div>
+  <div v-else></div>
 </template>
 
 <script lang="ts">
@@ -37,7 +44,6 @@ import Package from "@/classes/Package";
 import Address from "@/classes/Address";
 import City from "@/classes/City";
 
-
 @Options({
   props: {
     packageId: String,
@@ -46,12 +52,22 @@ import City from "@/classes/City";
     AddressBox,
     PersonDetails,
     SenderDetails,
-    CollectionPointDetails
+    CollectionPointDetails,
   },
 })
 export default class PackageDetails extends Vue {
-  private packageM: Package = new Package("", (null as unknown) as Person, (null as unknown) as Room, "", "", "", false, []);
+  private packageM: Package = new Package(
+    "",
+    (null as unknown) as Person,
+    (null as unknown) as Room,
+    "",
+    "",
+    "",
+    false,
+    []
+  );
   private isLoading: Boolean = true;
+  private error: Boolean = false;
 
   fAddress: Address = new Address(
     new City("13123", "Tilburg"),
@@ -72,7 +88,7 @@ export default class PackageDetails extends Vue {
         this.$router.currentRoute.value.params.id
       );
     } catch (exception) {
-      console.log(exception);
+      this.error = true;
     }
     this.isLoading = false;
   }

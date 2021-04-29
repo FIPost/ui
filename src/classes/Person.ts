@@ -1,5 +1,5 @@
 export default class Person {
-    public id: String;
+    public id: string;
     public name: string;
     public email: string;
 
