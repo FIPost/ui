@@ -103,12 +103,11 @@ export default class AddBuilding extends Vue {
       .getAll()
       .then((res) => {
         this.allCities = res;
+        this.allCities.forEach((city) => this.cities.push(city.name));
       })
       .catch((err) => {
         this.emitter.emit("err", err);
       });
-
-    this.allCities.forEach((city) => this.cities.push(city.name));
   }
 }
 </script>
