@@ -2,25 +2,47 @@
   <div v-if="!isLoading">
     <div v-if="!error" class="package-details">
       <div class="container container-header">Pakketgegevens</div>
+
+      <div class="pd-content">
+        <div class="container-subheader-small">Omschrijving</div>
+        <div class="pd-item">{{ packageM.name }}</div>
+      </div>
+
       <PersonDetails :person="packageM.receiver" />
 
-      <div class="sd-container">
-        <SenderDetails :sender="packageM.sender" />
+      <div class="pd-container">
+        <div class="pd-content">
+          <div class="container-subheader-small">Afzender</div>
+          <div class="pd-item">
+            {{
+              packageM.sender.length > 1
+                ? packageM.sender
+                : "De afzender kan niet worden opgehaald"
+            }}
+          </div>
+        </div>
         <div class="sd-img">
           <img alt="BoxQR" src="@/assets/BoxQR.png" />
         </div>
       </div>
 
-      <AddressBox
-        :address="deliveryLocation.address"
-        title="Bezorgadres"
-        :locationName="deliveryLocation.name"
-      />
+      <div>
+        <StatusBadge
+          completeText="20-apr-2021 asdasdasdaads"
+          inCompleteText="Niet binnen gekomen"
+          :complete="true"
+        />
+        <RoomDetails :room="deliveryLocation" title="Binnen gekomen bij" />
+      </div>
 
-      <CollectionPointDetails
-        :room="packageM.collectionPoint"
-        title="Eindadres"
-      />
+      <div>
+        <StatusBadge
+          completeText="Aangekomen"
+          inCompleteText="nog niet binnen"
+          :complete="packageM.routeFinished"
+        />
+        <RoomDetails :room="packageM.collectionPoint" title="Af te halen op" />
+      </div>
     </div>
     <div v-else class="package-details">
       <div class="container container-header">Pakketgegevens</div>
@@ -33,26 +55,25 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import AddressBox from "@/components/packageInfo/AddressBox.vue";
 import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
-import SenderDetails from "@/components/packageInfo/SenderDetails.vue";
-import CollectionPointDetails from "@/components/packageInfo/CollectionPointDetails.vue";
+import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
+import StatusBadge from "@/components/standardUi/StatusBadge.vue";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import Person from "@/classes/Person";
 import Room from "@/classes/Room";
 import Package from "@/classes/Package";
 import Address from "@/classes/Address";
 import City from "@/classes/City";
+import Building from "@/classes/Building";
 
 @Options({
   props: {
     packageId: String,
   },
   components: {
-    AddressBox,
     PersonDetails,
-    SenderDetails,
-    CollectionPointDetails,
+    RoomDetails,
+    StatusBadge,
   },
 })
 export default class PackageDetails extends Vue {
@@ -70,17 +91,18 @@ export default class PackageDetails extends Vue {
   private error: Boolean = false;
 
   fAddress: Address = new Address(
-    new City("13123", "Tilburg"),
+    new City("Tilburg", "1"),
     "Professor Goossenslaan",
-    "5022DM",
+    "1234AB",
     1,
     ""
   );
 
-  deliveryLocation: object = {
-    name: "Fontys Tilburg Stappengoor",
-    address: this.fAddress,
-  };
+  private deliveryLocation: Room = new Room(
+    "1",
+    "Postkamer",
+    new Building("1", "P8", this.fAddress)
+  );
 
   async mounted() {
     try {
@@ -115,11 +137,25 @@ export default class PackageDetails extends Vue {
   }
 }
 
-.sd-container {
+.pd-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   column-gap: 0.5em;
+}
+
+.pd-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  row-gap: 0.2em;
+}
+
+.pd-item {
+  font-size: 16px;
+  @media only screen and (max-width: 600px) {
+    font-size: 12px;
+  }
 }
 
 .sd-img {

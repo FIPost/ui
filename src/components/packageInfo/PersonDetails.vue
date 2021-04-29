@@ -1,6 +1,6 @@
 <template>
   <div class="cd-container">
-    <div class="container-subheader">Ontvanger</div>
+    <div class="container-subheader-small">Ontvanger</div>
     <div v-if="person">
       <div class="cd-item">{{ person.name }}</div>
       <div class="cd-item">{{ person.email }}</div>
@@ -33,7 +33,7 @@ export default class PersonDetails extends Vue {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  row-gap: 0.5em;
+  row-gap: 0.2em;
 }
 
 .cd-item {
