@@ -13,6 +13,9 @@
       :input="room.Name"
     />
     <BtnFinish text="Bevestigen" v-on:click="addRoom" />
+    <transition name="modal" v-if="showModal" close="showModal = false">
+      <link-or-stay-modal link="locaties"  @close="showModal = false"/>
+    </transition>
   </div>
 </template>
 
@@ -36,6 +39,7 @@ import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
   },
 })
 export default class AddRoom extends Vue {
+  private showModal: boolean = false;
   private buildings: Array<String> = new Array<String>();
   private allBuildings: Array<Building> = new Array<Building>();
   private room: RoomRequest = new RoomRequest("", "");
@@ -51,7 +55,7 @@ export default class AddRoom extends Vue {
 
   async addRoom() {
     await roomService.post(this.room);
-    this.$router.push("/locaties");
+    this.showModal = true;
   }
 
   async mounted() {

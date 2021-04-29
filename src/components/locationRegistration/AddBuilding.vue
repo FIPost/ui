@@ -33,6 +33,9 @@
       :input="building.Address.PostalCode"
     />
     <BtnFinish text="Bevestigen" v-on:click="addBuilding()" />
+    <transition name="modal" v-if="showModal" close="showModal = false">
+      <link-or-stay-modal link="locaties"  @close="showModal = false"/>
+    </transition>
   </div>
 </template>
 
@@ -59,6 +62,7 @@ import { cityService } from "@/services/locatieService/cityservice";
   },
 })
 export default class AddBuilding extends Vue {
+  private showModal: boolean = false;
   private cities: Array<String> = new Array<String>();
   private building: BuildingRequest = new BuildingRequest(
     "",
@@ -95,7 +99,7 @@ export default class AddBuilding extends Vue {
 
   async addBuilding() {
     await buildingService.post(this.building);
-    this.$router.push("/locaties");
+    this.showModal = true;
   }
 
   async mounted() {
