@@ -507,3 +507,5 @@ screenshots
 
 # env for local dev
 .env
+
+.idea
