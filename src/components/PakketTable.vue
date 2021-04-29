@@ -95,6 +95,10 @@ export default PakketTable;
         box-shadow: $shadow;
     }
 
+    tbody tr {
+      cursor: pointer;
+    }
+
     th a{
         color: $black-color;
         text-decoration: none;
