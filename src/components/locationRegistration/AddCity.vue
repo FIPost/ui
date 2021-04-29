@@ -13,9 +13,10 @@
 import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/standardUi/InputField.vue";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
-import CityRequest from "@/classes/requests/CityRequest"
+import CityRequest from "@/classes/requests/CityRequest";
 import { cityService } from "@/services/locatieService/cityservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
+import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -25,6 +26,9 @@ import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
   },
 })
 export default class AddCity extends Vue {
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
+
   private city: CityRequest = new CityRequest("");
   private showModal: boolean = false;
 
@@ -34,7 +38,16 @@ export default class AddCity extends Vue {
 
   async addCity() {
     await cityService.post(this.city);
-    this.showModal = true;
+    cityService
+      .post(this.city)
+      .then(() => 
+        {  
+          this.$router.push("/locaties");
+          this.showModal = true;
+        })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
   }
 }
 </script>
