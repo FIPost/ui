@@ -37,13 +37,12 @@ export default class AddCity extends Vue {
   }
 
   async addCity() {
-    await cityService.post(this.city);
     cityService
       .post(this.city)
       .then(() => 
         {  
           this.showModal = true;
-          
+          this.cityMethod("");
         })
       .catch((err) => {
         this.emitter.emit("err", err);
