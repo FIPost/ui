@@ -72,6 +72,7 @@ import { roomService } from "@/services/locatieService/roomservice";
 import { personeelService } from "@/services/personeelService/personeelService";
 import Person from "@/classes/Person";
 import SelectOption from "@/classes/helpers/SelectOption";
+import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -82,6 +83,9 @@ import SelectOption from "@/classes/helpers/SelectOption";
   },
 })
 export default class RegisterPackage extends Vue {
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
+
+
   private fpackage: RegisterPackageModel = new RegisterPackageModel(
     "",
     "",
@@ -177,10 +181,22 @@ export default class RegisterPackage extends Vue {
   }
 
   async mounted() {
-    this.allRooms = await roomService.getAll();
+    roomService.getAll()
+      .then((res) => {
+        this.allRooms = res;
+      })
+      .catch((err) => {
+        this.emitter.emit('err', err);
+      });
+    personeelService.getAll()
+      .then((res) => {
+        this.allreceivers = res;
+      })
+      .catch((err) => {
+        this.emitter.emit('err', err);
+      });
     this.allRooms.forEach((room) => this.rooms.push(new SelectOption(room.id, room.building.address.city.name + ", " + room.building.name + ", " + room.name)));
-    this.allreceivers = await personeelService.getAll();
-    this.allreceivers.forEach(receiver => this.receivers.push(new SelectOption(receiver.id, receiver.name)))
+    this.allreceivers.forEach(receiver => this.receivers.push(new SelectOption(receiver.id, receiver.name)));
   }
 }
 </script>

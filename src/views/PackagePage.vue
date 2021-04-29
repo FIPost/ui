@@ -7,7 +7,7 @@
         <RoutePackageInfo :ticketModels="ticketModels" />
       </div>
       <div class="pi-item-container">
-        <PrintQR :code="packageId"/>
+        <PrintQR :code="packageId" />
         <PackageDetails :packageId="packageId" />
       </div>
     </div>
@@ -29,11 +29,12 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
     PrintQR,
     RoutePackageInfo,
     NextStep,
-    BtnBack
+    BtnBack,
   },
 })
-export default class PackagePage extends Vue {
+export default class PackagePage extends Vue {    
   private packageId: String = "";
+
   private ticketModels: TicketModel[] = [
     new TicketModel(
       "12",

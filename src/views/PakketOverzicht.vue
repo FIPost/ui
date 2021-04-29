@@ -18,16 +18,20 @@ import { pakketService } from "@/services/pakketService/pakketservice";
 import Package from "@/classes/Package";
 import SearchContainer from "@/components/SearchContainer.vue";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
+import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
     PakketTable,
     SearchContainer,
-    BtnBack
+    BtnBack,
   },
 })
 export default class PakketOverzicht extends Vue {
   private columns: string[] = ["Naam", "Ontvanger", "Status", "Locatie", "Datum"];
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
+
   private columnKeys: string[] = [
     "name",
     "receiverId",
@@ -38,8 +42,15 @@ export default class PakketOverzicht extends Vue {
   private packages: Array<Package> = [];
 
   async created() {
-    let result = await pakketService.getAll();
-    this.packages = result;
+    //let result = await pakketService.getAll();
+    pakketService
+      .getAll()
+      .then((res) => {
+        this.packages = res;
+      })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
   }
 }
 </script>
