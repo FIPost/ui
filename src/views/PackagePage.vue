@@ -7,8 +7,8 @@
         <RoutePackageInfo :ticketModels="ticketModels" />
       </div>
       <div class="pi-item-container">
-        <PrintQR />
-        <PackageDetails :packageModel="packageModel" />
+        <PrintQR :code="packageId" />
+        <PackageDetails :packageId="packageId" />
       </div>
     </div>
   </div>
@@ -21,10 +21,7 @@ import PrintQR from "@/components/PrintQR.vue";
 import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
 import NextStep from "@/components/route/NextStep.vue";
 import TicketModel from "@/classes/TicketModel";
-import PackageModel from "@/classes/PackageModel";
-import { pakketService } from "@/services/pakketService/pakketservice";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
-import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -35,72 +32,54 @@ import { getCurrentInstance } from "@vue/runtime-core";
     BtnBack,
   },
 })
-export default class PackagePage extends Vue {
-  private emitter = getCurrentInstance()?.appContext.config.globalProperties
-    .emitter;
+export default class PackagePage extends Vue {    
+  private packageId: String = "";
 
   private ticketModels: TicketModel[] = [
     new TicketModel(
-      1,
-      1,
+      "12",
+      "12",
       1,
       "13 februari 13:16",
-      405273,
-      405273,
+      "405273",
+      "405273",
       false,
-      2,
+      "11",
       "14 februari 16:32",
       true,
       "Zending is aangekomen bij Fontys HVK"
     ),
     new TicketModel(
-      2,
-      1,
+      "11",
+      "11",
       1,
       "12 februari 10:28",
-      405273,
-      405273,
+      "405273",
+      "405273",
       true,
-      3,
+      "13",
       "12 februari 14:23",
       false,
       "Zending onderweg naar Fontys HVK"
     ),
     new TicketModel(
-      1,
-      1,
+      "13",
+      "13",
       1,
       "10 februari 13:16",
-      405273,
-      405273,
+      "405273",
+      "405273",
       true,
-      2,
+      "13",
       "11 februari 10:32",
       false,
       "Zending is geregistreerd bij Fontys"
     ),
   ];
-  private packageModel: PackageModel = new PackageModel(
-    "",
-    "",
-    "",
-    "jaap",
-    "",
-    "",
-    false,
-    []
-  );
   private isLoading: Boolean = true;
 
-  async created() {
-    pakketService
-      .get(this.$router.currentRoute.value.params.id)
-      .then((res) => {
-        this.packageModel = res;
-      })
-      .catch((err) => {
-        this.emitter.emit("err", err);
-      });
+  async mounted() {
+    this.packageId = this.$router.currentRoute.value.params.id.toString();
     this.isLoading = false;
   }
 }
@@ -122,6 +101,7 @@ export default class PackagePage extends Vue {
 .pi-item-container {
   min-height: 100vh;
   min-width: 45vw;
+  max-width: 45vw;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;

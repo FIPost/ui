@@ -7,7 +7,7 @@
         type="text"
         :class="valid ? 'input' : 'input error'"
         v-on:input="updateSuggestions()"
-        v-model="selectedOption"
+        v-model="selectedOption.name"
         v-on:blur="loseFocus()"
       />
 
@@ -17,7 +17,7 @@
           :key="suggestion"
           @mousedown="onChange(suggestion)"
         >
-          {{ suggestion }}
+          {{ suggestion.name }}
         </div>
       </div>
     </div>
@@ -26,25 +26,26 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
+import SelectOption from "@/classes/helpers/SelectOption";
 
 @Options({
   props: {
     placeholder: String,
-    options: Array as () => Array<String>,
+    options: Array as () => Array<SelectOption>,
     label: String,
     valid: Boolean
   },
   emits: ["select-changed"],
 })
 export default class CBSearchSuggestions extends Vue {
-  private selectedOption: String = "";
-  private placeholder: String = "";
-  private suggestions: Array<String> = [];
-  private options!: Array<String>;
+  private selectedOption: SelectOption = new SelectOption("", "");
+  private placeholder: string = "";
+  private suggestions: Array<SelectOption> = [];
+  private options!: Array<SelectOption>;
   private open: Boolean = false;
   private valid: Boolean = true;
 
-  private onChange(option: String): void {
+  private onChange(option: SelectOption): void {
     this.selectedOption = option;
     this.open = false;
     this.$emit("select-changed", this.selectedOption);
@@ -52,8 +53,8 @@ export default class CBSearchSuggestions extends Vue {
 
   private updateSuggestions() {
     this.$emit("select-changed", this.selectedOption);
-    this.suggestions = this.options.filter((el: String) =>
-      el.includes(this.selectedOption.toString())
+    this.suggestions = this.options.filter((el: SelectOption) =>
+      el.name.includes(this.selectedOption.name)
     );
     this.open = true;
   }
@@ -64,7 +65,7 @@ export default class CBSearchSuggestions extends Vue {
   }
 
   mounted() {
-    this.selectedOption = this.placeholder;
+    this.selectedOption.name = this.placeholder;
   }
 }
 </script>
