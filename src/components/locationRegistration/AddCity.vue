@@ -10,8 +10,9 @@
 import { Options, Vue } from "vue-class-component";
 import InputField from "@/components/standardUi/InputField.vue";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
-import CityRequest from "@/classes/requests/CityRequest"
+import CityRequest from "@/classes/requests/CityRequest";
 import { cityService } from "@/services/locatieService/cityservice";
+import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -20,6 +21,9 @@ import { cityService } from "@/services/locatieService/cityservice";
   },
 })
 export default class AddCity extends Vue {
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
+
   private city: CityRequest = new CityRequest("");
 
   cityMethod(input: string): void {
@@ -27,8 +31,12 @@ export default class AddCity extends Vue {
   }
 
   async addCity() {
-    await cityService.post(this.city);
-    this.$router.push("/locaties");
+    cityService
+      .post(this.city)
+      .then(() => this.$router.push("/locaties"))
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
   }
 }
 </script>

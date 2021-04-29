@@ -5,45 +5,52 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import Table from '@/components/location/Table.vue'
-import Room from '@/classes/Room'
-import { roomService } from '@/services/locatieService/roomservice';
+import { Options, Vue } from "vue-class-component";
+import Table from "@/components/location/Table.vue";
+import Room from "@/classes/Room";
+import { roomService } from "@/services/locatieService/roomservice";
+import { getCurrentInstance } from "@vue/runtime-core";
 
-export default defineComponent ({
+@Options({
   components: {
     Table,
   },
-
-  data(){
-    return {items: Array<Object>(), rooms: Array<Room>()};
-  },
+})
+export default class LocationOverviewTable extends Vue {
+  private items: Array<Object> = new Array<Object>();
+  private rooms: Array<Room> = new Array<Room>();
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
 
   beforeMount(){
-     this.GetRooms();
-  },
-
-  methods:{
-    async GetRooms(){
-      this.rooms = await roomService.getAll();
-      this.GenerateTableObjects(this.rooms);
-    },
-
-    //Format objects to display in the table
-    GenerateTableObjects(rooms: Room[]){
-      rooms.forEach(value => {
-        this.items.push({
-          Stad: value.building.address.city.name,
-          Gebouw: value.building.name,
-          Ruimte: value.name
-        });
-      });
-    }
+    this.GetRooms();
   }
-})
+
+  async GetRooms(){
+    roomService
+        .getAll()
+        .then((res) => {
+          this.rooms = res;
+          this.GenerateTableObjects(this.rooms);
+        })
+        .catch((err) => {
+          this.emitter.emit("err", err);
+        });
+  }
+
+  //Format objects to display in the table
+  GenerateTableObjects(rooms: Room[]){
+    rooms.forEach(value => {
+      this.items.push({
+        Stad: value.building.address.city.name,
+        Gebouw: value.building.name,
+        Ruimte: value.name
+      });
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
-
 </style>

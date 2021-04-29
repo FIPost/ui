@@ -69,6 +69,7 @@ import RegisterPackageModel from "@/classes/requests/PackageRequest";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
+import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -79,6 +80,9 @@ import { roomService } from "@/services/locatieService/roomservice";
   },
 })
 export default class RegisterPackage extends Vue {
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
+
+
   private fpackage: RegisterPackageModel = new RegisterPackageModel(
     "",
     "",
@@ -173,7 +177,13 @@ export default class RegisterPackage extends Vue {
   }
 
   async mounted() {
-    this.allRooms = await roomService.getAll();
+    roomService.getAll()
+      .then((res) => {
+        this.allRooms = res;
+      })
+      .catch((err) => {
+        this.emitter.emit('err', err);
+      });
     this.allRooms.forEach((room) => this.rooms.push(room.name));
   }
 }

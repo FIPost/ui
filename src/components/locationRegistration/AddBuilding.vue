@@ -48,6 +48,7 @@ import City from "@/classes/City";
 
 import { buildingService } from "@/services/locatieService/buildingservice";
 import { cityService } from "@/services/locatieService/cityservice";
+import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -63,12 +64,13 @@ export default class AddBuilding extends Vue {
     new AddressRequest("", "", "", 0, "")
   );
   private allCities: Array<City> = new Array<City>();
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
 
   assignCityToAddress(input: string): void {
     this.building.Address.CityId = input;
-    var id = this.allCities.find(city => city.name == input)?.id;
-    if(id != null)
-    this.building.Address.CityId = id;
+    var id = this.allCities.find((city) => city.name == input)?.id;
+    if (id != null) this.building.Address.CityId = id;
   }
 
   assignStreetToAddress(input: string): void {
@@ -76,8 +78,8 @@ export default class AddBuilding extends Vue {
   }
 
   assignNrToAddress(input: Number): void {
-    this.building.Address.Number = Number(input)
-    }
+    this.building.Address.Number = Number(input);
+  }
 
   assignAdditionToAddress(input: string): void {
     this.building.Address.Addition = input;
@@ -97,7 +99,15 @@ export default class AddBuilding extends Vue {
   }
 
   async mounted() {
-    this.allCities = await cityService.getAll();
+    cityService
+      .getAll()
+      .then((res) => {
+        this.allCities = res;
+      })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
+
     this.allCities.forEach((city) => this.cities.push(city.name));
   }
 }

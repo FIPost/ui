@@ -1,5 +1,9 @@
 <template>
   <Navigationbar />
+  <modal v-if="modalVisible" @close="closeModal" :header="header" :body="body">
+    <h3>{{ body }}</h3>
+  </modal>
+
   <div id="app">
     <router-view />
   </div>
@@ -8,13 +12,39 @@
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import Navigationbar from "@/components/Navigationbar.vue";
+import Modal from "@/views/Modal.vue";
+import { getCurrentInstance } from "vue";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
-    Navigationbar
+    Navigationbar,
+    Modal,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  public modalVisible: boolean = false;
+  public header: string = "Oeps er is iets mis gegaan..."
+  public body: string = "";
+
+  public showModal(): void {
+    this.modalVisible = true;
+  }
+
+  public closeModal(): void {
+    this.modalVisible = false;
+    this.$router.back();
+  }
+
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
+
+  async mounted() {
+    this.emitter.on("err", (err: AxiosError) => {
+      this.body = err.message;
+      this.modalVisible = true;
+    });
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -91,5 +121,4 @@ export default class App extends Vue {}
   color: $black-color;
   padding: 1em;
 }
-
 </style>

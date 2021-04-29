@@ -24,6 +24,7 @@ import TicketModel from "@/classes/TicketModel";
 import PackageModel from "@/classes/PackageModel";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
+import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -31,10 +32,13 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
     PrintQR,
     RoutePackageInfo,
     NextStep,
-    BtnBack
+    BtnBack,
   },
 })
 export default class PackagePage extends Vue {
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
+
   private ticketModels: TicketModel[] = [
     new TicketModel(
       1,
@@ -89,14 +93,14 @@ export default class PackagePage extends Vue {
   private isLoading: Boolean = true;
 
   async created() {
-    try {
-      const result = await pakketService.get(
-        this.$router.currentRoute.value.params.id
-      );
-      this.packageModel = result;
-    } catch (exception) {
-      console.log(exception);
-    }
+    pakketService
+      .get(this.$router.currentRoute.value.params.id)
+      .then((res) => {
+        this.packageModel = res;
+      })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
     this.isLoading = false;
   }
 }
