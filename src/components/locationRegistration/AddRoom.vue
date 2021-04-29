@@ -56,12 +56,7 @@ export default class AddRoom extends Vue {
   async addRoom() {
     await roomService.post(this.room);
     this.showModal = true;
-    var elements = document.getElementsByTagName("input");
-          for (var ii=0; ii < elements.length; ii++) {
-            if (elements[ii].type == "text") {
-            elements[ii].value = "";
-            }
-          }   
+    
   }
 
   async mounted() {

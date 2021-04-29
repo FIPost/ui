@@ -43,12 +43,7 @@ export default class AddCity extends Vue {
       .then(() => 
         {  
           this.showModal = true;
-          var elements = document.getElementsByTagName("input");
-          for (var ii=0; ii < elements.length; ii++) {
-            if (elements[ii].type == "text") {
-            elements[ii].value = "";
-            }
-          }   
+          
         })
       .catch((err) => {
         this.emitter.emit("err", err);
