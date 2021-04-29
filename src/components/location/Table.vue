@@ -29,13 +29,15 @@ export default defineComponent({
       return { sortKey: 0, sortOrders: Array<number>() };
   },
 
-  mounted() {
-    let items = this.items as Object[];
-    if(items.length > 0){
-      this.InitSortOrders(Object.keys(items[0]).length)
-    }
-    else{
-      console.error("No items for table");
+  beforeUpdate() {
+    if(!(this.sortOrders.length > 0)){
+      let items = this.items as Object[];
+      if(items.length > 0){
+        this.InitSortOrders(Object.keys(items[0]).length)
+      }
+      else{
+        console.error("No items for table");
+      }
     }
   },
 
@@ -76,7 +78,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss" scoped>
-@import '../../styling/main.scss';
+@import '@/styling/main.scss';
 
 table {
   border-collapse: collapse;
