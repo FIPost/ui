@@ -9,6 +9,7 @@
           label="Afzender:"
           v-model:input="fpackage.Sender"
           :valid="senderValid"
+          @update:input="senderChanged"
         />
       </div>
       <div>
@@ -26,6 +27,7 @@
           label="Pakketnaam:"
           v-model:input="fpackage.Name"
           :valid="nameValid"
+          @update:input="nameChanged"
         />
       </div>
       <div>
@@ -33,7 +35,7 @@
         <CBSearchSuggestions
           :options="rooms"
           label="Afhaalpunt:"
-          @selectChanged="collectionPoint"
+          @selectChanged="collectionPointChanged"
           :valid="collectionPointValid"
         />
       </div>
@@ -75,7 +77,7 @@ import { roomService } from "@/services/locatieService/roomservice";
 import { personeelService } from "@/services/personeelService/personeelService";
 import Person from "@/classes/Person";
 import SelectOption from "@/classes/helpers/SelectOption";
-import { getCurrentInstance } from "@vue/runtime-core";
+import { getCurrentInstance, watch } from "@vue/runtime-core";
 
 @Options({
   components: {
@@ -89,13 +91,14 @@ export default class RegisterPackage extends Vue {
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
 
-  private fpackage: RegisterPackageModel = new RegisterPackageModel(
+  public fpackage: RegisterPackageModel = new RegisterPackageModel(
     "",
     "",
     "",
     ""
   );
 
+  private test: string = "";
   private overview: boolean = false;
   private btnText: string = "Volgende";
   private errorText: boolean = false;
@@ -167,8 +170,16 @@ export default class RegisterPackage extends Vue {
     this.receiver = input;
   }
 
-  collectionPoint(input: SelectOption): void {
+  collectionPointChanged(input: SelectOption): void {
     this.room = input;
+  }
+
+  senderChanged(input: SelectOption): void {
+    this.senderValid = this.fpackage.Sender.length >= 1;
+  }
+
+  nameChanged(input: SelectOption): void {
+    this.nameValid = this.fpackage.Name.length >= 1;
   }
 
   async mounted() {
