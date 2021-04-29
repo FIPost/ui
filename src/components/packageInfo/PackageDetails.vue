@@ -105,14 +105,16 @@ export default class PackageDetails extends Vue {
   );
 
   async mounted() {
-    try {
-      this.packageM = await pakketService.get(
-        this.$router.currentRoute.value.params.id
-      );
-    } catch (exception) {
-      this.error = true;
-    }
-    this.isLoading = false;
+    pakketService
+      .get(this.$router.currentRoute.value.params.id)
+      .then((res) => {
+        this.packageM = res;
+        this.isLoading = false;
+      })
+      .catch((err) => {
+        this.error = true;
+        this.isLoading = false;
+      });
   }
 }
 </script>
