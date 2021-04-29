@@ -40,7 +40,7 @@ export default class App extends Vue {
 
   async mounted() {
     this.emitter.on("err", (err: AxiosError) => {
-      this.body = err.message + "test";
+      this.body = err.message;
       this.modalVisible = true;
     });
   }
