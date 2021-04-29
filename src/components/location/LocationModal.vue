@@ -13,7 +13,7 @@
             <span name="body"> {{ body }} </span>
           </div>
           <div class="modal-footer">
-              <button class="modal-default-button" @click="$emit('close')">
+              <button class="modal-default-button" @click="Close()">
                 OK
               </button>
           </div>
@@ -25,19 +25,27 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Emit, Prop } from "vue-property-decorator";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
+
 
 @Options({
   components: {
     BtnFinish
+  },
+  emits: {
+      emits: ["close-modal"],
   }
 })
-export default class Modal extends Vue {
+export default class LocationModal extends Vue {
   @Prop()
   public header: string = "";
   @Prop()
   public body: string = "";
+
+  @Emit("close-modal")
+  Close() {
+  }
 }
 </script>
 
