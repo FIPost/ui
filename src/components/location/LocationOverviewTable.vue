@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Table from "@/components/location/Table.vue";
+import Table from "@/components/standardUi/Table.vue";
 import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
 import { getCurrentInstance } from "@vue/runtime-core";
