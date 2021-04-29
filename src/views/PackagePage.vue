@@ -22,7 +22,6 @@ import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
 import NextStep from "@/components/route/NextStep.vue";
 import TicketModel from "@/classes/TicketModel";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
-import { getCurrentInstance } from "@vue/runtime-core";
 
 @Options({
   components: {

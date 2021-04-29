@@ -219,7 +219,6 @@ export default class RegisterPackage extends Vue {
       .catch((err) => {
         this.emitter.emit("err", err);
       });
-    console.log(this.allRooms);
   }
 }
 </script>
