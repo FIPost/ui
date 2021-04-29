@@ -54,8 +54,13 @@
       <h3>Afhaalpunt</h3>
       <p>{{ room.name }}</p>
     </div>
-      <BtnFinish class="margin-button" :text="btnText" v-on:click="toggleStep" />
-      <BtnFinish class="margin-button" text="Bevestigen" v-on:click="registerPackage" v-if="overview" />
+    <BtnFinish class="margin-button" :text="btnText" v-on:click="toggleStep" />
+    <BtnFinish
+      class="margin-button"
+      text="Bevestigen"
+      v-on:click="registerPackage"
+      v-if="overview"
+    />
   </div>
 </template>
 
@@ -83,8 +88,8 @@ import { getCurrentInstance } from "@vue/runtime-core";
   },
 })
 export default class RegisterPackage extends Vue {
-  private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
-
+  private emitter = getCurrentInstance()?.appContext.config.globalProperties
+    .emitter;
 
   private fpackage: RegisterPackageModel = new RegisterPackageModel(
     "",
@@ -125,7 +130,9 @@ export default class RegisterPackage extends Vue {
       this.error = "dit afhaalpunt bestaat niet";
     }
 
-    var receiverId = this.allreceivers.find((receiver) => receiver.id == this.receiver.id)?.id;
+    var receiverId = this.allreceivers.find(
+      (receiver) => receiver.id == this.receiver.id
+    )?.id;
     if (receiverId != null) {
       this.receiverValid = true;
       this.fpackage.ReceiverId = receiverId;
@@ -135,7 +142,7 @@ export default class RegisterPackage extends Vue {
       this.error = "deze ontvanger kan niet gevonden worden";
     }
 
-    if (this.senderValid  && this.nameValid) {
+    if (this.senderValid && this.nameValid) {
       if (this.collectionPointValid && this.receiverValid) {
         this.errorText = false;
         this.error = "";
@@ -170,7 +177,7 @@ export default class RegisterPackage extends Vue {
   }
 
   name(input: string): void {
-     if (!this.nameValid && input.length >= 1) {
+    if (!this.nameValid && input.length >= 1) {
       this.nameValid = true;
     }
     this.fpackage.Name = input;
@@ -181,22 +188,38 @@ export default class RegisterPackage extends Vue {
   }
 
   async mounted() {
-    roomService.getAll()
+    roomService
+      .getAll()
       .then((res) => {
         this.allRooms = res;
+        this.allRooms.forEach((room) =>
+          this.rooms.push(
+            new SelectOption(
+              room.id,
+              room.building.address.city.name +
+                ", " +
+                room.building.name +
+                ", " +
+                room.name
+            )
+          )
+        );
       })
       .catch((err) => {
-        this.emitter.emit('err', err);
+        this.emitter.emit("err", err);
       });
-    personeelService.getAll()
+    personeelService
+      .getAll()
       .then((res) => {
         this.allreceivers = res;
+        this.allreceivers.forEach((receiver) =>
+          this.receivers.push(new SelectOption(receiver.id, receiver.name))
+        );
       })
       .catch((err) => {
-        this.emitter.emit('err', err);
+        this.emitter.emit("err", err);
       });
-    this.allRooms.forEach((room) => this.rooms.push(new SelectOption(room.id, room.building.address.city.name + ", " + room.building.name + ", " + room.name)));
-    this.allreceivers.forEach(receiver => this.receivers.push(new SelectOption(receiver.id, receiver.name)));
+    console.log(this.allRooms);
   }
 }
 </script>
@@ -207,8 +230,7 @@ export default class RegisterPackage extends Vue {
 .align-left {
   text-align: left;
 }
-.margin-button{
+.margin-button {
   margin-right: 5%;
 }
-
 </style>
