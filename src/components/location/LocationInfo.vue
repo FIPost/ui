@@ -1,8 +1,7 @@
 <template>
-    <AddCity v-if="locationType == 0"/>
-    <AddBuilding v-if="locationType == 1"/>
-    <AddRoom  v-if="locationType == 2"/>
-    <span>asdfasdf {{ locationType }}</span>
+    <AddCity v-if="locationType == city"/>
+    <AddBuilding v-if="locationType == building"/>
+    <AddRoom  v-if="locationType == room"/>
 </template>
 
 <script lang="ts">
@@ -29,6 +28,10 @@ function EnumProp(d: string | number, e: Record<any, any>) {
   },
 })
 export default class LocationInfo extends Vue {
+  private city: LocationType = LocationType.CITY;
+  private building: LocationType = LocationType.BUILDING;
+  private room: LocationType = LocationType.ROOM;
+
 
   @Prop(EnumProp(LocationType.CITY, LocationType))
   locationType!: LocationType;

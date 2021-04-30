@@ -1,6 +1,6 @@
 <template>
   <div class="component-container" style="padding: 0 !important">
-    <Table :items="items" />
+    <Table :items="items" @cell-clicked="CellClicked" />
     <LocationModal v-if="modalOpen" @closeModal="CloseModal()">
       <LocationInfo :locationType="locationType" />
     </LocationModal>
@@ -17,6 +17,7 @@ import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
 import { Emit, Prop } from "vue-property-decorator";
 import { getCurrentInstance } from "@vue/runtime-core";
+import { TableCell } from "@/classes/TableCell";
 
 @Options({
   components: {
@@ -29,7 +30,7 @@ export default class LocationOverviewTable extends Vue {
   /* LocationInfo Modal */
   public locationType: LocationType = LocationType.ROOM;
 
-  public modalOpen: boolean = true;
+  public modalOpen: boolean = false;
   public CloseModal(): void {
     this.modalOpen = false;
   }
@@ -56,14 +57,31 @@ export default class LocationOverviewTable extends Vue {
       });
   }
 
+  public CellClicked(cell: TableCell) : void {
+    this.locationType = cell.type as LocationType;
+    this.modalOpen = true;
+  }
+
   //Format objects to display in the table
   GenerateTableObjects(rooms: Room[]) {
-    rooms.forEach((value) => {
+    rooms.forEach(value => {
       this.items.push({
-        Stad: value.building.address.city.name,
-        Gebouw: value.building.name,
-        Ruimte: value.name,
-      });
+        Stad: {
+          id: value.building.address.city.id,
+          displayName: value.building.address.city.name,
+          type: LocationType.CITY
+        } as TableCell,
+        Gebouw: {
+          id: value.building.id,
+          displayName: value.building.name,
+          type: LocationType.BUILDING 
+        } as TableCell,
+        Ruimte: {
+          id: value.id,
+          displayName: value.name,
+          type: LocationType.ROOM
+        } as TableCell
+      })
     });
   }
 }
