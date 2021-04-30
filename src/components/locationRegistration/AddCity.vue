@@ -11,6 +11,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { Prop } from "vue-property-decorator";
 import InputField from "@/components/standardUi/InputField.vue";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 import CityRequest from "@/classes/requests/CityRequest";
@@ -32,6 +33,9 @@ export default class AddCity extends Vue {
   private city: CityRequest = new CityRequest("");
   private showModal: boolean = false;
 
+  @Prop()
+  public cityId: string = "";
+
   async addCity() {
     cityService
       .post(this.city)
@@ -42,6 +46,17 @@ export default class AddCity extends Vue {
       .catch((err) => {
         this.emitter.emit("err", err);
       });
+  }
+
+  async created() {
+
+    if(this.cityId) {
+      cityService
+        .getById(this.cityId)
+        .then((res) => {
+          this.city = new CityRequest(res.name);
+        })
+    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <AddCity v-if="locationType == city"/>
+    <AddCity v-if="locationType == city" :cityId="locationId"/>
     <AddBuilding v-if="locationType == building"/>
     <AddRoom  v-if="locationType == room"/>
 </template>
@@ -32,6 +32,8 @@ export default class LocationInfo extends Vue {
   private building: LocationType = LocationType.BUILDING;
   private room: LocationType = LocationType.ROOM;
 
+  @Prop()
+  public locationId: string = "";
 
   @Prop(EnumProp(LocationType.CITY, LocationType))
   locationType!: LocationType;

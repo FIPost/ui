@@ -2,7 +2,7 @@
   <div class="component-container" style="padding: 0 !important">
     <Table :items="items" @cell-clicked="CellClicked" />
     <LocationModal v-if="modalOpen" @closeModal="CloseModal()">
-      <LocationInfo :locationType="locationType" />
+      <LocationInfo :locationType="locationType" :locationId="locationId" />
     </LocationModal>
   </div>
 </template>
@@ -29,6 +29,7 @@ import { TableCell } from "@/classes/TableCell";
 export default class LocationOverviewTable extends Vue {
   /* LocationInfo Modal */
   public locationType: LocationType = LocationType.ROOM;
+  public locationId: string = "";
 
   public modalOpen: boolean = false;
   public CloseModal(): void {
@@ -59,6 +60,7 @@ export default class LocationOverviewTable extends Vue {
 
   public CellClicked(cell: TableCell) : void {
     this.locationType = cell.type as LocationType;
+    this.locationId = cell.id;
     this.modalOpen = true;
   }
 
