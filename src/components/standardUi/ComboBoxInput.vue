@@ -3,7 +3,7 @@
     <p class="header">{{ label }}</p>
     <div class="custom-select">
       <div class="selected" :class="{ open: open }" @click="toggle()">
-        {{ selectedOption }}
+        {{ selectedOption.name }}
       </div>
 
       <div>
@@ -18,8 +18,8 @@
       </div>
 
       <div class="items" :class="{ selectHide: !open }">
-        <div v-for="option in options" :key="option" @click="onChange(option)">
-          {{ option }}
+        <div v-for="option in options" :key="option.id" @click="onChange(option)">
+          {{ option.name }}
         </div>
       </div>
     </div>
@@ -28,28 +28,32 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
+import SelectOption from "@/classes/helpers/SelectOption";
 
 @Options({
   props: {
     placeholder: String,
-    options: Array as () => Array<String>,
+    options: Array as () => Array<SelectOption>,
     label: String,
+    valid: Boolean
   },
   emits: ["select-change"],
 })
 export default class ComboBoxInput extends Vue {
-  private selectedOption: String = "";
-  private placeholder!: String;
+  private selectedOption: SelectOption = new SelectOption("", "");
+  private placeholder!: string;
+  private options!: Array<SelectOption>;
   private open: Boolean = false;
+  private valid: Boolean = true;
 
-  private onChange(option: String): void {
+  private onChange(option: SelectOption): void {
     this.selectedOption = option;
     this.open = false;
     this.$emit("select-change", this.selectedOption);
   }
 
   mounted() {
-    this.selectedOption = this.placeholder;
+    this.selectedOption.name = this.placeholder;
   }
 
   private toggle(){

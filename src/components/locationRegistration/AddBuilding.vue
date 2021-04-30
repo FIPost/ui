@@ -35,6 +35,7 @@ import City from "@/classes/City";
 import { buildingService } from "@/services/locatieService/buildingservice";
 import { cityService } from "@/services/locatieService/cityservice";
 import { getCurrentInstance } from "@vue/runtime-core";
+import SelectOption from "@/classes/helpers/SelectOption";
 
 @Options({
   components: {
@@ -48,7 +49,7 @@ export default class AddBuilding extends Vue {
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
   private showModal: boolean = false;
-  private cities: Array<String> = new Array<String>();
+  private cities: Array<SelectOption> = new Array<SelectOption>();
   private allCities: Array<City> = new Array<City>();
 
   private building: BuildingRequest = new BuildingRequest(
@@ -63,10 +64,8 @@ export default class AddBuilding extends Vue {
     this.building.Address.Addition = "";
     this.building.Address.PostalCode = "";
   }
-  public assignCityToAddress(input: string): void {
-    this.building.Address.CityId = input;
-    var id = this.allCities.find((city) => city.name == input)?.id;
-    if (id != null) this.building.Address.CityId = id;
+  public assignCityToAddress(option: SelectOption): void {
+    this.building.Address.CityId = option.id;
   }
 
   addBuilding() {
@@ -87,7 +86,7 @@ export default class AddBuilding extends Vue {
       .getAll()
       .then((res) => {
         this.allCities = res;
-        this.allCities.forEach((city) => this.cities.push(city.name));
+        this.allCities.forEach((city) => this.cities.push(new SelectOption(city.id, city.name)));
       })
       .catch((err) => {
         this.emitter.emit("err", err);
