@@ -14,7 +14,7 @@
           </div>
           <div class="modal-footer">
               <button class="modal-default-button" @click="Close()">
-                OK
+                Exit
               </button>
           </div>
         </div>

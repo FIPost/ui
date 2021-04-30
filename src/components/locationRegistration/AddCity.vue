@@ -37,25 +37,37 @@ export default class AddCity extends Vue {
   public cityId: string = "";
 
   async addCity() {
-    cityService
-      .post(this.city)
-      .then(() => {
-        this.showModal = true;
-        this.city.Name = "";
-      })
-      .catch((err) => {
-        this.emitter.emit("err", err);
-      });
+    if (this.cityId) {
+      // Update.
+      this.city.Id = this.cityId;
+      cityService
+        .updateCity(this.city)
+        .then(() => {
+          this.showModal = true;
+          this.city.Name = "";
+        })
+        .catch((err) => {
+          this.emitter.emit("err", err);
+          console.log(err)
+        });
+    } else {
+      cityService
+        .post(this.city)
+        .then(() => {
+          this.showModal = true;
+          this.city.Name = "";
+        })
+        .catch((err) => {
+          this.emitter.emit("err", err);
+        });
+    }
   }
 
   async created() {
-
-    if(this.cityId) {
-      cityService
-        .getById(this.cityId)
-        .then((res) => {
-          this.city = new CityRequest(res.name);
-        })
+    if (this.cityId) {
+      cityService.getById(this.cityId).then((res) => {
+        this.city = new CityRequest(res.name);
+      });
     }
   }
 }
