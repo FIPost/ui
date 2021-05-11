@@ -38,7 +38,7 @@ const SearchContainer = defineComponent({
   data() {
     return {
       result: "",
-      options: ["City", "Building", "Room"],
+      options: ["Stad", "Gebouw", "Ruimte"],
     };
   },
 });
