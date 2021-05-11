@@ -8,7 +8,9 @@
         :class="valid ? 'input' : 'input error'"
         v-on:input="updateSuggestions()"
         v-model="selectedRef.name"
-        v-on:blur="loseFocus()" />
+        v-on:blur="loseFocus()"
+        v-on:focus="startFocus()"
+      />
 
       <div class="items" :class="{ selectHide: !open }">
         <div
@@ -56,12 +58,13 @@ export default class CBSearchSuggestions extends Vue {
   private valid: Boolean = true;
 
   private onChange(option: SelectOption): void {
-    this.selectedRef = option;
+    this.selectedRef = new SelectOption(option.id, option.name);
     this.open = false;
     this.$emit("select-changed", this.selectedRef);
   }
 
   private updateSuggestions() {
+    this.selectedRef.id = "";
     this.$emit("select-changed", this.selectedRef);
     this.suggestions = this.options.filter((el: SelectOption) =>
       el.name.includes(this.selectedRef.name)
@@ -72,6 +75,15 @@ export default class CBSearchSuggestions extends Vue {
   private loseFocus() {
     this.$emit("select-changed", this.selectedRef);
     this.open = false;
+  }
+
+  private startFocus(){
+    this.suggestions = this.options;
+    this.open = true;
+  }
+
+  mounted() {
+    this.selectedRef.name = this.placeholder;
   }
 }
 </script>
