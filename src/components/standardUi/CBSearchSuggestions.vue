@@ -47,12 +47,13 @@ export default class CBSearchSuggestions extends Vue {
   private valid: Boolean = true;
 
   private onChange(option: SelectOption): void {
-    this.selectedOption = option;
+    this.selectedOption = new SelectOption(option.id, option.name);
     this.open = false;
     this.$emit("select-changed", this.selectedOption);
   }
 
   private updateSuggestions() {
+    this.selectedOption.id = "";
     this.$emit("select-changed", this.selectedOption);
     this.suggestions = this.options.filter((el: SelectOption) =>
       el.name.includes(this.selectedOption.name)
