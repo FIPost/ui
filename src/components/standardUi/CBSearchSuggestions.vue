@@ -9,6 +9,7 @@
         v-on:input="updateSuggestions()"
         v-model="selectedOption.name"
         v-on:blur="loseFocus()"
+        v-on:focus="startFocus()"
       />
 
       <div class="items" :class="{ selectHide: !open }">
@@ -62,6 +63,11 @@ export default class CBSearchSuggestions extends Vue {
   private loseFocus(){
     this.$emit("select-changed", this.selectedOption);
     this.open = false;
+  }
+
+  private startFocus(){
+    this.suggestions = this.options;
+    this.open = true;
   }
 
   mounted() {

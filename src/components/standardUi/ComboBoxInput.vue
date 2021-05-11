@@ -2,7 +2,7 @@
   <div class="combobox-container">
     <p class="header">{{ label }}</p>
     <div class="custom-select">
-      <div class="selected" :class="{ open: open }" @mouseover="openBox()"  @mouseleave="closeBox()">
+      <div class="selected" :class="{ open: open }" @click="toggle()">
         {{ selectedOption.name }}
       </div>
 
@@ -56,12 +56,8 @@ export default class ComboBoxInput extends Vue {
     this.selectedOption.name = this.placeholder;
   }
 
-  private openBox(){
-    this.open = true;
-  }
-
-  private closeBox(){
-    this.open = false;
+  private toggle(){
+      this.open = !this.open;
   }
 }
 </script>
