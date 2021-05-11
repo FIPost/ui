@@ -1,8 +1,8 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
+      <div class="modal-wrapper" @click="Close()">
+        <div class="modal-container" @click.stop.prevent >
           <div class="modal-header">
             <h3 name="header"> {{ header }} </h3>
           </div>
@@ -13,9 +13,6 @@
             <span name="body"> {{ body }} </span>
           </div>
           <div class="modal-footer">
-              <button class="modal-default-button" @click="Close()">
-                Exit
-              </button>
           </div>
         </div>
       </div>

@@ -28,6 +28,7 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
+import { Prop } from "vue-property-decorator";
 import SelectOption from "@/classes/helpers/SelectOption";
 
 @Options({
@@ -40,7 +41,10 @@ import SelectOption from "@/classes/helpers/SelectOption";
   emits: ["select-change"],
 })
 export default class ComboBoxInput extends Vue {
-  private selectedOption: SelectOption = new SelectOption("", "");
+  
+  @Prop()
+  private selectedOption: SelectOption = new SelectOption("","");
+
   private placeholder!: string;
   private options!: Array<SelectOption>;
   private open: Boolean = false;
@@ -53,7 +57,9 @@ export default class ComboBoxInput extends Vue {
   }
 
   mounted() {
-    this.selectedOption.name = this.placeholder;
+    if(this.selectedOption.name == "") {
+      this.selectedOption.name = this.placeholder;
+    }
   }
 
   private toggle(){

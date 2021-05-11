@@ -1,6 +1,6 @@
 <template>
-    <AddCity v-if="locationType == city" :cityId="locationId"/>
-    <AddBuilding v-if="locationType == building"/>
+    <AddCity v-if="locationType == city" :cityId="locationId" @location-changed="ReloadTable" :title="updateCityTitle"/>
+    <AddBuilding v-if="locationType == building" :buildingId="buildingId" :title="updateBuildingTitle"/>
     <AddRoom  v-if="locationType == room"/>
 </template>
 
@@ -26,17 +26,34 @@ function EnumProp(d: string | number, e: Record<any, any>) {
     AddBuilding,
     AddRoom
   },
+  emits: [
+    "reload-table"
+  ]
 })
 export default class LocationInfo extends Vue {
   private city: LocationType = LocationType.CITY;
   private building: LocationType = LocationType.BUILDING;
   private room: LocationType = LocationType.ROOM;
 
+  private updateCityTitle: string = "Wijzig een stad";
+  private updateBuildingTitle: string = "Wijzig een gebouw";
+  private updateRoomTitle: string = "Wijzig een kamer";
+
   @Prop()
   public locationId: string = "";
 
+  @Prop()
+  public buildingId: string = "";
+
+  @Prop()
+  public roomId: string = "";
+
   @Prop(EnumProp(LocationType.CITY, LocationType))
   locationType!: LocationType;
+
+  ReloadTable(): void {
+    this.$emit("reload-table");
+  }
 }
 </script>
 

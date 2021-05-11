@@ -12,6 +12,11 @@ export default class BuildingService {
         const response = await http.get(`/api/locations/buildings`);
         return response.data;
      }
+
+     public async getById(id): Promise<Building> {
+      const response = await http.get(`/api/locations/buildings/${id}`);
+      return response.data;
+   }
 }
 
 export const buildingService = new BuildingService();

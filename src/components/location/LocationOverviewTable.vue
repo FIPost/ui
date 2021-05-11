@@ -2,7 +2,13 @@
   <div class="component-container" style="padding: 0 !important">
     <Table :items="items" @cell-clicked="CellClicked" />
     <LocationModal v-if="modalOpen" @closeModal="CloseModal()">
-      <LocationInfo :locationType="locationType" :locationId="locationId" />
+      <LocationInfo
+        :locationType="locationType"
+        :locationId="locationId"
+        :buildingId="buildingId"
+        :roomId="roomId"
+        @reload-table="ReloadTable"
+      />
     </LocationModal>
   </div>
 </template>
@@ -30,6 +36,8 @@ export default class LocationOverviewTable extends Vue {
   /* LocationInfo Modal */
   public locationType: LocationType = LocationType.ROOM;
   public locationId: string = "";
+  public buildingId: string = "";
+  public roomId: string = "";
 
   public modalOpen: boolean = false;
   public CloseModal(): void {
@@ -58,33 +66,48 @@ export default class LocationOverviewTable extends Vue {
       });
   }
 
-  public CellClicked(cell: TableCell) : void {
+  public CellClicked(cell: TableCell): void {
     this.locationType = cell.type as LocationType;
-    this.locationId = cell.id;
+
+    if (this.locationType == LocationType.CITY) {
+      this.locationId = cell.id;
+    } else if (this.locationType == LocationType.BUILDING) {
+      this.buildingId = cell.id;
+    } else if (this.locationType == LocationType.ROOM) {
+      this.roomId = cell.id;
+    } else {
+      return;
+    }
     this.modalOpen = true;
   }
 
   //Format objects to display in the table
   GenerateTableObjects(rooms: Room[]) {
-    rooms.forEach(value => {
+    rooms.forEach((value) => {
       this.items.push({
         Stad: {
           id: value.building.address.city.id,
           displayName: value.building.address.city.name,
-          type: LocationType.CITY
+          type: LocationType.CITY,
         } as TableCell,
         Gebouw: {
           id: value.building.id,
           displayName: value.building.name,
-          type: LocationType.BUILDING 
+          type: LocationType.BUILDING,
         } as TableCell,
         Ruimte: {
           id: value.id,
           displayName: value.name,
-          type: LocationType.ROOM
-        } as TableCell
-      })
+          type: LocationType.ROOM,
+        } as TableCell,
+      });
     });
+  }
+
+  ReloadTable(): void {
+    this.items = [];
+    this.modalOpen = false;
+    this.GetRooms();
   }
 }
 </script>

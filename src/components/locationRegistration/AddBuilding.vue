@@ -1,9 +1,10 @@
 <template>
   <div class="wrapper">
-    <div class="container-subheader">Voeg een gebouw toe</div>
+    <div class="container-subheader">{{ title }}</div>
     <ComboBoxInput
       @selectChange="assignCityToAddress"
       :options="cities"
+      :selectedOption="selectedCityOption"
       placeholder="selecteer een stad"
       label="Stad:"
     />
@@ -14,7 +15,7 @@
     <InputField label="Toevoeging:" v-model:input="building.Address.Addition" />
     <InputField label="Postcode:" v-model:input="building.Address.PostalCode" />
 
-    <BtnFinish text="Bevestigen" v-on:click="addBuilding()" />
+    <SmallBtnFinish text="Bevestigen" v-on:click="addBuilding()" />
     <transition name="modal" v-if="showModal" close="showModal = false">
       <link-or-stay-modal link="locaties" @close="showModal = false" />
     </transition>
@@ -23,13 +24,15 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { Prop } from "vue-property-decorator";
 import InputField from "@/components/standardUi/InputField.vue";
-import BtnFinish from "@/components/standardUi/BtnFinish.vue";
+import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
 import AddressRequest from "@/classes/requests/AddressRequest";
 import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 
 import BuildingRequest from "@/classes/requests/BuildingRequest";
+import Building from "@/classes/Building";
 import City from "@/classes/City";
 
 import { buildingService } from "@/services/locatieService/buildingservice";
@@ -41,21 +44,59 @@ import SelectOption from "@/classes/helpers/SelectOption";
   components: {
     ComboBoxInput,
     InputField,
-    BtnFinish,
+    SmallBtnFinish,
     LinkOrStayModal,
   },
 })
 export default class AddBuilding extends Vue {
+  @Prop()
+  private title: string = "Voeg een gebouw toe";
+
+  @Prop()
+  private buildingId: string = "";
+
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
   private showModal: boolean = false;
   private cities: Array<SelectOption> = new Array<SelectOption>();
+
+  private selectedCityOption: SelectOption = new SelectOption("","");
+
   private allCities: Array<City> = new Array<City>();
 
   private building: BuildingRequest = new BuildingRequest(
     "",
     new AddressRequest("", "", "", 0, "")
   );
+
+  async created() {
+    // Retrieve cities.
+    cityService
+      .getAll()
+      .then((res) => {
+        this.allCities = res;
+        this.allCities.forEach((city) =>
+          this.cities.push(new SelectOption(city.id, city.name))
+        );
+      })
+      .catch((err) => {
+        this.emitter.emit("err", err);
+      });
+
+    if (this.buildingId) {
+      // Get existing building if exists.
+      buildingService.getById(this.buildingId).then((res: Building) => {
+        this.building.Name = res.name;
+        this.building.Address.CityId = res.address.city.id;
+        this.building.Address.Street = res.address.street;
+        this.building.Address.Number = res.address.number;
+        this.building.Address.PostalCode = res.address.postalCode;
+        this.building.Address.Addition = res.address.addition;
+
+        this.selectedCityOption = new SelectOption(this.building.Address.CityId, res.address.city.name);
+      });
+    }
+  }
 
   private clearModel() {
     this.building.Name = "";
@@ -64,6 +105,7 @@ export default class AddBuilding extends Vue {
     this.building.Address.Addition = "";
     this.building.Address.PostalCode = "";
   }
+
   public assignCityToAddress(option: SelectOption): void {
     this.building.Address.CityId = option.id;
   }
@@ -81,17 +123,7 @@ export default class AddBuilding extends Vue {
       });
   }
 
-  async mounted() {
-    cityService
-      .getAll()
-      .then((res) => {
-        this.allCities = res;
-        this.allCities.forEach((city) => this.cities.push(new SelectOption(city.id, city.name)));
-      })
-      .catch((err) => {
-        this.emitter.emit("err", err);
-      });
-  }
+  async mounted() {}
 }
 </script>
 
