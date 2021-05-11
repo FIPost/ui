@@ -79,8 +79,8 @@ export default defineComponent({
       const order = this.sortOrders[sortKey] || 1;
 
       items.sort(function (a, b) {
-        let x = a[Object.keys(a)[sortKey]];
-        let y = b[Object.keys(b)[sortKey]];
+        let x: TableCell = a[Object.keys(a)[sortKey]].displayName;
+        let y: TableCell = b[Object.keys(b)[sortKey]].displayName;
         return (x === y ? 0 : x > y ? 1 : -1) * order;
       });
 
