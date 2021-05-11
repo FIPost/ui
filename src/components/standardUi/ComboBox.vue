@@ -1,12 +1,18 @@
 <template>
-  <div class="custom-select">
-    <div class="selected" :class="{ open: open }" @click="toggle()">
+  <div class="custom-select" @click="toggle()">
+    <div class="selected" :class="{ open: open }" >
       {{ selectedOption }}
     </div>
 
     <div>
       <font-awesome-icon v-if="open" icon="sort-up" size="2x" class="arrow" />
-      <font-awesome-icon v-else icon="sort-down" size="2x" class="arrow" style="margin-top:-10px"/>
+      <font-awesome-icon
+        v-else
+        icon="sort-down"
+        size="2x"
+        class="arrow"
+        style="margin-top: -10px"
+      />
     </div>
 
     <div class="items" :class="{ selectHide: !open }">
@@ -34,16 +40,14 @@ export default class ComboBox extends Vue {
 
   private onChange(option: String): void {
     this.selectedOption = option;
-    this.open = false;
     this.$emit("select-change", this.selectedOption);
   }
 
   mounted() {
     this.selectedOption = this.placeholder;
   }
-
-  private toggle(){
-      this.open = !this.open;
+  private toggle() {
+    this.open = !this.open;
   }
 }
 </script>
@@ -64,10 +68,10 @@ export default class ComboBox extends Vue {
   min-width: 150px;
   height: 2rem;
   padding: 1px 0.8rem;
-  
 
   display: flex;
   flex-direction: row;
+  cursor: pointer;
   @media only screen and (max-width: 600px) {
     width: 150px;
   }
@@ -81,7 +85,6 @@ export default class ComboBox extends Vue {
   height: 100%;
   padding-top: 6px;
 }
-
 
 .items {
   border-radius: $small-border-radius;
