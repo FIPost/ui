@@ -1,6 +1,6 @@
 <template>
   <div class="custom-select">
-    <div class="selected" :class="{ open: open }" @click="toggle()">
+    <div class="selected" :class="{ open: open }" @mouseover="openBox()"  @mouseleave="closeBox()">
       {{ selectedOption }}
     </div>
 
@@ -42,8 +42,12 @@ export default class ComboBox extends Vue {
     this.selectedOption = this.placeholder;
   }
 
-  private toggle(){
-      this.open = !this.open;
+  private openBox(){
+    this.open = true;
+  }
+
+  private closeBox(){
+    this.open = false;
   }
 }
 </script>
