@@ -1,6 +1,6 @@
 <template>
-  <div class="custom-select">
-    <div class="selected" :class="{ open: open }" @click="toggle()">
+  <div class="custom-select" @click="toggle()">
+    <div class="selected" :class="{ open: open }" >
       {{ selectedOption }}
     </div>
 
@@ -40,7 +40,6 @@ export default class ComboBox extends Vue {
 
   private onChange(option: String): void {
     this.selectedOption = option;
-    this.open = false;
     this.$emit("select-change", this.selectedOption);
   }
 
@@ -72,6 +71,7 @@ export default class ComboBox extends Vue {
 
   display: flex;
   flex-direction: row;
+  cursor: pointer;
   @media only screen and (max-width: 600px) {
     width: 150px;
   }
