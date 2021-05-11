@@ -14,15 +14,18 @@
       <div class="header">Dashboard</div>
       <hr />
     </div>
+    <DebugLoad/>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Menu from "@/components/Menu.vue";
+import DebugLoad from "@/components/DebugLoad.vue";
 
 const Home = defineComponent({
   components: {
+    DebugLoad,
     Menu,
   },
   data() {

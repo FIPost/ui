@@ -1,6 +1,9 @@
 <template>
     <div class="component-container" style="padding: 0 !important;">
-        <Table :items="items"/>
+        <div v-if="loading">
+          <h1>items are loading in...</h1>
+        </div>
+        <Table v-else :items="items"/>
     </div>
 </template>
 
@@ -17,6 +20,8 @@ import { getCurrentInstance } from "@vue/runtime-core";
   },
 })
 export default class LocationOverviewTable extends Vue {
+  private loading: boolean = true;
+  private error: boolean = false;
   private items: Array<Object> = new Array<Object>();
   private rooms: Array<Room> = new Array<Room>();
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
@@ -30,6 +35,7 @@ export default class LocationOverviewTable extends Vue {
     roomService
         .getAll()
         .then((res) => {
+          this.loading = false;
           this.rooms = res;
           this.GenerateTableObjects(this.rooms);
         })
