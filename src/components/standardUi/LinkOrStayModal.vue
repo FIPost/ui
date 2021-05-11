@@ -10,7 +10,7 @@
         />
         <small-btn-finish
           class="button-tray"
-          text="Nog een invoeren"
+          text="Sluiten"
           v-on:click="goToLink"
         />
       </div>

@@ -52,7 +52,6 @@ export default class AddCity extends Vue {
         })
         .catch((err) => {
           this.emitter.emit("err", err);
-          console.log(err);
         });
     } else {
       cityService
@@ -67,7 +66,7 @@ export default class AddCity extends Vue {
     }
   }
 
-  async created() {
+  async mounted() {
     if (this.cityId) {
       cityService.getById(this.cityId).then((res) => {
         this.city = new CityRequest(res.name);

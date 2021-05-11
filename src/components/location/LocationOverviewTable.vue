@@ -1,7 +1,7 @@
 <template>
   <div class="component-container" style="padding: 0 !important">
     <Table :items="items" @cell-clicked="CellClicked" />
-    <LocationModal v-if="modalOpen" @closeModal="CloseModal()">
+    <LocationModal v-if="modalOpen" @close-location="CloseModal()">
       <LocationInfo
         :locationType="locationType"
         :locationId="locationId"

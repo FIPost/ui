@@ -47,6 +47,7 @@ import SelectOption from "@/classes/helpers/SelectOption";
     SmallBtnFinish,
     LinkOrStayModal,
   },
+  emits: ["location-changed"],
 })
 export default class AddBuilding extends Vue {
   @Prop()
@@ -60,7 +61,7 @@ export default class AddBuilding extends Vue {
   private showModal: boolean = false;
   private cities: Array<SelectOption> = new Array<SelectOption>();
 
-  private selectedCityOption: SelectOption = new SelectOption("","");
+  private selectedCityOption: SelectOption = new SelectOption("", "");
 
   private allCities: Array<City> = new Array<City>();
 
@@ -70,6 +71,7 @@ export default class AddBuilding extends Vue {
   );
 
   async created() {
+    
     // Retrieve cities.
     cityService
       .getAll()
@@ -93,7 +95,10 @@ export default class AddBuilding extends Vue {
         this.building.Address.PostalCode = res.address.postalCode;
         this.building.Address.Addition = res.address.addition;
 
-        this.selectedCityOption = new SelectOption(this.building.Address.CityId, res.address.city.name);
+        this.selectedCityOption = new SelectOption(
+          this.building.Address.CityId,
+          res.address.city.name
+        );
       });
     }
   }
@@ -112,18 +117,23 @@ export default class AddBuilding extends Vue {
 
   addBuilding() {
     this.building.Address.Number = Number(this.building.Address.Number);
-    buildingService
-      .post(this.building)
-      .then(() => {
-        this.showModal = true;
-        this.clearModel();
-      })
-      .catch((err) => {
-        this.emitter.emit("err", err);
-      });
-  }
 
-  async mounted() {}
+    if (this.buildingId) {
+      buildingService.update(this.building, this.buildingId).then(() => {
+        this.$emit("location-changed");
+      });
+    } else {
+      buildingService
+        .post(this.building)
+        .then(() => {
+          this.showModal = true;
+          this.clearModel();
+        })
+        .catch((err) => {
+          this.emitter.emit("err", err);
+        });
+    }
+  }
 }
 </script>
 
@@ -133,4 +143,5 @@ export default class AddBuilding extends Vue {
 .wrapper {
   margin-top: 1em;
 }
+
 </style>

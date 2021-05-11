@@ -1,7 +1,7 @@
 <template>
     <AddCity v-if="locationType == city" :cityId="locationId" @location-changed="ReloadTable" :title="updateCityTitle"/>
-    <AddBuilding v-if="locationType == building" :buildingId="buildingId" :title="updateBuildingTitle"/>
-    <AddRoom  v-if="locationType == room"/>
+    <AddBuilding v-if="locationType == building" :buildingId="buildingId" @location-changed="ReloadTable" :title="updateBuildingTitle"/>
+    <AddRoom  v-if="locationType == room" :roomId="roomId" @location-changed="ReloadTable" :title="updateRoomTitle"/>
 </template>
 
 <script lang="ts">
