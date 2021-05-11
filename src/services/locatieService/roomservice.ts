@@ -12,12 +12,6 @@ export default class RoomService {
          return response.data;
       }
 
-
-     //moet nog in backend
-      public async get(val): Promise<Array<Room>>{
-         const response = await http.get(`/api/locations/rooms/${{val}}`);
-         return response.data;
-      }
 }
 
 export const roomService = new RoomService();

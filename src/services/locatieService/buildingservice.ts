@@ -12,13 +12,6 @@ export default class BuildingService {
          const response = await http.get(`/api/locations/buildings`);
          return response.data;
       }
-
-     //moet nog in backend 
-
-      public async get(val): Promise<Array<Building>>{
-         const response = await http.get(`/api/locations/buildings/${{val}}`);
-         return response.data;
-      }
 }
 
 export const buildingService = new BuildingService();

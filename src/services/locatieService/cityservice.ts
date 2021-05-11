@@ -11,13 +11,7 @@ export default class CityService {
          const response = await http.get(`/api/locations/cities`);
          return response.data;
       }
-     
-     //moet nog in backend
 
-      public async get(val): Promise<Array<City>>{
-         const response = await http.get(`/api/locations/cities/${{val}}`);
-         return response.data;
-      }
 }
 
 export const cityService = new CityService();
