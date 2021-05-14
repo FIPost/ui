@@ -17,6 +17,7 @@ import CityRequest from "@/classes/requests/CityRequest";
 import { cityService } from "@/services/locatieService/cityservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
@@ -39,7 +40,7 @@ export default class AddCity extends Vue {
         this.showModal = true;
         this.city.Name = "";
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
       });
   }
