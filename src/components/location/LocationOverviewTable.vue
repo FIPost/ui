@@ -3,8 +3,8 @@
     <Table :items="items" @cell-clicked="CellClicked" />
     <LocationModal v-if="modalOpen" @close-location="CloseModal()">
       <LocationInfo
-        :locationType="locationType"
-        :locationId="locationId"
+        :ColumnType="ColumnType"
+        :cityId="cityId"
         :buildingId="buildingId"
         :roomId="roomId"
         @reload-table="ReloadTable"
@@ -18,12 +18,11 @@ import { Options, Vue } from "vue-class-component";
 import Table from "@/components/standardUi/Table.vue";
 import LocationInfo from "@/components/location/LocationInfo.vue";
 import LocationModal from "@/components/location/LocationModal.vue";
-import { LocationType } from "@/classes/LocationType";
+import { ColumnType } from "@/classes/table/ColumnType";
 import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
-import { Emit, Prop } from "vue-property-decorator";
 import { getCurrentInstance } from "@vue/runtime-core";
-import { TableCell } from "@/classes/TableCell";
+import { TableCell } from "@/classes/table/TableCell";
 
 @Options({
   components: {
@@ -34,8 +33,8 @@ import { TableCell } from "@/classes/TableCell";
 })
 export default class LocationOverviewTable extends Vue {
   /* LocationInfo Modal */
-  public locationType: LocationType = LocationType.ROOM;
-  public locationId: string = "";
+  public ColumnType: ColumnType = ColumnType.ROOM;
+  public cityId: string = "";
   public buildingId: string = "";
   public roomId: string = "";
 
@@ -67,13 +66,13 @@ export default class LocationOverviewTable extends Vue {
   }
 
   public CellClicked(cell: TableCell): void {
-    this.locationType = cell.type as LocationType;
+    this.ColumnType = cell.type as ColumnType;
 
-    if (this.locationType == LocationType.CITY) {
-      this.locationId = cell.id;
-    } else if (this.locationType == LocationType.BUILDING) {
+    if (this.ColumnType == ColumnType.CITY) {
+      this.cityId = cell.id;
+    } else if (this.ColumnType == ColumnType.BUILDING) {
       this.buildingId = cell.id;
-    } else if (this.locationType == LocationType.ROOM) {
+    } else if (this.ColumnType == ColumnType.ROOM) {
       this.roomId = cell.id;
     } else {
       return;
@@ -88,17 +87,17 @@ export default class LocationOverviewTable extends Vue {
         Stad: {
           id: value.building.address.city.id,
           displayName: value.building.address.city.name,
-          type: LocationType.CITY,
+          type: ColumnType.CITY,
         } as TableCell,
         Gebouw: {
           id: value.building.id,
           displayName: value.building.name,
-          type: LocationType.BUILDING,
+          type: ColumnType.BUILDING,
         } as TableCell,
         Ruimte: {
           id: value.id,
           displayName: value.name,
-          type: LocationType.ROOM,
+          type: ColumnType.ROOM,
         } as TableCell,
       });
     });

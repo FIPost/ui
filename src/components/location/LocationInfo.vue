@@ -1,16 +1,16 @@
 <template>
-    <AddCity v-if="locationType == city" :cityId="locationId" @location-changed="ReloadTable" :title="updateCityTitle"/>
-    <AddBuilding v-if="locationType == building" :buildingId="buildingId" @location-changed="ReloadTable" :title="updateBuildingTitle"/>
-    <AddRoom  v-if="locationType == room" :roomId="roomId" @location-changed="ReloadTable" :title="updateRoomTitle"/>
+    <AddCity v-if="ColumnType == city" :cityId="cityId" @location-changed="ReloadTable" :title="updateCityTitle"/>
+    <AddBuilding v-if="ColumnType == building" :buildingId="buildingId" @location-changed="ReloadTable" :title="updateBuildingTitle"/>
+    <AddRoom  v-if="ColumnType == room" :roomId="roomId" @location-changed="ReloadTable" :title="updateRoomTitle"/>
 </template>
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
 import AddCity from "@/components/locationRegistration/AddCity.vue";
 import { Emit, Prop } from "vue-property-decorator";
-import { LocationType } from "@/classes/LocationType";
 import AddBuilding from "@/components/locationRegistration/AddBuilding.vue";
 import AddRoom from "@/components/locationRegistration/AddRoom.vue";
+import { ColumnType } from "@/classes/table/ColumnType";
 
 function EnumProp(d: string | number, e: Record<any, any>) {
   // <- Record is changed
@@ -31,16 +31,16 @@ function EnumProp(d: string | number, e: Record<any, any>) {
   ]
 })
 export default class LocationInfo extends Vue {
-  private city: LocationType = LocationType.CITY;
-  private building: LocationType = LocationType.BUILDING;
-  private room: LocationType = LocationType.ROOM;
+  private city: ColumnType = ColumnType.CITY;
+  private building: ColumnType = ColumnType.BUILDING;
+  private room: ColumnType = ColumnType.ROOM;
 
   private updateCityTitle: string = "Wijzig een stad";
   private updateBuildingTitle: string = "Wijzig een gebouw";
   private updateRoomTitle: string = "Wijzig een kamer";
 
   @Prop()
-  public locationId: string = "";
+  public cityId: string = "";
 
   @Prop()
   public buildingId: string = "";
@@ -48,8 +48,8 @@ export default class LocationInfo extends Vue {
   @Prop()
   public roomId: string = "";
 
-  @Prop(EnumProp(LocationType.CITY, LocationType))
-  locationType!: LocationType;
+  @Prop(EnumProp(ColumnType.CITY, ColumnType))
+  ColumnType!: ColumnType;
 
   ReloadTable(): void {
     this.$emit("reload-table");

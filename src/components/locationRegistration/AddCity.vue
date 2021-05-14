@@ -43,9 +43,8 @@ export default class AddCity extends Vue {
   async addCity() {
     if (this.cityId) {
       // Update.
-      this.city.Id = this.cityId;
       cityService
-        .updateCity(this.city)
+        .updateCity(this.cityId, this.city)
         .then(() => {
           this.city.Name = "";
           this.$emit("location-changed");

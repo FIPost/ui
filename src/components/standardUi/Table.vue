@@ -1,4 +1,3 @@
-<!-- Table adapted from: https://vuejs.org/v2/examples/grid-component.html -->
 
 <template>
   <table>
@@ -27,8 +26,7 @@
 </template>
 
 <script lang="ts">
-import { LocationType } from "@/classes/LocationType";
-import { TableCell } from "@/classes/TableCell";
+import { TableCell } from "@/classes/table/TableCell";
 import { defineComponent } from "vue";
 
 export default defineComponent({

@@ -1,4 +1,5 @@
 import City from '@/classes/City';
+import CityRequest from '@/classes/requests/CityRequest';
 import http from '@/services/http';
 
 export default class CityService {
@@ -17,8 +18,8 @@ export default class CityService {
     return response.data;
   }
 
-  public async updateCity(cityModel): Promise<City> {
-    const response = await http.put(`/api/locations/cities?id=${cityModel.Id}`, cityModel);
+  public async updateCity(id: String, cityModel: CityRequest): Promise<City> {
+    const response = await http.put(`/api/locations/cities?id=${id}`, cityModel);
     return response.data;
   }
 }
