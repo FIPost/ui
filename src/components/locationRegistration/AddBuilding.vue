@@ -97,6 +97,7 @@ export default class AddBuilding extends Vue {
       })
       .catch((err) => {
         this.emitter.emit("err", err);
+        this.loading = false;
       });
   }
 }

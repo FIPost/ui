@@ -55,6 +55,7 @@ export default class PakketOverzicht extends Vue {
       })
       .catch((err) => {
         this.emitter.emit("err", err);
+        this.loading = false;
       });
   }
 }

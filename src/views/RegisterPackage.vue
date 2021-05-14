@@ -211,6 +211,7 @@ export default class RegisterPackage extends Vue {
       })
       .catch((err) => {
         this.emitter.emit("err", err);
+        this.loadRoom = false;
       });
     personeelService
       .getAll()
@@ -223,6 +224,7 @@ export default class RegisterPackage extends Vue {
       })
       .catch((err) => {
         this.emitter.emit("err", err);
+        this.loadPers = false;
       });
   }
 }
