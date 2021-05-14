@@ -1,22 +1,16 @@
 <template>
   <transition name="modal">
     <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
+      <div class="modal-wrapper" @click="Close()">
+        <div class="modal-container" @click.stop.prevent>
           <div class="modal-header">
-            <h3 name="header"> {{ header }} </h3>
+            <h3 name="header">{{ header }}</h3>
           </div>
           <div class="modal-body">
-            <slot>
-
-            </slot>
+            <slot> </slot>
             <span name="body"> {{ body }} </span>
           </div>
-          <div class="modal-footer">
-              <button class="modal-default-button" @click="$emit('close')">
-                OK
-              </button>
-          </div>
+          <div class="modal-footer"></div>
         </div>
       </div>
     </div>
@@ -25,19 +19,23 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
-import { Prop } from "vue-property-decorator";
+import { Emit, Prop } from "vue-property-decorator";
 import BtnFinish from "@/components/standardUi/BtnFinish.vue";
 
 @Options({
   components: {
-    BtnFinish
-  }
+    BtnFinish,
+  },
+  emits: ["close-location"],
 })
-export default class Modal extends Vue {
+export default class LocationModal extends Vue {
   @Prop()
   public header: string = "";
   @Prop()
   public body: string = "";
+
+  @Emit("close-location")
+  Close() {}
 }
 </script>
 
@@ -80,13 +78,13 @@ export default class Modal extends Vue {
 
 .modal-body {
   margin: 20px 0;
-    font-family: $font-family;
+  font-family: $font-family;
   color: $light-black-color;
 }
 
 .modal-footer {
-    height: 100%;
-    margin: 20px 0;
+  height: 100%;
+  margin: 20px 0;
 }
 
 .modal-default-button {
@@ -115,6 +113,5 @@ export default class Modal extends Vue {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
 }
-
 </style>
 

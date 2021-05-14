@@ -1,11 +1,11 @@
 <template>
   <div class="align-left">
     <BtnBack class="button-back" />
-    <div>
-      <div class="component-container" v-if="!overview">
-        <h1>Pakket registreren</h1>
-        <LoadingIcon v-if="loadPers || loadRoom" />
-        <div v-else>
+    <div class="component-container">
+      <h1>{{ !overview ? "Pakket Registreren" : "Overzicht" }}</h1>
+      <LoadingIcon v-if="loadPers || loadRoom" />
+      <div v-else>
+        <div v-if="!overview">
           <div>
             <h3>Afzender</h3>
             <InputField
@@ -46,8 +46,8 @@
             {{ error }}
           </h3>
         </div>
-        <div class="component-container" v-if="overview">
-          <h1>Overzicht</h1>
+
+        <div v-else>
           <h3>Afzender</h3>
           <p>{{ fpackage.Sender }}</p>
           <h3>Ontvanger</h3>
@@ -219,7 +219,7 @@ export default class RegisterPackage extends Vue {
         this.emitter.emit("err", err);
         this.loadRoom = false;
       });
-      
+
     personeelService
       .getAll()
       .then((res) => {

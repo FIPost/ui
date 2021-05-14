@@ -1,45 +1,55 @@
-<!-- Table adapted from: https://vuejs.org/v2/examples/grid-component.html -->
 
 <template>
   <table>
     <thead>
       <tr>
-        <th v-for="(value, name, index) in items[0]" :key="value" @click="sortBy(index)" :class="{ active: sortKey === index }">
-          {{name}} <span class="arrow" :class="sortOrders[index] > 0 ? 'asc' : 'dsc'"/>
+        <th
+          v-for="(value, name, index) in items[0]"
+          :key="value"
+          @click="sortBy(index)"
+          :class="{ active: sortKey === index }"
+        >
+          {{ name }}
+          <span class="arrow" :class="sortOrders[index] > 0 ? 'asc' : 'dsc'" />
         </th>
       </tr>
     </thead>
     <tbody>
-      <tr v-for="entry in filteredItems" :key="entry">
-        <td v-for="key in entry" :key="key"> {{key}} </td>
+      <tr
+        v-for="entry in filteredItems"
+        :key="entry"
+      >
+        <td v-for="cell in entry" :key="cell" @click="$emit('cell-clicked', cell)">{{ cell.displayName }}</td>
       </tr>
     </tbody>
   </table>
 </template>
 
 <script lang="ts">
+import { TableCell } from "@/classes/table/TableCell";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   props: {
-    items: Array
+    items: Array,
   },
+  emits: ["cell-clicked"],
 
   data() {
-      return { sortKey: 0, sortOrders: Array<number>() };
+    return { sortKey: 0, sortOrders: Array<number>() };
   },
 
   beforeUpdate() {
-    if(!(this.sortOrders.length > 0)){
+    if (!(this.sortOrders.length > 0)) {
       let items = this.items as Object[];
-      if(items.length > 0){
-        this.InitSortOrders(Object.keys(items[0]).length)
-      }
-      else{
+      if (items.length > 0) {
+        this.InitSortOrders(Object.keys(items[0]).length);
+      } else {
         console.error("No items for table");
       }
     }
   },
+
 
   computed: {
     filteredItems(): Object[] {
@@ -48,12 +58,12 @@ export default defineComponent({
       //TODO: filter items here
 
       return this.sortedItems(filtered);
-    }
+    },
   },
 
   methods: {
-    InitSortOrders(amount: number){
-      for(let i = 0; i < amount; i++) this.sortOrders[i] = 1;
+    InitSortOrders(amount: number) {
+      for (let i = 0; i < amount; i++) this.sortOrders[i] = 1;
     },
 
     sortBy(key: number) {
@@ -61,24 +71,25 @@ export default defineComponent({
       this.sortOrders[key] = this.sortOrders[key] * -1;
     },
 
+
     sortedItems(items: Object[]): Object[] {
       const sortKey = this.sortKey;
       const order = this.sortOrders[sortKey] || 1;
 
-      items.sort(function(a, b) {
-        let x = a[Object.keys(a)[sortKey]];
-        let y = b[Object.keys(b)[sortKey]];
+      items.sort(function (a, b) {
+        let x: TableCell = a[Object.keys(a)[sortKey]].displayName;
+        let y: TableCell = b[Object.keys(b)[sortKey]].displayName;
         return (x === y ? 0 : x > y ? 1 : -1) * order;
       });
 
       return items;
-    }
-  }
-})
+    },
+  },
+});
 </script>
 
 <style lang="scss" scoped>
-@import '@/styling/main.scss';
+@import "@/styling/main.scss";
 
 table {
   border-collapse: collapse;
@@ -96,7 +107,8 @@ th {
   text-decoration: none;
 }
 
-table td, th {
+table td,
+th {
   padding: 0.75em !important;
 }
 
@@ -129,4 +141,7 @@ td:first-child {
   border-top: 4px solid $black-color;
 }
 
+td {
+  cursor: pointer;
+}
 </style>

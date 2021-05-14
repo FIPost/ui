@@ -7,8 +7,9 @@
         type="text"
         :class="valid ? 'input' : 'input error'"
         v-on:input="updateSuggestions()"
-        v-model="selectedOption.name"
+        v-model="selectedRef.name"
         v-on:blur="loseFocus()"
+        v-on:focus="startFocus()"
       />
 
       <div class="items" :class="{ selectHide: !open }">
@@ -26,6 +27,7 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
+import { Prop, Watch } from "vue-property-decorator";
 import SelectOption from "@/classes/helpers/SelectOption";
 
 @Options({
@@ -33,12 +35,22 @@ import SelectOption from "@/classes/helpers/SelectOption";
     placeholder: String,
     options: Array as () => Array<SelectOption>,
     label: String,
-    valid: Boolean
+    valid: Boolean,
   },
   emits: ["select-changed"],
 })
 export default class CBSearchSuggestions extends Vue {
-  private selectedOption: SelectOption = new SelectOption("", "");
+
+  @Prop()
+  private selectedOption?: SelectOption;
+
+  @Watch('selectedOption')
+  onPropertyChanged(value: SelectOption, oldValue: SelectOption) {
+    this.selectedRef.name = value.name;
+  }
+
+  private selectedRef: SelectOption = new SelectOption("","")
+
   private placeholder: string = "";
   private suggestions: Array<SelectOption> = [];
   private options!: Array<SelectOption>;
@@ -46,26 +58,32 @@ export default class CBSearchSuggestions extends Vue {
   private valid: Boolean = true;
 
   private onChange(option: SelectOption): void {
-    this.selectedOption = option;
+    this.selectedRef = new SelectOption(option.id, option.name);
     this.open = false;
-    this.$emit("select-changed", this.selectedOption);
+    this.$emit("select-changed", this.selectedRef);
   }
 
   private updateSuggestions() {
-    this.$emit("select-changed", this.selectedOption);
+    this.selectedRef.id = "";
+    this.$emit("select-changed", this.selectedRef);
     this.suggestions = this.options.filter((el: SelectOption) =>
-      el.name.includes(this.selectedOption.name)
+      el.name.includes(this.selectedRef.name)
     );
     this.open = true;
   }
 
-  private loseFocus(){
-    this.$emit("select-changed", this.selectedOption);
+  private loseFocus() {
+    this.$emit("select-changed", this.selectedRef);
     this.open = false;
   }
 
+  private startFocus(){
+    this.suggestions = this.options;
+    this.open = true;
+  }
+
   mounted() {
-    this.selectedOption.name = this.placeholder;
+    this.selectedRef.name = this.placeholder;
   }
 }
 </script>

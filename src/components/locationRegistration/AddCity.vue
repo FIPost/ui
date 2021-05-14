@@ -1,8 +1,8 @@
 <template>
   <div class="wrapper">
-    <div class="container-subheader">Voeg een stad toe</div>
+    <div class="container-subheader">{{ title }}</div>
     <InputField label="Stad:" v-model:input="city.Name" />
-    <BtnFinish text="Bevestigen" v-on:click="addCity" />
+    <SmallBtnFinish text="Bevestigen" v-on:click="addCity" />
     <transition name="modal" v-if="showModal" close="showModal = false">
       <link-or-stay-modal link="locaties" @close="showModal = false" />
     </transition>
@@ -11,8 +11,9 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { Prop } from "vue-property-decorator";
 import InputField from "@/components/standardUi/InputField.vue";
-import BtnFinish from "@/components/standardUi/BtnFinish.vue";
+import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
 import CityRequest from "@/classes/requests/CityRequest";
 import { cityService } from "@/services/locatieService/cityservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
@@ -21,9 +22,10 @@ import { getCurrentInstance } from "@vue/runtime-core";
 @Options({
   components: {
     InputField,
-    BtnFinish,
+    SmallBtnFinish,
     LinkOrStayModal,
   },
+  emits: ["location-changed"],
 })
 export default class AddCity extends Vue {
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
@@ -32,16 +34,43 @@ export default class AddCity extends Vue {
   private city: CityRequest = new CityRequest("");
   private showModal: boolean = false;
 
+  @Prop()
+  public cityId: string = "";
+
+  @Prop()
+  public title: string = "Voeg een stad toe";
+
   async addCity() {
-    cityService
-      .post(this.city)
-      .then(() => {
-        this.showModal = true;
-        this.city.Name = "";
-      })
-      .catch((err) => {
-        this.emitter.emit("err", err);
+    if (this.cityId) {
+      // Update.
+      cityService
+        .updateCity(this.cityId, this.city)
+        .then(() => {
+          this.city.Name = "";
+          this.$emit("location-changed");
+        })
+        .catch((err) => {
+          this.emitter.emit("err", err);
+        });
+    } else {
+      cityService
+        .post(this.city)
+        .then(() => {
+          this.showModal = true;
+          this.city.Name = "";
+        })
+        .catch((err) => {
+          this.emitter.emit("err", err);
+        });
+    }
+  }
+
+  async mounted() {
+    if (this.cityId) {
+      cityService.getById(this.cityId).then((res) => {
+        this.city = new CityRequest(res.name);
       });
+    }
   }
 }
 </script>
@@ -53,4 +82,3 @@ export default class AddCity extends Vue {
   margin-top: 1em;
 }
 </style>
-  
