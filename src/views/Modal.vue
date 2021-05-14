@@ -4,7 +4,7 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <h3 name="header"> {{ header }} </h3>
+            <h3 name="header"> Er is iets mis gegaan </h3>
           </div>
           <div class="modal-body">
             <slot>
@@ -34,8 +34,6 @@ import BtnFinish from "@/components/standardUi/BtnFinish.vue";
   }
 })
 export default class Modal extends Vue {
-  @Prop()
-  public header: string = "";
   @Prop()
   public body: string = "";
 }

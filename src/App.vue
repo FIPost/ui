@@ -1,7 +1,6 @@
 <template>
   <Navigationbar />
-  <modal v-if="modalVisible" @close="closeModal" :header="header" :body="body">
-    <h3>{{ body }}</h3>
+  <modal v-if="modalVisible" @close="closeModal" :body="body">
   </modal>
 
   <div id="app">
@@ -24,7 +23,6 @@ import { AxiosError } from "axios";
 })
 export default class App extends Vue {
   public modalVisible: boolean = false;
-  public header: string = "Oeps er is iets mis gegaan..."
   public body: string = "";
   public stayOnExit = true;
 
