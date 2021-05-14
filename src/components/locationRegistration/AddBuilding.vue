@@ -1,25 +1,40 @@
 <template>
   <div>
-    <LoadingIcon v-if="loading"/>
-    <div v-else class="wrapper">
-      <div class="container-subheader">Voeg een gebouw toe</div>
-      <ComboBoxInput
-        @selectChange="assignCityToAddress"
-        :options="cities"
-        placeholder="selecteer een stad"
-        label="Stad:"
-      />
+    <div class="wrapper">
+      <LoadingIcon v-if="loading" />
 
-      <InputField label="Gebouw:" v-model:input="building.Name" />
-      <InputField label="Straatnaam:" v-model:input="building.Address.Street" />
-      <InputField label="Huisnummer:" v-model:input="building.Address.Number" />
-      <InputField label="Toevoeging:" v-model:input="building.Address.Addition" />
-      <InputField label="Postcode:" v-model:input="building.Address.PostalCode" />
+      <div v-else>
+        <div class="container-subheader">Voeg een gebouw toe</div>
+        <ComboBoxInput
+          @selectChange="assignCityToAddress"
+          :options="cities"
+          placeholder="selecteer een stad"
+          label="Stad:"
+        />
 
-      <BtnFinish text="Bevestigen" v-on:click="addBuilding()" />
-      <transition name="modal" v-if="showModal" close="showModal = false">
-        <link-or-stay-modal link="locaties" @close="showModal = false" />
-      </transition>
+        <InputField label="Gebouw:" v-model:input="building.Name" />
+        <InputField
+          label="Straatnaam:"
+          v-model:input="building.Address.Street"
+        />
+        <InputField
+          label="Huisnummer:"
+          v-model:input="building.Address.Number"
+        />
+        <InputField
+          label="Toevoeging:"
+          v-model:input="building.Address.Addition"
+        />
+        <InputField
+          label="Postcode:"
+          v-model:input="building.Address.PostalCode"
+        />
+
+        <BtnFinish text="Bevestigen" v-on:click="addBuilding()" />
+        <transition name="modal" v-if="showModal" close="showModal = false">
+          <link-or-stay-modal link="locaties" @close="showModal = false" />
+        </transition>
+      </div>
     </div>
   </div>
 </template>
@@ -92,7 +107,9 @@ export default class AddBuilding extends Vue {
       .getAll()
       .then((res) => {
         this.allCities = res;
-        this.allCities.forEach((city) => this.cities.push(new SelectOption(city.id, city.name)));
+        this.allCities.forEach((city) =>
+          this.cities.push(new SelectOption(city.id, city.name))
+        );
         this.loading = false;
       })
       .catch((err) => {

@@ -1,19 +1,21 @@
 <template>
   <div>
-    <LoadingIcon v-if="loading" />
-    <div v-else class="wrapper">
-      <div class="container-subheader">Voeg een ruimte toe</div>
-      <CBSearchSuggestion
-        @selectChanged="assignBuildingToRoom"
-        :options="buildings"
-        label="Gebouw:"
-        :valid="true"
-      />
-      <InputField label="Ruimte:" v-model:input="room.Name" />
-      <BtnFinish text="Bevestigen" v-on:click="addRoom" />
-      <transition name="modal" v-if="showModal" close="showModal = false">
-        <link-or-stay-modal link="locaties" @close="showModal = false" />
-      </transition>
+    <div class="wrapper">
+      <LoadingIcon v-if="loading" />
+      <div v-else>
+        <div class="container-subheader">Voeg een ruimte toe</div>
+        <CBSearchSuggestion
+          @selectChanged="assignBuildingToRoom"
+          :options="buildings"
+          label="Gebouw:"
+          :valid="true"
+        />
+        <InputField label="Ruimte:" v-model:input="room.Name" />
+        <BtnFinish text="Bevestigen" v-on:click="addRoom" />
+        <transition name="modal" v-if="showModal" close="showModal = false">
+          <link-or-stay-modal link="locaties" @close="showModal = false" />
+        </transition>
+      </div>
     </div>
   </div>
 </template>
@@ -72,7 +74,12 @@ export default class AddRoom extends Vue {
       .then((res) => {
         this.allBuildings = res;
         this.allBuildings.forEach((building) =>
-          this.buildings.push(new SelectOption(building.id, building.address.city.name + ", " + building.name ))
+          this.buildings.push(
+            new SelectOption(
+              building.id,
+              building.address.city.name + ", " + building.name
+            )
+          )
         );
         this.loading = false;
       })

@@ -1,10 +1,10 @@
 <template>
   <div>
-    <LoadingIcon v-if="isLoading" />
-    <div v-else>
-      <div v-if="!error" class="package-details">
-        <div class="container container-header">Pakketgegevens</div>
+    <div v-if="!error" class="package-details">
+      <div class="container container-header">Pakketgegevens</div>
+      <LoadingIcon v-if="isLoading" />
 
+      <div v-else>
         <div class="pd-content">
           <div class="container-subheader-small">Omschrijving</div>
           <div class="pd-item">{{ packageM.name }}</div>
@@ -43,13 +43,16 @@
             inCompleteText="nog niet binnen"
             :complete="packageM.routeFinished"
           />
-          <RoomDetails :room="packageM.collectionPoint" title="Af te halen op" />
+          <RoomDetails
+            :room="packageM.collectionPoint"
+            title="Af te halen op"
+          />
         </div>
       </div>
-      <div v-else class="package-details">
+      <div v-if="error" class="package-details">
         <div class="container container-header">Pakketgegevens</div>
-        Er ging iets mis bij het ophalen van de pakketgegevens. probeer het later
-        opnieuw.
+        Er ging iets mis bij het ophalen van de pakketgegevens. probeer het
+        later opnieuw.
       </div>
     </div>
   </div>
@@ -67,6 +70,7 @@ import Package from "@/classes/Package";
 import Address from "@/classes/Address";
 import City from "@/classes/City";
 import Building from "@/classes/Building";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   props: {
@@ -76,6 +80,7 @@ import Building from "@/classes/Building";
     PersonDetails,
     RoomDetails,
     StatusBadge,
+    LoadingIcon,
   },
 })
 export default class PackageDetails extends Vue {

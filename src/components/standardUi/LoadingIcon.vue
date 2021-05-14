@@ -8,17 +8,19 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import "@/styling/main.scss";
+
 .loader {
   border: 16px solid #e3e3e3; /* Light grey */
-  border-top: 16px solid #3498db; /* Blue */
+  border-top: 16px solid $modern-purple-color; /* Blue */
   border-radius: 50%;
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
   position: relative;
-  left: 50%;
-  margin-left: -60px;
+  margin: auto;
+  margin-top: 50px;
 }
 
 @keyframes spin {

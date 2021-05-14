@@ -1,68 +1,74 @@
 <template>
   <div class="align-left">
     <BtnBack class="button-back" />
-    <LoadingIcon v-if="loadPers || loadRoom"/>
-    <div v-else>
+    <div>
       <div class="component-container" v-if="!overview">
         <h1>Pakket registreren</h1>
-        <div>
+        <LoadingIcon v-if="loadPers || loadRoom" />
+        <div v-else>
+          <div>
+            <h3>Afzender</h3>
+            <InputField
+              label="Afzender:"
+              v-model:input="fpackage.Sender"
+              :valid="senderValid"
+              @update:input="senderChanged"
+            />
+          </div>
+          <div>
+            <h3>Ontvanger</h3>
+            <CBSearchSuggestions
+              :options="receivers"
+              label="Ontvanger:"
+              @selectChanged="receiverChanged"
+              :valid="receiverValid"
+            />
+          </div>
+          <div>
+            <h3>Pakket</h3>
+            <InputField
+              label="Pakketnaam:"
+              v-model:input="fpackage.Name"
+              :valid="nameValid"
+              @update:input="nameChanged"
+            />
+          </div>
+          <div>
+            <h3>Afhaalpunt</h3>
+            <CBSearchSuggestions
+              :options="rooms"
+              label="Afhaalpunt:"
+              @selectChanged="collectionPointChanged"
+              :valid="collectionPointValid"
+            />
+          </div>
+          <h3 class="error-text" v-if="errorText">
+            {{ error }}
+          </h3>
+        </div>
+        <div class="component-container" v-if="overview">
+          <h1>Overzicht</h1>
           <h3>Afzender</h3>
-          <InputField
-            label="Afzender:"
-            v-model:input="fpackage.Sender"
-            :valid="senderValid"
-            @update:input="senderChanged"
-          />
-        </div>
-        <div>
+          <p>{{ fpackage.Sender }}</p>
           <h3>Ontvanger</h3>
-          <CBSearchSuggestions
-            :options="receivers"
-            label="Ontvanger:"
-            @selectChanged="receiverChanged"
-            :valid="receiverValid"
-          />
-        </div>
-        <div>
+          <p>{{ receiver.name }}</p>
           <h3>Pakket</h3>
-          <InputField
-            label="Pakketnaam:"
-            v-model:input="fpackage.Name"
-            :valid="nameValid"
-            @update:input="nameChanged"
-          />
-        </div>
-        <div>
+          <p>{{ fpackage.Name }}</p>
           <h3>Afhaalpunt</h3>
-          <CBSearchSuggestions
-            :options="rooms"
-            label="Afhaalpunt:"
-            @selectChanged="collectionPointChanged"
-            :valid="collectionPointValid"
-          />
+          <p>{{ room.name }}</p>
         </div>
-        <h3 class="error-text" v-if="errorText">
-          {{ error }}
-        </h3>
+        <BtnFinish
+          class="margin-button"
+          :text="btnText"
+          v-on:click="toggleStep"
+        />
+        <BtnFinish
+          class="margin-button"
+          text="Bevestigen"
+          v-on:click="registerPackage"
+          v-if="overview"
+        />
       </div>
-      <div class="component-container" v-if="overview">
-        <h1>Overzicht</h1>
-        <h3>Afzender</h3>
-        <p>{{ fpackage.Sender }}</p>
-        <h3>Ontvanger</h3>
-        <p>{{ receiver.name }}</p>
-        <h3>Pakket</h3>
-        <p>{{ fpackage.Name }}</p>
-        <h3>Afhaalpunt</h3>
-        <p>{{ room.name }}</p>
-      </div>
-      <BtnFinish class="margin-button" :text="btnText" v-on:click="toggleStep" />
-      <BtnFinish
-        class="margin-button"
-        text="Bevestigen"
-        v-on:click="registerPackage"
-        v-if="overview"
-      />
     </div>
   </div>
 </template>
@@ -213,6 +219,7 @@ export default class RegisterPackage extends Vue {
         this.emitter.emit("err", err);
         this.loadRoom = false;
       });
+      
     personeelService
       .getAll()
       .then((res) => {

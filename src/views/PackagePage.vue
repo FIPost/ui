@@ -1,7 +1,6 @@
 <template>
   <div>
-    <LoadingIcon v-if="isLoading"/>
-    <div v-else>
+    <div>
       <btn-back />
       <div class="pi-container">
         <div class="pi-item-container">
@@ -25,7 +24,6 @@ import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
 import NextStep from "@/components/route/NextStep.vue";
 import TicketModel from "@/classes/TicketModel";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
-import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   components: {
@@ -33,8 +31,7 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
     PrintQR,
     RoutePackageInfo,
     NextStep,
-    BtnBack,
-    LoadingIcon,
+    BtnBack
   },
 })
 export default class PackagePage extends Vue {    
@@ -85,7 +82,6 @@ export default class PackagePage extends Vue {
 
   async mounted() {
     this.packageId = this.$router.currentRoute.value.params.id.toString();
-    this.isLoading = false;
   }
 }
 </script>
@@ -112,6 +108,7 @@ export default class PackagePage extends Vue {
   flex-wrap: wrap;
   row-gap: 1em;
   padding-bottom: 1em;
+
   @media only screen and (max-width: 970px) {
     min-width: 90vw;
     max-width: 90vw;
