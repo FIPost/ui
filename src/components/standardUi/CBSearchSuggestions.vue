@@ -59,7 +59,6 @@ export default class CBSearchSuggestions extends Vue {
   private valid: Boolean = true;
 
   private onChange(option: SelectOption): void {
-    console.log(this.selectedRef);
     this.selectedRef = new SelectOption(option.id, option.name);
     this.open = false;
     this.$emit("select-changed", this.selectedRef);
