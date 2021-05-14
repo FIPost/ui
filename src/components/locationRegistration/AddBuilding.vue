@@ -36,6 +36,7 @@ import { buildingService } from "@/services/locatieService/buildingservice";
 import { cityService } from "@/services/locatieService/cityservice";
 import { getCurrentInstance } from "@vue/runtime-core";
 import SelectOption from "@/classes/helpers/SelectOption";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
@@ -88,7 +89,7 @@ export default class AddBuilding extends Vue {
         this.allCities = res;
         this.allCities.forEach((city) => this.cities.push(new SelectOption(city.id, city.name)));
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
       });
   }

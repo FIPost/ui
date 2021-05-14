@@ -19,6 +19,7 @@ import Package from "@/classes/Package";
 import SearchContainer from "@/components/SearchContainer.vue";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
@@ -48,7 +49,7 @@ export default class PakketOverzicht extends Vue {
       .then((res) => {
         this.packages = res;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
       });
   }

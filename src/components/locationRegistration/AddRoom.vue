@@ -27,6 +27,7 @@ import { buildingService } from "@/services/locatieService/buildingservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import SelectOption from "@/classes/helpers/SelectOption";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
@@ -69,7 +70,7 @@ export default class AddRoom extends Vue {
           this.buildings.push(new SelectOption(building.id, building.address.city.name + ", " + building.name ))
         );
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
       });
   }

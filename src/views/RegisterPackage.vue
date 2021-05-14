@@ -78,6 +78,7 @@ import { personeelService } from "@/services/personeelService/personeelService";
 import Person from "@/classes/Person";
 import SelectOption from "@/classes/helpers/SelectOption";
 import { getCurrentInstance, watch } from "@vue/runtime-core";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
@@ -200,7 +201,7 @@ export default class RegisterPackage extends Vue {
           )
         );
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
       });
     personeelService
@@ -211,7 +212,7 @@ export default class RegisterPackage extends Vue {
           this.receivers.push(new SelectOption(receiver.id, receiver.name))
         );
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
       });
   }

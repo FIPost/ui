@@ -16,10 +16,6 @@
 import { defineComponent } from "vue";
 import Search from "./Search.vue";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
-import {roomService} from "@/services/locatieService/roomservice";
-import {buildingService} from "@/services/locatieService/buildingservice";
-import {cityService} from "@/services/locatieService/cityservice";
-
 
 const SearchContainer = defineComponent({
   components: {

@@ -10,6 +10,7 @@ import Table from "@/components/standardUi/Table.vue";
 import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
 import { getCurrentInstance } from "@vue/runtime-core";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
@@ -33,7 +34,7 @@ export default class LocationOverviewTable extends Vue {
           this.rooms = res;
           this.GenerateTableObjects(this.rooms);
         })
-        .catch((err) => {
+        .catch((err: AxiosError) => {
           this.emitter.emit("err", err);
         });
   }

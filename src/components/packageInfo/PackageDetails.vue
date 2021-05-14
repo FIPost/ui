@@ -65,6 +65,7 @@ import Package from "@/classes/Package";
 import Address from "@/classes/Address";
 import City from "@/classes/City";
 import Building from "@/classes/Building";
+import { AxiosError } from "axios";
 
 @Options({
   props: {
@@ -111,7 +112,7 @@ export default class PackageDetails extends Vue {
         this.packageM = res;
         this.isLoading = false;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.error = true;
         this.isLoading = false;
       });
