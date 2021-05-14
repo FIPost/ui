@@ -1,10 +1,10 @@
 <template>
-    <div class="component-container" style="padding: 0 !important;">
-        <div v-if="loading">
-          <h1>items are loading in...</h1>
-        </div>
-        <Table v-else :items="items"/>
+  <div>
+    <LoadingIcon v-if="loading" />
+    <div v-else class="component-container" style="padding: 0 !important;">
+        <Table :items="items"/>
     </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -13,10 +13,12 @@ import Table from "@/components/standardUi/Table.vue";
 import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
 import { getCurrentInstance } from "@vue/runtime-core";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   components: {
     Table,
+    LoadingIcon,
   },
 })
 export default class LocationOverviewTable extends Vue {

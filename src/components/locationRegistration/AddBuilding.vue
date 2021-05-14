@@ -1,23 +1,26 @@
 <template>
-  <div class="wrapper">
-    <div class="container-subheader">Voeg een gebouw toe</div>
-    <ComboBoxInput
-      @selectChange="assignCityToAddress"
-      :options="cities"
-      placeholder="selecteer een stad"
-      label="Stad:"
-    />
+  <div>
+    <LoadingIcon v-if="loading"/>
+    <div v-else class="wrapper">
+      <div class="container-subheader">Voeg een gebouw toe</div>
+      <ComboBoxInput
+        @selectChange="assignCityToAddress"
+        :options="cities"
+        placeholder="selecteer een stad"
+        label="Stad:"
+      />
 
-    <InputField label="Gebouw:" v-model:input="building.Name" />
-    <InputField label="Straatnaam:" v-model:input="building.Address.Street" />
-    <InputField label="Huisnummer:" v-model:input="building.Address.Number" />
-    <InputField label="Toevoeging:" v-model:input="building.Address.Addition" />
-    <InputField label="Postcode:" v-model:input="building.Address.PostalCode" />
+      <InputField label="Gebouw:" v-model:input="building.Name" />
+      <InputField label="Straatnaam:" v-model:input="building.Address.Street" />
+      <InputField label="Huisnummer:" v-model:input="building.Address.Number" />
+      <InputField label="Toevoeging:" v-model:input="building.Address.Addition" />
+      <InputField label="Postcode:" v-model:input="building.Address.PostalCode" />
 
-    <BtnFinish text="Bevestigen" v-on:click="addBuilding()" />
-    <transition name="modal" v-if="showModal" close="showModal = false">
-      <link-or-stay-modal link="locaties" @close="showModal = false" />
-    </transition>
+      <BtnFinish text="Bevestigen" v-on:click="addBuilding()" />
+      <transition name="modal" v-if="showModal" close="showModal = false">
+        <link-or-stay-modal link="locaties" @close="showModal = false" />
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -36,6 +39,7 @@ import { buildingService } from "@/services/locatieService/buildingservice";
 import { cityService } from "@/services/locatieService/cityservice";
 import { getCurrentInstance } from "@vue/runtime-core";
 import SelectOption from "@/classes/helpers/SelectOption";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   components: {
@@ -43,11 +47,13 @@ import SelectOption from "@/classes/helpers/SelectOption";
     InputField,
     BtnFinish,
     LinkOrStayModal,
+    LoadingIcon,
   },
 })
 export default class AddBuilding extends Vue {
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
+  private loading: boolean = true;
   private showModal: boolean = false;
   private cities: Array<SelectOption> = new Array<SelectOption>();
   private allCities: Array<City> = new Array<City>();
@@ -87,6 +93,7 @@ export default class AddBuilding extends Vue {
       .then((res) => {
         this.allCities = res;
         this.allCities.forEach((city) => this.cities.push(new SelectOption(city.id, city.name)));
+        this.loading = false;
       })
       .catch((err) => {
         this.emitter.emit("err", err);

@@ -1,17 +1,20 @@
 <template>
-  <div class="wrapper">
-    <div class="container-subheader">Voeg een ruimte toe</div>
-    <CBSearchSuggestion
-      @selectChanged="assignBuildingToRoom"
-      :options="buildings"
-      label="Gebouw:"
-      :valid="true"
-    />
-    <InputField label="Ruimte:" v-model:input="room.Name" />
-    <BtnFinish text="Bevestigen" v-on:click="addRoom" />
-    <transition name="modal" v-if="showModal" close="showModal = false">
-      <link-or-stay-modal link="locaties" @close="showModal = false" />
-    </transition>
+  <div>
+    <LoadingIcon v-if="loading" />
+    <div v-else class="wrapper">
+      <div class="container-subheader">Voeg een ruimte toe</div>
+      <CBSearchSuggestion
+        @selectChanged="assignBuildingToRoom"
+        :options="buildings"
+        label="Gebouw:"
+        :valid="true"
+      />
+      <InputField label="Ruimte:" v-model:input="room.Name" />
+      <BtnFinish text="Bevestigen" v-on:click="addRoom" />
+      <transition name="modal" v-if="showModal" close="showModal = false">
+        <link-or-stay-modal link="locaties" @close="showModal = false" />
+      </transition>
+    </div>
   </div>
 </template>
 
@@ -27,6 +30,7 @@ import { buildingService } from "@/services/locatieService/buildingservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import SelectOption from "@/classes/helpers/SelectOption";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   components: {
@@ -34,11 +38,13 @@ import SelectOption from "@/classes/helpers/SelectOption";
     InputField,
     BtnFinish,
     LinkOrStayModal,
+    LoadingIcon,
   },
 })
 export default class AddRoom extends Vue {
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
+  private loading: boolean = true;
   private showModal: boolean = false;
   private buildings: Array<SelectOption> = new Array<SelectOption>();
   private allBuildings: Array<Building> = new Array<Building>();
@@ -68,6 +74,7 @@ export default class AddRoom extends Vue {
         this.allBuildings.forEach((building) =>
           this.buildings.push(new SelectOption(building.id, building.address.city.name + ", " + building.name ))
         );
+        this.loading = false;
       })
       .catch((err) => {
         this.emitter.emit("err", err);
