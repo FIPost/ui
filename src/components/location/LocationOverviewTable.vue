@@ -37,12 +37,13 @@ export default class LocationOverviewTable extends Vue {
     roomService
         .getAll()
         .then((res) => {
-          this.loading = false;
           this.rooms = res;
           this.GenerateTableObjects(this.rooms);
+          this.loading = false;
         })
         .catch((err) => {
           this.emitter.emit("err", err);
+          this.loading = false;
         });
   }
 
