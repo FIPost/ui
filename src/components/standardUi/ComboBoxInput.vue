@@ -3,7 +3,7 @@
     <p class="header">{{ label }}</p>
     <div class="custom-select" @click="toggle()">
       <div class="selected" :class="{ open: open }" >
-        {{ selectedOption.name }}
+        {{ selectedRef.name }}
       </div>
 
       <div>
@@ -28,6 +28,7 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
+import { Prop, Watch } from "vue-property-decorator";
 import SelectOption from "@/classes/helpers/SelectOption";
 
 @Options({
@@ -40,19 +41,30 @@ import SelectOption from "@/classes/helpers/SelectOption";
   emits: ["select-change"],
 })
 export default class ComboBoxInput extends Vue {
-  private selectedOption: SelectOption = new SelectOption("", "");
+  @Prop()
+  private selectedOption?: SelectOption;
+
+  @Watch('selectedOption')
+  onPropertyChanged(value: SelectOption, oldValue: SelectOption) {
+    this.selectedRef.name = value.name;
+  }
+
+  private selectedRef: SelectOption = new SelectOption("", "")
+
   private placeholder!: string;
   private options!: Array<SelectOption>;
   private open: Boolean = false;
   private valid: Boolean = true;
 
   private onChange(option: SelectOption): void {
-    this.selectedOption = option;
-    this.$emit("select-change", this.selectedOption);
+    this.selectedRef = option;
+    this.$emit("select-change", this.selectedRef);
   }
 
   mounted() {
-    this.selectedOption.name = this.placeholder;
+    if(this.selectedRef.name == "") {
+      this.selectedRef.name = this.placeholder;
+    }
   }
 
   private toggle(){
@@ -137,7 +149,6 @@ export default class ComboBoxInput extends Vue {
     width: 150px;
   }
 }
-
 
 .custom-select .items div {
   color: $black-color;

@@ -1,14 +1,16 @@
 <template>
-  <div v-if="!isLoading">
-    <btn-back />
-    <div class="pi-container">
-      <div class="pi-item-container">
-        <NextStep :ticket="ticketModels[0]" />
-        <RoutePackageInfo :ticketModels="ticketModels" />
-      </div>
-      <div class="pi-item-container">
-        <PrintQR :code="packageId" />
-        <PackageDetails :packageId="packageId" />
+  <div>
+    <div>
+      <btn-back />
+      <div class="pi-container">
+        <div class="pi-item-container">
+          <NextStep :ticket="ticketModels[0]" />
+          <RoutePackageInfo :ticketModels="ticketModels" />
+        </div>
+        <div class="pi-item-container">
+          <PrintQR :code="packageId" />
+          <PackageDetails :packageId="packageId" />
+        </div>
       </div>
     </div>
   </div>
@@ -29,7 +31,7 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
     PrintQR,
     RoutePackageInfo,
     NextStep,
-    BtnBack,
+    BtnBack
   },
 })
 export default class PackagePage extends Vue {    
@@ -80,7 +82,6 @@ export default class PackagePage extends Vue {
 
   async mounted() {
     this.packageId = this.$router.currentRoute.value.params.id.toString();
-    this.isLoading = false;
   }
 }
 </script>
@@ -107,6 +108,7 @@ export default class PackagePage extends Vue {
   flex-wrap: wrap;
   row-gap: 1em;
   padding-bottom: 1em;
+
   @media only screen and (max-width: 970px) {
     min-width: 90vw;
     max-width: 90vw;

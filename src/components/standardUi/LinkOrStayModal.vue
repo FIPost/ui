@@ -3,14 +3,14 @@
     <div class="modal-wrapper">
       <div class="modal-container">
         <h2>Wilt u verder gaan of blijven?</h2>
-        <btn-finish
+        <small-btn-finish
           class="button-tray"
-          text="blijven"
+          text="Blijven"
           @click="$emit('close')"
         />
-        <btn-finish
+        <small-btn-finish
           class="button-tray"
-          text="Verder gaan"
+          text="Sluiten"
           v-on:click="goToLink"
         />
       </div>
@@ -18,15 +18,13 @@
   </div>
 </template>
 
-
-
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import BtnFinish from "@/components/standardUi/BtnFinish.vue";
+import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
 
 @Options({
   components: {
-    BtnFinish,
+    SmallBtnFinish,
   },
   props: {
     link: String,

@@ -3,7 +3,8 @@
     <btn-back />
     <h1>Pakketoverzicht</h1>
     <SearchContainer />
-    <PakketTable
+    <LoadingIcon v-if="loading" />
+    <PakketTable v-else
       :columns="columns"
       :columnKeys="columnKeys"
       v-bind:packages="packages"
@@ -20,18 +21,21 @@ import SearchContainer from "@/components/SearchContainer.vue";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   components: {
     PakketTable,
     SearchContainer,
     BtnBack,
+    LoadingIcon,
   },
 })
 export default class PakketOverzicht extends Vue {
   private columns: string[] = ["Naam", "Ontvanger", "Status", "Locatie", "Datum"];
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
+  private loading: boolean = true;
 
   private columnKeys: string[] = [
     "name",
@@ -43,14 +47,15 @@ export default class PakketOverzicht extends Vue {
   private packages: Array<Package> = [];
 
   async created() {
-    //let result = await pakketService.getAll();
     pakketService
       .getAll()
       .then((res) => {
         this.packages = res;
+        this.loading = false;
       })
       .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
+        this.loading = false;
       });
   }
 }

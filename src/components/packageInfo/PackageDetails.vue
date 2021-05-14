@@ -1,56 +1,61 @@
 <template>
-  <div v-if="!isLoading">
+  <div>
     <div v-if="!error" class="package-details">
       <div class="container container-header">Pakketgegevens</div>
+      <LoadingIcon v-if="isLoading" />
 
-      <div class="pd-content">
-        <div class="container-subheader-small">Omschrijving</div>
-        <div class="pd-item">{{ packageM.name }}</div>
-      </div>
-
-      <PersonDetails :person="packageM.receiver" />
-
-      <div class="pd-container">
+      <div v-else>
         <div class="pd-content">
-          <div class="container-subheader-small">Afzender</div>
-          <div class="pd-item">
-            {{
-              packageM.sender.length > 1
-                ? packageM.sender
-                : "De afzender kan niet worden opgehaald"
-            }}
+          <div class="container-subheader-small">Omschrijving</div>
+          <div class="pd-item">{{ packageM.name }}</div>
+        </div>
+
+        <PersonDetails :person="packageM.receiver" />
+
+        <div class="pd-container">
+          <div class="pd-content">
+            <div class="container-subheader-small">Afzender</div>
+            <div class="pd-item">
+              {{
+                packageM.sender.length > 1
+                  ? packageM.sender
+                  : "De afzender kan niet worden opgehaald"
+              }}
+            </div>
+          </div>
+          <div class="sd-img">
+            <img alt="BoxQR" src="@/assets/BoxQR.png" />
           </div>
         </div>
-        <div class="sd-img">
-          <img alt="BoxQR" src="@/assets/BoxQR.png" />
+
+        <div>
+          <StatusBadge
+            completeText="20-apr-2021 asdasdasdaads"
+            inCompleteText="Niet binnen gekomen"
+            :complete="true"
+          />
+          <RoomDetails :room="deliveryLocation" title="Binnen gekomen bij" />
+        </div>
+
+        <div>
+          <StatusBadge
+            completeText="Aangekomen"
+            inCompleteText="nog niet binnen"
+            :complete="packageM.routeFinished"
+          />
+          <RoomDetails
+            :room="packageM.collectionPoint"
+            title="Af te halen op"
+          />
         </div>
       </div>
-
-      <div>
-        <StatusBadge
-          completeText="20-apr-2021 asdasdasdaads"
-          inCompleteText="Niet binnen gekomen"
-          :complete="true"
-        />
-        <RoomDetails :room="deliveryLocation" title="Binnen gekomen bij" />
+      <div v-if="error" class="package-details">
+        <div class="container container-header">Pakketgegevens</div>
+        Er ging iets mis bij het ophalen van de pakketgegevens. probeer het
+        later opnieuw.
       </div>
-
-      <div>
-        <StatusBadge
-          completeText="Aangekomen"
-          inCompleteText="nog niet binnen"
-          :complete="packageM.routeFinished"
-        />
-        <RoomDetails :room="packageM.collectionPoint" title="Af te halen op" />
-      </div>
-    </div>
-    <div v-else class="package-details">
-      <div class="container container-header">Pakketgegevens</div>
-      Er ging iets mis bij het ophalen van de pakketgegevens. probeer het later
-      opnieuw.
     </div>
   </div>
-  <div v-else></div>
 </template>
 
 <script lang="ts">
@@ -66,6 +71,7 @@ import Address from "@/classes/Address";
 import City from "@/classes/City";
 import Building from "@/classes/Building";
 import { AxiosError } from "axios";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   props: {
@@ -75,6 +81,7 @@ import { AxiosError } from "axios";
     PersonDetails,
     RoomDetails,
     StatusBadge,
+    LoadingIcon,
   },
 })
 export default class PackageDetails extends Vue {
