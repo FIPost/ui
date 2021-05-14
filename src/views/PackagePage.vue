@@ -1,14 +1,17 @@
 <template>
-  <div v-if="!isLoading">
-    <btn-back />
-    <div class="pi-container">
-      <div class="pi-item-container">
-        <NextStep :ticket="ticketModels[0]" />
-        <RoutePackageInfo :ticketModels="ticketModels" />
-      </div>
-      <div class="pi-item-container">
-        <PrintQR :code="packageId" />
-        <PackageDetails :packageId="packageId" />
+  <div>
+    <LoadingIcon v-if="isLoading"/>
+    <div v-else>
+      <btn-back />
+      <div class="pi-container">
+        <div class="pi-item-container">
+          <NextStep :ticket="ticketModels[0]" />
+          <RoutePackageInfo :ticketModels="ticketModels" />
+        </div>
+        <div class="pi-item-container">
+          <PrintQR :code="packageId" />
+          <PackageDetails :packageId="packageId" />
+        </div>
       </div>
     </div>
   </div>
@@ -22,6 +25,7 @@ import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
 import NextStep from "@/components/route/NextStep.vue";
 import TicketModel from "@/classes/TicketModel";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   components: {
@@ -30,6 +34,7 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
     RoutePackageInfo,
     NextStep,
     BtnBack,
+    LoadingIcon,
   },
 })
 export default class PackagePage extends Vue {    
