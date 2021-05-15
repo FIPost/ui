@@ -42,21 +42,23 @@
           @update:input="postalCodeChanged"
         />
 
-        <SmallBtnFinish
-          v-if="buildingId"
-          text="Delete"
-          :red="true"
-          @click="deleteLocation()"
-        />
+        <div class="action-container">
+          <SmallBtnFinish
+            v-if="buildingId"
+            text="Delete"
+            :red="true"
+            @click="deleteLocation()"
+          />
 
-        <h4 class="error-text" v-if="error.length > 0">
-          {{ error }}
-        </h4>
+          <h4 class="error-text" v-if="error.length > 0">
+            {{ error }}
+          </h4>
 
-        <SmallBtnFinish text="Bevestigen" v-on:click="addBuilding()" />
-        <transition name="modal" v-if="showModal" close="showModal = false">
-          <link-or-stay-modal link="locaties" @close="showModal = false" />
-        </transition>
+          <SmallBtnFinish text="Bevestigen" v-on:click="addBuilding()" />
+          <transition name="modal" v-if="showModal" close="showModal = false">
+            <link-or-stay-modal link="locaties" @close="showModal = false" />
+          </transition>
+        </div>
       </div>
     </div>
   </div>
@@ -262,4 +264,5 @@ export default class AddBuilding extends Vue {
 .wrapper {
   margin-top: 1em;
 }
+
 </style>

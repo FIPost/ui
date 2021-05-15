@@ -7,19 +7,23 @@
       :valid="nameValid"
       @update:input="nameChanged"
     />
+    
     <h4 class="error-text" v-if="error.length > 0">
       {{ error }}
     </h4>
-    <SmallBtnFinish
-      v-if="cityId"
-      text="Delete"
-      :red="true"
-      @click="deleteLocation()"
-    />
-    <SmallBtnFinish text="Bevestigen" v-on:click="addCity" />
-    <transition name="modal" v-if="showModal" close="showModal = false">
-      <link-or-stay-modal link="locaties" @close="showModal = false" />
-    </transition>
+
+    <div class="action-container">
+      <SmallBtnFinish
+        v-if="cityId"
+        text="Delete"
+        :red="true"
+        @click="deleteLocation()"
+      />
+      <SmallBtnFinish text="Bevestigen" v-on:click="addCity" />
+      <transition name="modal" v-if="showModal" close="showModal = false">
+        <link-or-stay-modal link="locaties" @close="showModal = false" />
+      </transition>
+    </div>
   </div>
 </template>   
 

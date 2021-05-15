@@ -5,7 +5,7 @@
         <div class="logo"></div>
       </div>
       <div class="other">
-        Peter
+        
       </div>
     </div>
   </div>
@@ -42,7 +42,7 @@ export default Navigationbar;
   justify-content: space-between;
   width: 100%;
   height: 50px;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 2px 10px rgba(88, 88, 88, 0.16);
   overflow: hidden;
   align-content: center;
   font-family: $font-family;
@@ -62,6 +62,7 @@ export default Navigationbar;
       background-size: contain;
       height: 30px;
       width: 100px;
+      margin: 3px;
       align-self: center;
     }
   }

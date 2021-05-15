@@ -1,13 +1,19 @@
 <template>
   <div class="component-container no-padding">
     <div class="search-main">
-      <div class="search-title">Zoeken</div>
-      <Search @valueChanged="valueChanged" />
-   
-      <ComboBox :options="options" placeholder="Selecteer een veld" />
-         <font-awesome-icon @click="goToAddLocationPage()" class="plus-location"
-        icon="plus-square"
-      />
+      <div class="search-fields">
+        <h2 class="text">Zoeken</h2>
+      </div>
+
+      <div class="search-fields">
+        <Search @valueChanged="valueChanged" />
+        <ComboBox :options="options" placeholder="Selecteer een veld" />
+        <font-awesome-icon
+          @click="goToAddLocationPage()"
+          class="plus-location"
+          icon="plus-square"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -27,9 +33,9 @@ const SearchContainer = defineComponent({
       // Needs implementation.
       console.log(val);
     },
-    goToAddLocationPage(){
-      this.$router.push("/locaties/nieuw")
-    }
+    goToAddLocationPage() {
+      this.$router.push("/locaties/nieuw");
+    },
   },
   data() {
     return {
@@ -46,19 +52,33 @@ export default SearchContainer;
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
 
-.no-padding {
-  padding: 0 !important;
-}
-
 .search-main {
   display: flex;
-  flex-direction: row !important;
-  justify-content: flex-start !important;
-  padding: 0.75rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 0.2rem;
+  justify-content: flex-start;
+  padding: 0.2rem;
 }
 
 .search-main div {
-  margin: 0 0.75rem;
+  margin: 0 0.2rem;
+}
+
+.search-fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.75rem;
+
+  .text {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .search-title {

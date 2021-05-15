@@ -1,59 +1,73 @@
 <template>
-  <div class="menu-item">
-    <div class="menugeneric">
-      <h2 class="menuText">{{ labelText }}</h2>
-      <slot class="slot"> 
-
-      </slot>
-    </div>
+  <div class="m-container">
+    <MenuItem
+      @click="registerClicked()"
+      class="item"
+      labelText="Registreren"
+      :source="getImgUrl('register.png')"
+    />
+    <MenuItem
+      @click="searchClicked()"
+      class="item"
+      labelText="Zoeken"
+      :source="getImgUrl('search.png')"
+    />
+    <MenuItem
+      @click="scanClicked()"
+      class="item"
+      labelText="Scannen"
+      :source="getImgUrl('scan.png')"
+    />
+    <MenuItem
+      @click="locationClicked()"
+      class="item"
+      labelText="Locaties"
+      :source="getImgUrl('map.png')"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
+import { defineComponent } from "vue";
+import MenuItem from "@/components/MenuItem.vue";
 
-@Options({
-  props: {
-    destRoute: String,
-    labelText: String,
+const Menu = defineComponent({
+  components: {
+    MenuItem,
   },
-})
-export default class Menu extends Vue {}
+  data() {
+    return {};
+  },
+  methods: {
+    getImgUrl(pic) {
+      return require("@/assets/svg/" + pic);
+    },
+    registerClicked(): void {
+      this.$router.push("/registratie");
+    },
+    searchClicked(): void {
+      this.$router.push("/overzicht");
+    },
+    scanClicked(): void {
+      this.$router.push("/pakket/1");
+    },
+    locationClicked(): void {
+      this.$router.push("/locaties");
+    },
+  },
+});
+export default Menu;
 </script>
 
-<style scoped lang="scss">
-@import "src/styling/main.scss";
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="scss" scoped>
+@import "@/styling/main.scss";
 
-.menu-item {
-  width: 200px;
-  height: 200px;
+.m-container {
+  margin: auto;
   display: flex;
-  flex-direction: column;
-  background: white;
-  box-shadow: $shadow;
-  border-radius: $border-radius;
-  font-family: $font-family;
-  cursor: pointer;
-}
-
-.menugeneric {
-  margin: auto;
-}
-
-.menuText {
-  font-size: 1.5em;
-  width: 175px;
-  margin: auto;
-}
-
-.menuimage {
-  margin: 10px;
-  width: 100px;
-}
-
-.slot {
-  width: 50px;
-  margin: 10px;
+  flex-wrap: wrap;
+  column-gap: 1.5em;
+  row-gap: 1.5em;
 }
 </style>
- 

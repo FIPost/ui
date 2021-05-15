@@ -1,7 +1,7 @@
 <template>
   <div>
     <LoadingIcon v-if="loading" />
-    <div v-else class="component-container" style="padding: 0 !important">
+    <div v-else class="component-container overflow" style="padding: 0 !important">
       <Table :items="items" @cell-clicked="CellClicked" />
       <LocationModal v-if="modalOpen" @close-location="CloseModal()">
         <LocationInfo

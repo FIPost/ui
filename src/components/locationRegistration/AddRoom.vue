@@ -20,16 +20,19 @@
         <h4 class="error-text" v-if="error.length > 0">
           {{ error }}
         </h4>
-        <SmallBtnFinish
-          v-if="roomId"
-          text="Delete"
-          :red="true"
-          @click="deleteLocation()"
-        />
-        <SmallBtnFinish text="Bevestigen" v-on:click="addRoom" />
-        <transition name="modal" v-if="showModal" close="showModal = false">
-          <link-or-stay-modal link="locaties" @close="showModal = false" />
-        </transition>
+
+        <div class="action-container">
+          <SmallBtnFinish
+            v-if="roomId"
+            text="Delete"
+            :red="true"
+            @click="deleteLocation()"
+          />
+          <SmallBtnFinish text="Bevestigen" v-on:click="addRoom" />
+          <transition name="modal" v-if="showModal" close="showModal = false">
+            <link-or-stay-modal link="locaties" @close="showModal = false" />
+          </transition>
+        </div>
       </div>
     </div>
   </div>
@@ -89,12 +92,14 @@ export default class AddRoom extends Vue {
   async addRoom() {
     if (this.validate()) {
       if (this.roomId) {
-        roomService.update(this.room, this.roomId).then(() => {
-          this.$emit("location-changed");
-        })
-        .catch((err: AxiosError) => {
-          this.error = err.response?.data;
-        });
+        roomService
+          .update(this.room, this.roomId)
+          .then(() => {
+            this.$emit("location-changed");
+          })
+          .catch((err: AxiosError) => {
+            this.error = err.response?.data;
+          });
       } else {
         roomService
           .post(this.room)

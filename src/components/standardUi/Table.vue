@@ -1,10 +1,11 @@
 
 <template>
-  <table>
+  <table aria-describedby="Data table" >
     <thead>
       <tr>
         <th
           v-for="(value, name, index) in items[0]"
+          :id="index"
           :key="value"
           @click="sortBy(index)"
           :class="{ active: sortKey === index }"
