@@ -1,10 +1,13 @@
 <template>
   <div class="component-container no-padding">
     <div class="search-main">
-      <div class="search-title">Zoeken</div>
-      <Search @valueChanged="valueChanged" />
-      <QrReader />
-      <ComboBox :options="options" placeholder="Selecteer een veld" />
+      <div class="search-fields">
+        <h3 class="text">Filter</h3>
+      </div>
+      <div class="search-fields">
+        <Search @valueChanged="valueChanged" />
+        <ComboBox :options="options" placeholder="Selecteer een veld" />
+      </div>
     </div>
   </div>
 </template>
@@ -12,13 +15,11 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Search from "./Search.vue";
-import QrReader from "./QrReader.vue";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
 
 const SearchContainer = defineComponent({
   components: {
     Search,
-    QrReader,
     ComboBox,
   },
   methods: {
@@ -42,26 +43,33 @@ export default SearchContainer;
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
 
-.no-padding {
-  padding: 0 !important;
-}
-
 .search-main {
   display: flex;
-  flex-direction: row !important;
-  justify-content: flex-start !important;
-  padding: 0.75rem;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 0.2rem;
+  justify-content: flex-start;
+  padding: 0.2rem;
 }
 
 .search-main div {
-  margin: 0 0.75rem;
+  margin: 0 0.2rem;
 }
 
-.search-title {
-  text-align: center;
-  font-family: $font-family;
-  font-weight: 550;
-  margin: auto 0 !important;
+.search-fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.75rem;
+
+  .text  {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
 }
 
 .qr {

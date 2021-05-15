@@ -73,7 +73,7 @@ export default class ComboBox extends Vue {
   flex-direction: row;
   cursor: pointer;
   @media only screen and (max-width: 600px) {
-    width: 150px;
+    width: 100%;
   }
 }
 

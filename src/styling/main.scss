@@ -9,6 +9,7 @@ $text-green: #16402D;
 $black-color: #051821;
 $light-black-color: #232627;
 $shadow: 0px 3px 6px rgba(0,0,0,0.16);
+$shadow-small: 0px 1px 3px rgba(0,0,0,0.16);
 $modern-purple-color: rgb(79,60,201);
 $border-radius: 0.8em;
 $small-border-radius: 0.5em;
@@ -29,6 +30,14 @@ $text-yellow: #7C7540;
   border-radius: $border-radius;
   @media only screen and (max-width: 600px) {
     padding: 2em;
+  }
+
+  &.overflow {
+    overflow: auto;
+  }
+
+  &.no-padding {
+    padding: 0;
   }
 }
 
