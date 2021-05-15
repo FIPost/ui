@@ -1,8 +1,21 @@
 <template>
   <div class="wrapper">
     <div class="container-subheader">{{ title }}</div>
-    <InputField label="Stad:" v-model:input="city.Name" />
-    <SmallBtnFinish v-if="cityId" text="Delete" :red="true" @click="deleteLocation()" />
+    <InputField
+      label="Stad:"
+      v-model:input="city.Name"
+      :valid="nameValid"
+      @update:input="nameChanged"
+    />
+    <h4 class="error-text" v-if="error.length > 0">
+      {{ error }}
+    </h4>
+    <SmallBtnFinish
+      v-if="cityId"
+      text="Delete"
+      :red="true"
+      @click="deleteLocation()"
+    />
     <SmallBtnFinish text="Bevestigen" v-on:click="addCity" />
     <transition name="modal" v-if="showModal" close="showModal = false">
       <link-or-stay-modal link="locaties" @close="showModal = false" />
@@ -35,6 +48,8 @@ export default class AddCity extends Vue {
 
   private city: CityRequest = new CityRequest("");
   private showModal: boolean = false;
+  private nameValid: boolean = true;
+  private error: string = "";
 
   @Prop()
   public cityId: string = "";
@@ -43,27 +58,40 @@ export default class AddCity extends Vue {
   public title: string = "Voeg een stad toe";
 
   async addCity() {
-    if (this.cityId) {
-      // Update.
-      cityService
-        .updateCity(this.cityId, this.city)
-        .then(() => {
-          this.city.Name = "";
-          this.$emit("location-changed");
-        })
-        .catch((err) => {
-          this.emitter.emit("err", err);
-        });
+    if (this.validate()) {
+      if (this.cityId) {
+        // Update.
+        cityService
+          .updateCity(this.cityId, this.city)
+          .then(() => {
+            this.city.Name = "";
+            this.$emit("location-changed");
+          })
+          .catch((err: AxiosError) => {
+            this.error = err.response?.data;
+          });
+      } else {
+        cityService
+          .post(this.city)
+          .then(() => {
+            this.showModal = true;
+            this.city.Name = "";
+          })
+          .catch((err: AxiosError) => {
+            this.emitter.emit("err", err);
+          });
+      }
+    }
+  }
+
+  private validate(): boolean {
+    this.nameValid = this.city.Name.length > 0;
+    if (this.nameValid) {
+      this.error = "";
+      return true;
     } else {
-      cityService
-        .post(this.city)
-        .then(() => {
-          this.showModal = true;
-          this.city.Name = "";
-        })
-        .catch((err) => {
-          this.emitter.emit("err", err);
-        });
+      this.error = "Niet alle velden zijn ingevoerd";
+      return false;
     }
   }
 
@@ -78,6 +106,10 @@ export default class AddCity extends Vue {
           this.emitter.emit("err", err);
         });
     }
+  }
+  nameChanged(input: string): void {
+    this.nameValid = this.city.Name.length > 0;
+    this.error = "";
   }
 
   async mounted() {

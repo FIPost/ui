@@ -20,6 +20,7 @@ import Package from "@/classes/Package";
 import SearchContainer from "@/components/SearchContainer.vue";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
+import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
@@ -46,14 +47,13 @@ export default class PakketOverzicht extends Vue {
   private packages: Array<Package> = [];
 
   async created() {
-    //let result = await pakketService.getAll();
     pakketService
       .getAll()
       .then((res) => {
         this.packages = res;
         this.loading = false;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
         this.loading = false;
       });

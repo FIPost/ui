@@ -10,16 +10,26 @@
           :options="cities"
           placeholder="selecteer een stad"
           label="Stad:"
+          :valid="cityValid"
         />
 
-        <InputField label="Gebouw:" v-model:input="building.Name" />
+        <InputField
+          label="Gebouw:"
+          v-model:input="building.Name"
+          :valid="nameValid"
+          @update:input="nameChanged"
+        />
         <InputField
           label="Straatnaam:"
           v-model:input="building.Address.Street"
+          :valid="streetValid"
+          @update:input="streetChanged"
         />
         <InputField
           label="Huisnummer:"
           v-model:input="building.Address.Number"
+          :valid="numberValid"
+          @update:input="numberChanged"
         />
         <InputField
           label="Toevoeging:"
@@ -28,9 +38,21 @@
         <InputField
           label="Postcode:"
           v-model:input="building.Address.PostalCode"
+          :valid="postalCodeValid"
+          @update:input="postalCodeChanged"
         />
 
-        <SmallBtnFinish v-if="buildingId" text="Delete" :red="true" @click="deleteLocation()" />
+        <SmallBtnFinish
+          v-if="buildingId"
+          text="Delete"
+          :red="true"
+          @click="deleteLocation()"
+        />
+
+        <h4 class="error-text" v-if="error.length > 0">
+          {{ error }}
+        </h4>
+
         <SmallBtnFinish text="Bevestigen" v-on:click="addBuilding()" />
         <transition name="modal" v-if="showModal" close="showModal = false">
           <link-or-stay-modal link="locaties" @close="showModal = false" />
@@ -82,15 +104,20 @@ export default class AddBuilding extends Vue {
   private loading: boolean = true;
   private showModal: boolean = false;
   private cities: Array<SelectOption> = new Array<SelectOption>();
-
   private selectedCityOption: SelectOption = new SelectOption("", "");
-
   private allCities: Array<City> = new Array<City>();
 
   private building: BuildingRequest = new BuildingRequest(
     "",
     new AddressRequest("", "", "", 0, "")
   );
+
+  private nameValid: boolean = true;
+  private streetValid: boolean = true;
+  private cityValid: boolean = true;
+  private postalCodeValid: boolean = true;
+  private numberValid: boolean = true;
+  private error: string = "";
 
   async created() {
     // Retrieve cities.
@@ -103,7 +130,7 @@ export default class AddBuilding extends Vue {
         );
         this.loading = false;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
         this.loading = false;
       });
@@ -139,38 +166,92 @@ export default class AddBuilding extends Vue {
   }
 
   addBuilding() {
-    this.building.Address.Number = Number(this.building.Address.Number);
+    if (this.validate()) {
+      this.building.Address.Number = Number(this.building.Address.Number);
 
-    if (this.buildingId) {
-      buildingService.update(this.building, this.buildingId).then(() => {
-        this.$emit("location-changed");
-      });
-    } else {
-      buildingService
-        .post(this.building)
-        .then(() => {
-          this.showModal = true;
-          this.clearModel();
-        })
-        .catch((err) => {
-          this.emitter.emit("err", err);
-        });
+      if (this.buildingId) {
+        buildingService
+          .update(this.building, this.buildingId)
+          .then(() => {
+            this.$emit("location-changed");
+          })
+          .catch((err: AxiosError) => {
+            this.error = err.response?.data;
+          });
+      } else {
+        buildingService
+          .post(this.building)
+          .then(() => {
+            this.showModal = true;
+            this.clearModel();
+          })
+          .catch((err: AxiosError) => {
+            this.emitter.emit("err", err);
+          });
+      }
     }
   }
 
   deleteLocation() {
-    if (
-      confirm("Weet je zeker dat je deze locatie wilt verwijderen?")
-    ) {
+    if (confirm("Weet je zeker dat je deze locatie wilt verwijderen?")) {
       buildingService
         .delete(this.buildingId)
         .then(() => {
           this.$emit("location-changed");
         })
         .catch((err: AxiosError) => {
-          this.emitter.emit("err", err)
+          this.emitter.emit("err", err);
         });
     }
+  }
+
+  private validate(): boolean {
+    this.nameValid = this.building.Name.length > 0;
+    this.cityValid =
+      this.allCities.find((city) => city.id == this.building.Address.CityId) !=
+      null;
+    this.streetValid = this.building.Address.Street.length > 0;
+    this.postalCodeValid = this.building.Address.PostalCode.length > 0;
+    this.numberValid =
+      !isNaN(this.building.Address.Number) &&
+      this.building.Address.Number != null &&
+      this.building.Address.Number.toString().length > 0;
+
+    if (!this.nameValid || !this.streetValid || !this.postalCodeValid) {
+      this.error = "Niet alle velden zijn ingevoerd";
+      return false;
+    }
+
+    if (!this.numberValid) {
+      this.error = "Het huisnummer is niet valide";
+      return false;
+    }
+    if (!this.cityValid) {
+      this.error = "deze stad bestaat niet";
+      return false;
+    }
+    this.error = "";
+    return true;
+  }
+
+  nameChanged(input: string): void {
+    this.nameValid = this.building.Name.length > 0;
+    this.error = "";
+  }
+
+  streetChanged(input: string): void {
+    this.streetValid = this.building.Address.Street.length > 0;
+    this.error = "";
+  }
+
+  postalCodeChanged(input: string): void {
+    this.postalCodeValid = this.building.Address.PostalCode.length > 0;
+    this.error = "";
+  }
+
+  numberChanged(input: string): void {
+    this.numberValid = !isNaN(this.building.Address.Number);
+    this.error = "";
   }
 }
 </script>

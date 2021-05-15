@@ -1,7 +1,6 @@
 <template>
   <Navigationbar />
-  <modal v-if="modalVisible" @close="closeModal" :header="header" :body="body">
-    <h3>{{ body }}</h3>
+  <modal v-if="modalVisible" @close="closeModal" :body="body">
   </modal>
 
   <div id="app">
@@ -24,8 +23,8 @@ import { AxiosError } from "axios";
 })
 export default class App extends Vue {
   public modalVisible: boolean = false;
-  public header: string = "Oeps er is iets mis gegaan..."
   public body: string = "";
+  public stayOnExit = true;
 
   public showModal(): void {
     this.modalVisible = true;
@@ -33,14 +32,28 @@ export default class App extends Vue {
 
   public closeModal(): void {
     this.modalVisible = false;
-    this.$router.back();
+    if(!this.stayOnExit){
+      this.$router.back();
+    }
   }
 
   private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
 
   async mounted() {
     this.emitter.on("err", (err: AxiosError) => {
-      this.body = err.message;
+      if(err.response != null){
+        if(err.response.status == 500 || err.response.status == 404 || err.response.status == 400){
+            this.stayOnExit = false;
+        }
+        else{
+            this.stayOnExit = true;
+        }
+        this.body = err.response.data;
+      }
+      else{
+        this.stayOnExit = false;
+        this.body = "Probeer het later opnieuw."
+      }
       this.modalVisible = true;
     });
   }

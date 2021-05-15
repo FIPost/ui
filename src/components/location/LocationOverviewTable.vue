@@ -25,6 +25,7 @@ import { ColumnType } from "@/classes/table/ColumnType";
 import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
 import { getCurrentInstance } from "@vue/runtime-core";
+import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { TableCell } from "@/classes/table/TableCell";
 
@@ -69,7 +70,7 @@ export default class LocationOverviewTable extends Vue {
         this.GenerateTableObjects(this.rooms);
         this.loading = false;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
         this.loading = false;
       });

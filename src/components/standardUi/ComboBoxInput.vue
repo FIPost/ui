@@ -1,8 +1,8 @@
 <template>
   <div class="combobox-container">
     <p class="header">{{ label }}</p>
-    <div class="custom-select" @click="toggle()">
-      <div class="selected" :class="{ open: open }">
+    <div @click="toggle()" :class="valid ? 'custom-select' : 'custom-select error'">
+      <div class="selected" :class="{ open: open }" >
         {{ selectedRef.name }}
       </div>
 
@@ -174,5 +174,9 @@ export default class ComboBoxInput extends Vue {
   color: $fontys-purple;
   position: absolute;
   padding-top: 8px;
+}
+
+.error {
+  background: #ffc9cf;
 }
 </style>

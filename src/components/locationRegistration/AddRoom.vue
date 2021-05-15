@@ -9,10 +9,23 @@
           :options="buildings"
           :selectedOption="selectedBuildingOption"
           label="Gebouw:"
-          :valid="true"
+          :valid="buildingValid"
         />
-        <InputField label="Ruimte:" v-model:input="room.Name" />
-        <SmallBtnFinish v-if="roomId" text="Delete" :red="true" @click="deleteLocation()" />
+        <InputField
+          label="Ruimte:"
+          v-model:input="room.Name"
+          :valid="nameValid"
+          @update:input="nameChanged"
+        />
+        <h4 class="error-text" v-if="error.length > 0">
+          {{ error }}
+        </h4>
+        <SmallBtnFinish
+          v-if="roomId"
+          text="Delete"
+          :red="true"
+          @click="deleteLocation()"
+        />
         <SmallBtnFinish text="Bevestigen" v-on:click="addRoom" />
         <transition name="modal" v-if="showModal" close="showModal = false">
           <link-or-stay-modal link="locaties" @close="showModal = false" />
@@ -65,26 +78,34 @@ export default class AddRoom extends Vue {
   private selectedBuildingOption: SelectOption = new SelectOption("", "");
 
   private room: RoomRequest = new RoomRequest("", "");
+  private nameValid: boolean = true;
+  private buildingValid: boolean = true;
+  private error: string = "";
 
   assignBuildingToRoom(option: SelectOption): void {
     this.room.BuildingId = option.id;
   }
 
   async addRoom() {
-    if (this.roomId) {
-      roomService.update(this.room, this.roomId).then(() => {
-        this.$emit("location-changed");
-      });
-    } else {
-      roomService
-        .post(this.room)
-        .then(() => {
-          this.showModal = true;
-          this.room.Name = "";
+    if (this.validate()) {
+      if (this.roomId) {
+        roomService.update(this.room, this.roomId).then(() => {
+          this.$emit("location-changed");
         })
-        .catch((err) => {
-          this.emitter.emit("err", err);
+        .catch((err: AxiosError) => {
+          this.error = err.response?.data;
         });
+      } else {
+        roomService
+          .post(this.room)
+          .then(() => {
+            this.showModal = true;
+            this.room.Name = "";
+          })
+          .catch((err: AxiosError) => {
+            this.emitter.emit("err", err);
+          });
+      }
     }
   }
 
@@ -99,6 +120,31 @@ export default class AddRoom extends Vue {
           this.emitter.emit("err", err);
         });
     }
+  }
+
+  private validate(): boolean {
+    this.nameValid = this.room.Name.length > 0;
+    this.buildingValid =
+      this.allBuildings.find(
+        (building) => building.id == this.room.BuildingId
+      ) != null;
+
+    if (!this.nameValid) {
+      this.error = "Niet alle velden zijn ingevoerd";
+      return false;
+    }
+
+    if (!this.buildingValid) {
+      this.error = "dit gebouw bestaat niet";
+      return false;
+    }
+    this.error = "";
+    return true;
+  }
+
+  nameChanged(input: string): void {
+    this.nameValid = this.room.Name.length > 0;
+    this.error = "";
   }
 
   async mounted() {
@@ -127,7 +173,7 @@ export default class AddRoom extends Vue {
         );
         this.loading = false;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
         this.loading = false;
       });

@@ -86,6 +86,7 @@ import { personeelService } from "@/services/personeelService/personeelService";
 import Person from "@/classes/Person";
 import SelectOption from "@/classes/helpers/SelectOption";
 import { getCurrentInstance, watch } from "@vue/runtime-core";
+import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
@@ -214,7 +215,7 @@ export default class RegisterPackage extends Vue {
         );
         this.loadRoom = false;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
         this.loadRoom = false;
       });
@@ -228,7 +229,7 @@ export default class RegisterPackage extends Vue {
         );
         this.loadPers = false;
       })
-      .catch((err) => {
+      .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
         this.loadPers = false;
       });
