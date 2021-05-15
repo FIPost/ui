@@ -17,9 +17,9 @@
           :valid="nameValid"
           @update:input="nameChanged"
         />
-        <h3 class="error-text" v-if="error.length > 0">
+        <h4 class="error-text" v-if="error.length > 0">
           {{ error }}
-        </h3>
+        </h4>
         <SmallBtnFinish text="Bevestigen" v-on:click="addRoom" />
         <transition name="modal" v-if="showModal" close="showModal = false">
           <link-or-stay-modal link="locaties" @close="showModal = false" />
@@ -85,6 +85,9 @@ export default class AddRoom extends Vue {
       if (this.roomId) {
         roomService.update(this.room, this.roomId).then(() => {
           this.$emit("location-changed");
+        })
+        .catch((err: AxiosError) => {
+          this.error = err.response?.data;
         });
       } else {
         roomService

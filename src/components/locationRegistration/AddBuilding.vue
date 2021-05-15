@@ -164,6 +164,9 @@ export default class AddBuilding extends Vue {
       if (this.buildingId) {
         buildingService.update(this.building, this.buildingId).then(() => {
           this.$emit("location-changed");
+        })
+        .catch((err: AxiosError) => {
+          this.error = err.response?.data;
         });
       } else {
         buildingService

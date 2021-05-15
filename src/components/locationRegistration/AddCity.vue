@@ -2,9 +2,9 @@
   <div class="wrapper">
     <div class="container-subheader">{{ title }}</div>
     <InputField label="Stad:" v-model:input="city.Name" :valid="nameValid" @update:input="nameChanged"/>
-    <h3 class="error-text" v-if="error.length > 0">
+    <h4 class="error-text" v-if="error.length > 0">
       {{ error }}
-    </h3>
+    </h4>
     <SmallBtnFinish text="Bevestigen" v-on:click="addCity" />
     <transition name="modal" v-if="showModal" close="showModal = false">
       <link-or-stay-modal link="locaties" @close="showModal = false" />
@@ -57,7 +57,7 @@ export default class AddCity extends Vue {
             this.$emit("location-changed");
           })
           .catch((err: AxiosError) => {
-            this.emitter.emit("err", err);
+            this.error = err.response?.data;
           });
       } else {
         cityService
