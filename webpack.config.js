@@ -32,13 +32,6 @@ module.exports = {
             }
           }
         ]
-      }, 
-      {
-        test: /\.svg$/,
-        use: [
-          'babel-loader',
-          'vue-svg-loader',
-        ],
       }
     ]
   },
