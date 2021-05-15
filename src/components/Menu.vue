@@ -70,4 +70,9 @@ export default Menu;
   column-gap: 1.5em;
   row-gap: 1.5em;
 }
+
+.slot {
+  width: 50px;
+  margin: 10px;
+}
 </style>

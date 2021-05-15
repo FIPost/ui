@@ -15,6 +15,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Menu from "@/components/Menu.vue";
+import LocationSvg from "@/components/svg/LocationSvg.vue";
+import RegisterSvg from "@/components/svg/RegisterSvg.vue";
+import ScanSvg from "@/components/svg/ScanSvg.vue";
+import SearchSvg from "@/components/svg/SearchSvg.vue";
 
 const Home = defineComponent({
   components: {

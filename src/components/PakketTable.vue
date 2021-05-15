@@ -1,10 +1,18 @@
 <template>
+<<<<<<< HEAD
   <div class="component-container overflow table-container">
     <table class="table"
         aria-describedby="Table that displays all packages.">
       <thead>
         <tr>
           <th :id="index" v-for="(column, index) in columns" :key="column">
+=======
+  <div class="component-container table-container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th v-for="(column, index) in columns" :key="column">
+>>>>>>> a0ed04724e91853d753aa5bcdc82e142ab167e29
             <a href="#" @click="sortBy(columnKeys[index])">
               {{ column }}
               <span v-if="reverse && sortKey == columnKeys[index]">
