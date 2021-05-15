@@ -3,10 +3,9 @@
     <div class="wrapper">
       <LoadingIcon v-if="loading" />
       <div v-else>
-        <div class="container-subheader">Voeg een gebouw toe</div>
+        <div class="container-subheader">{{ title }}</div>
         <ComboBoxInput
           @selectChange="assignCityToAddress"
-          :selectedOption="selectedCityOption"
           :options="cities"
           placeholder="selecteer een stad"
           label="Stad:"
@@ -56,8 +55,8 @@ import { buildingService } from "@/services/locatieService/buildingservice";
 import { cityService } from "@/services/locatieService/cityservice";
 import { getCurrentInstance } from "@vue/runtime-core";
 import SelectOption from "@/classes/helpers/SelectOption";
-import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+import { AxiosError } from "axios";
 
 @Options({
   components: {

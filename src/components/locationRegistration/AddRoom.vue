@@ -3,15 +3,23 @@
     <div class="wrapper">
       <LoadingIcon v-if="loading" />
       <div v-else>
-        <div class="container-subheader">Voeg een ruimte toe</div>
+        <div class="container-subheader">{{ title }}</div>
         <CBSearchSuggestion
           @selectChanged="assignBuildingToRoom"
           :options="buildings"
           :selectedOption="selectedBuildingOption"
           label="Gebouw:"
-          :valid="true"
+          :valid="buildingValid"
         />
-        <InputField label="Ruimte:" v-model:input="room.Name" />
+        <InputField
+          label="Ruimte:"
+          v-model:input="room.Name"
+          :valid="nameValid"
+          @update:input="nameChanged"
+        />
+        <h3 class="error-text" v-if="error.length > 0">
+          {{ error }}
+        </h3>
         <SmallBtnFinish text="Bevestigen" v-on:click="addRoom" />
         <transition name="modal" v-if="showModal" close="showModal = false">
           <link-or-stay-modal link="locaties" @close="showModal = false" />
@@ -35,8 +43,8 @@ import { buildingService } from "@/services/locatieService/buildingservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import SelectOption from "@/classes/helpers/SelectOption";
-import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
@@ -46,15 +54,11 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
     LinkOrStayModal,
     LoadingIcon,
   },
-  emits: [
-    "location-changed"
-  ]
+  emits: ["location-changed"],
 })
 export default class AddRoom extends Vue {
-
   @Prop()
-  private roomId : string = "";
-  private selectedBuildingOption: SelectOption = new SelectOption("","");
+  private roomId: string = "";
 
   @Prop()
   private title: string = "Voeg een nieuwe ruimte toe";
@@ -65,42 +69,72 @@ export default class AddRoom extends Vue {
   private showModal: boolean = false;
   private buildings: Array<SelectOption> = new Array<SelectOption>();
   private allBuildings: Array<Building> = new Array<Building>();
+  private selectedBuildingOption: SelectOption = new SelectOption("", "");
 
   private room: RoomRequest = new RoomRequest("", "");
+  private nameValid: boolean = true;
+  private buildingValid: boolean = true;
+  private error: string = "";
 
   assignBuildingToRoom(option: SelectOption): void {
     this.room.BuildingId = option.id;
   }
 
   async addRoom() {
-    if(this.roomId) {
-      roomService
-        .update(this.room, this.roomId)
-        .then(() => {
+    if (this.validate()) {
+      if (this.roomId) {
+        roomService.update(this.room, this.roomId).then(() => {
           this.$emit("location-changed");
-        })
-    } else {
-    roomService
-      .post(this.room)
-      .then(() => {
-        this.showModal = true;
-        this.room.Name = "";
-      })
-      .catch((err: AxiosError) => {
-        this.emitter.emit("err", err);
-      });
+        });
+      } else {
+        roomService
+          .post(this.room)
+          .then(() => {
+            this.showModal = true;
+            this.room.Name = "";
+          })
+          .catch((err: AxiosError) => {
+            this.emitter.emit("err", err);
+          });
+      }
     }
   }
 
+  private validate(): boolean {
+    this.nameValid = this.room.Name.length > 0;
+    this.buildingValid =
+      this.allBuildings.find(
+        (building) => building.id == this.room.BuildingId
+      ) != null;
+
+    if (!this.nameValid) {
+      this.error = "Niet alle velden zijn ingevoerd";
+      return false;
+    }
+
+    if (!this.buildingValid) {
+      this.error = "dit gebouw bestaat niet";
+      return false;
+    }
+    this.error = "";
+    return true;
+  }
+
+  nameChanged(input: string): void {
+    this.nameValid = this.room.Name.length > 0;
+    this.error = "";
+  }
+
   async mounted() {
-    if(this.roomId) {
-      roomService
-        .getById(this.roomId)
-        .then((res) => {
-          this.room.Name = res.name;
-          this.room.BuildingId = res.building.id;
-          this.selectedBuildingOption = new SelectOption(res.building.id, res.building.address.city.name + ", " + res.building.name);
-        })
+    if (this.roomId) {
+      roomService.getById(this.roomId).then((res) => {
+        this.room.Name = res.name;
+        this.room.BuildingId = res.building.id;
+        this.selectedBuildingOption = new SelectOption(
+          res.building.id,
+          res.building.address.city.name + ", " + res.building.name
+        );
+      });
     }
 
     buildingService

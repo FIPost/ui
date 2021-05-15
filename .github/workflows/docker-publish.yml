@@ -17,7 +17,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: fipost/ui
           tag_with_ref: true
-          build_args: "VUE_APP_PAKKETSERVICE=${{ secrets.PAKKETSERVICE_HOST }}"
+          build_args: "VUE_APP_APIGATEWAY=${{ secrets.GATEWAY_URL }}"
           
       - name: Push to GitHub Packages
         uses: docker/build-push-action@v1
