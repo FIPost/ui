@@ -4,7 +4,7 @@
     <h1>Pakketoverzicht</h1>
     <SearchContainer />
     <LoadingIcon v-if="loading" />
-    <PakketTable v-else
+    <PakketTable class="pakket-table" v-else
       :columns="columns"
       :columnKeys="columnKeys"
       v-bind:packages="packages"
