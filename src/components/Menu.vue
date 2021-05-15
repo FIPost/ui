@@ -2,7 +2,9 @@
   <div class="menu-item">
     <div class="menugeneric">
       <h2 class="menuText">{{ labelText }}</h2>
-      <img class="menuimage" src="@/assets/BoxQR.png" />
+      <slot class="slot"> 
+
+      </slot>
     </div>
   </div>
 </template>
@@ -47,6 +49,11 @@ export default class Menu extends Vue {}
 .menuimage {
   margin: 10px;
   width: 100px;
+}
+
+.slot {
+  width: 50px;
+  margin: 10px;
 }
 </style>
  

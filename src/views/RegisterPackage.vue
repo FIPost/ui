@@ -57,13 +57,12 @@
           <h3>Afhaalpunt</h3>
           <p>{{ room.name }}</p>
         </div>
-        <BtnFinish
-          class="margin-button"
+        <SmallBtnFinish
           :text="btnText"
+          :red="btnText == 'Vorige' ? true : false"
           v-on:click="toggleStep"
         />
-        <BtnFinish
-          class="margin-button"
+        <SmallBtnFinish
           text="Bevestigen"
           v-on:click="registerPackage"
           v-if="overview"
@@ -77,7 +76,7 @@
 import { Options, Vue } from "vue-class-component";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 import InputField from "@/components/standardUi/InputField.vue";
-import BtnFinish from "@/components/standardUi/BtnFinish.vue";
+import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
 import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
 import RegisterPackageModel from "@/classes/requests/PackageRequest";
 import { pakketService } from "@/services/pakketService/pakketservice";
@@ -93,7 +92,7 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
   components: {
     BtnBack,
     InputField,
-    BtnFinish,
+    SmallBtnFinish,
     CBSearchSuggestions,
     LoadingIcon,
   },

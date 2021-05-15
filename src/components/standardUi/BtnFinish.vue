@@ -29,7 +29,7 @@ export default class BtnFinish extends Vue {
   width: 180px;
   height: 45px;
 
-  background: $gradient;
+  background: $modern-purple-color;
   color: #ffffff;
 
   border-radius: 10px;

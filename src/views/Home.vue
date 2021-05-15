@@ -4,10 +4,18 @@
       <div class="header">Start</div>
       <hr />
       <div class="m-container">
-        <Menu @click="registerClicked()" class="item" labelText="Registreren" />
-        <Menu @click="searchClicked()" class="item" labelText="Zoeken" />
-        <Menu @click="scanClicked()" class="item" labelText="Scannen" />
-        <Menu @click="locationClicked()" class="item" labelText="Locaties" />
+        <Menu @click="registerClicked()" class="item" labelText="Registreren">
+          <RegisterSvg />
+        </Menu>
+        <Menu @click="searchClicked()" class="item" labelText="Zoeken">
+          <SearchSvg />
+        </Menu>
+        <Menu @click="scanClicked()" class="item" labelText="Scannen">
+          <ScanSvg />
+        </Menu>
+        <Menu @click="locationClicked()" class="item" labelText="Locaties">
+          <LocationSvg />
+        </Menu>
       </div>
     </div>
      <div class="container-group">
@@ -20,10 +28,18 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Menu from "@/components/Menu.vue";
+import LocationSvg from "@/components/svg/LocationSvg.vue";
+import RegisterSvg from "@/components/svg/RegisterSvg.vue";
+import ScanSvg from "@/components/svg/ScanSvg.vue";
+import SearchSvg from "@/components/svg/SearchSvg.vue";
 
 const Home = defineComponent({
   components: {
     Menu,
+    LocationSvg,
+    RegisterSvg,
+    ScanSvg,
+    SearchSvg
   },
   data() {
     return {};

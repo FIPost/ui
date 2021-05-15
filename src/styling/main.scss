@@ -74,3 +74,10 @@ input {
   font-family: $font-family;
 }
 
+.svg {
+  width: 100px;
+  height: 100px;
+  margin-top: 20px;
+  opacity: 80%;
+  filter: brightness(100%);
+}

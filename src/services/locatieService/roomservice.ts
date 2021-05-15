@@ -22,6 +22,11 @@ export default class RoomService {
     const response = await http.put(`/api/locations/rooms?id=${id}`, room);
     return response.data;
   }
+
+  public async delete(id: string) {
+    const response = await http.delete(`/api/locations/rooms?id=${id}`);
+    return response.data;
+  }
 }
 
 export const roomService = new RoomService();

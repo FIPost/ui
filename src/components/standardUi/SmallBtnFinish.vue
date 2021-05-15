@@ -1,5 +1,5 @@
 <template>
-  <button class="small-btn-finish" @click="onClick()">
+  <button :class="red ? 'small-btn-finish red' : 'small-btn-finish purple'" @click="onClick()">
     {{ text }}
   </button>
 </template>
@@ -10,11 +10,12 @@ import { Options, Vue } from "vue-class-component";
 @Options({
   props: {
     text: String,
+    red: Boolean
   },
   emits: ["btn-clicked"],
 })
 export default class BtnFinish extends Vue {
-  text: string = "Voltooi";
+  red: Boolean = false;
 
   onClick(): void {
     this.$emit("btn-clicked");
@@ -26,11 +27,11 @@ export default class BtnFinish extends Vue {
 @import "@/styling/main.scss";
 
 .small-btn-finish {
-  width: 150px;
+  width: 140px;
   font-size: 14px;
   height: 35px;
+  margin-right: 5px;
 
-  background: $modern-purple-color;
   color: #ffffff;
 
   border-radius: 5px;
@@ -39,5 +40,13 @@ export default class BtnFinish extends Vue {
 
   font-weight: bold;
   cursor: pointer;
+}
+
+.purple {
+  background: $modern-purple-color;
+}
+
+.red {
+  background: $pink-color;
 }
 </style>

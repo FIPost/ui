@@ -22,6 +22,11 @@ export default class BuildingService {
     const response = await http.put(`/api/locations/buildings?id=${id}`, buildingModel);
     return response.data;
   }
+
+  public async delete(id: string): Promise<Building> {
+    const response = await http.delete(`/api/locations/buildings?id=${id}`);
+    return response.data;
+  }
 }
 
 export const buildingService = new BuildingService();

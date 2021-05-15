@@ -71,7 +71,7 @@ export default class Ticket extends Vue {
 }
 
 .finished {
- color: $fontys-purple;
+ color: $pink-color;
 }
 .unfinished{
  color: $gray-color;

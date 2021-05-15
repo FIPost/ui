@@ -2,6 +2,7 @@
   <div class="wrapper">
     <div class="container-subheader">{{ title }}</div>
     <InputField label="Stad:" v-model:input="city.Name" />
+    <SmallBtnFinish v-if="cityId" text="Delete" :red="true" @click="deleteLocation()" />
     <SmallBtnFinish text="Bevestigen" v-on:click="addCity" />
     <transition name="modal" v-if="showModal" close="showModal = false">
       <link-or-stay-modal link="locaties" @close="showModal = false" />
@@ -18,6 +19,7 @@ import CityRequest from "@/classes/requests/CityRequest";
 import { cityService } from "@/services/locatieService/cityservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
+import { AxiosError } from "axios";
 
 @Options({
   components: {
@@ -60,6 +62,19 @@ export default class AddCity extends Vue {
           this.city.Name = "";
         })
         .catch((err) => {
+          this.emitter.emit("err", err);
+        });
+    }
+  }
+
+  deleteLocation() {
+    if (confirm("Weet je zeker dat je deze locatie wilt verwijderen?")) {
+      cityService
+        .deleteCity(this.cityId)
+        .then(() => {
+          this.$emit("location-changed");
+        })
+        .catch((err: AxiosError) => {
           this.emitter.emit("err", err);
         });
     }

@@ -2,7 +2,7 @@
   <div class="combobox-container">
     <p class="header">{{ label }}</p>
     <div class="custom-select" @click="toggle()">
-      <div class="selected" :class="{ open: open }" >
+      <div class="selected" :class="{ open: open }">
         {{ selectedRef.name }}
       </div>
 
@@ -18,7 +18,11 @@
       </div>
 
       <div class="items" :class="{ selectHide: !open }">
-        <div v-for="option in options" :key="option.id" @click="onChange(option)">
+        <div
+          v-for="option in options"
+          :key="option.id"
+          @click="onChange(option)"
+        >
           {{ option.name }}
         </div>
       </div>
@@ -36,7 +40,7 @@ import SelectOption from "@/classes/helpers/SelectOption";
     placeholder: String,
     options: Array as () => Array<SelectOption>,
     label: String,
-    valid: Boolean
+    valid: Boolean,
   },
   emits: ["select-change"],
 })
@@ -44,12 +48,14 @@ export default class ComboBoxInput extends Vue {
   @Prop()
   private selectedOption?: SelectOption;
 
-  @Watch('selectedOption')
+  @Watch("selectedOption", { immediate: true, deep: true })
   onPropertyChanged(value: SelectOption, oldValue: SelectOption) {
-    this.selectedRef.name = value.name;
+    if (value) {
+      this.selectedRef.name = value.name;
+    }
   }
 
-  private selectedRef: SelectOption = new SelectOption("", "")
+  private selectedRef: SelectOption = new SelectOption("", "");
 
   private placeholder!: string;
   private options!: Array<SelectOption>;
@@ -61,14 +67,14 @@ export default class ComboBoxInput extends Vue {
     this.$emit("select-change", this.selectedRef);
   }
 
-  mounted() {
-    if(this.selectedRef.name == "") {
-      this.selectedRef.name = this.placeholder;
-    }
-  }
+  // mounted() {
+  //   if(this.selectedRef.name == "") {
+  //     this.selectedRef.name = this.placeholder;
+  //   }
+  // }
 
-  private toggle(){
-      this.open = !this.open;
+  private toggle() {
+    this.open = !this.open;
   }
 }
 </script>
@@ -112,7 +118,6 @@ export default class ComboBoxInput extends Vue {
 
   @media only screen and (max-width: 600px) {
     width: 150px;
-    
   }
 }
 
@@ -169,7 +174,5 @@ export default class ComboBoxInput extends Vue {
   color: $fontys-purple;
   position: absolute;
   padding-top: 8px;
-
 }
-
 </style>
