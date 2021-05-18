@@ -84,24 +84,28 @@ export default class AddCity extends Vue {
         cityService
           .updateCity(this.cityId, this.city)
           .then(() => {
+            this.city.Name = "";
+            this.loadPostRequest = false;
             this.$emit("location-changed");
           })
           .catch((err: AxiosError) => {
+            this.loadPostRequest = false;
             this.error = err.response?.data;
           });
       } else {
         cityService
           .post(this.city)
           .then(() => {
-            this.showModal = true;
             this.city.Name = "";
+            this.showModal = true;
+            this.loadPostRequest = false;
           })
           .catch((err: AxiosError) => {
+            this.loadPostRequest = false;
             this.emitter.emit("err", err);
           });
       }
     }
-    this.loadPostRequest = false;
   }
 
   private validate(): boolean {
@@ -121,12 +125,13 @@ export default class AddCity extends Vue {
       cityService
         .deleteCity(this.cityId)
         .then(() => {
+          this.loadDeleteRequest = false;
           this.$emit("location-changed");
         })
         .catch((err: AxiosError) => {
+          this.loadDeleteRequest = false;
           this.emitter.emit("err", err);
         });
-      this.loadDeleteRequest = false;
     }
   }
   nameChanged(input: string): void {
@@ -139,9 +144,9 @@ export default class AddCity extends Vue {
       this.isLoading = true;
       cityService.getById(this.cityId).then((res) => {
         this.city = new CityRequest(res.name);
+        this.isLoading = false;
       });
     }
-    this.isLoading = false;
   }
 }
 </script>

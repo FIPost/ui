@@ -131,19 +131,6 @@ export default class AddBuilding extends Vue {
   private error: string = "";
 
   async created() {
-    // Retrieve cities.
-    cityService
-      .getAll()
-      .then((res) => {
-        this.allCities = res;
-        this.allCities.forEach((city) =>
-          this.cities.push(new SelectOption(city.id, city.name))
-        );
-      })
-      .catch((err: AxiosError) => {
-        this.emitter.emit("err", err);
-      });
-
     if (this.buildingId) {
       // Get existing building if exists.
       buildingService.getById(this.buildingId).then((res: Building) => {
@@ -160,7 +147,20 @@ export default class AddBuilding extends Vue {
         );
       });
     }
-    this.loading = false;
+    // Retrieve cities.
+    cityService
+      .getAll()
+      .then((res) => {
+        this.allCities = res;
+        this.allCities.forEach((city) =>
+          this.cities.push(new SelectOption(city.id, city.name))
+        );
+        this.loading = false;
+      })
+      .catch((err: AxiosError) => {
+        this.loading = false;
+        this.emitter.emit("err", err);
+      });
   }
 
   private clearModel() {
@@ -184,24 +184,27 @@ export default class AddBuilding extends Vue {
         buildingService
           .update(this.building, this.buildingId)
           .then(() => {
+            this.loadPostRequest = false;
             this.$emit("location-changed");
           })
           .catch((err: AxiosError) => {
+            this.loadPostRequest = false;
             this.error = err.response?.data;
           });
       } else {
         buildingService
           .post(this.building)
           .then(() => {
+            this.loadPostRequest = false;
             this.showModal = true;
             this.clearModel();
           })
           .catch((err: AxiosError) => {
+            this.loadPostRequest = false;
             this.emitter.emit("err", err);
           });
       }
     }
-    this.loadPostRequest = false;
   }
 
   deleteLocation() {

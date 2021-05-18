@@ -106,24 +106,28 @@ export default class AddRoom extends Vue {
         roomService
           .update(this.room, this.roomId)
           .then(() => {
+            this.room.Name = "";
+            this.loadPostRequest = false;
             this.$emit("location-changed");
           })
           .catch((err: AxiosError) => {
+            this.loadPostRequest = false;
             this.error = err.response?.data;
           });
       } else {
         roomService
           .post(this.room)
           .then(() => {
-            this.showModal = true;
             this.room.Name = "";
+            this.showModal = true;
+            this.loadPostRequest = false;
           })
           .catch((err: AxiosError) => {
+            this.loadPostRequest = false;
             this.emitter.emit("err", err);
           });
       }
     }
-    this.loadPostRequest = false;
   }
 
   deleteLocation() {
@@ -133,11 +137,12 @@ export default class AddRoom extends Vue {
         .delete(this.roomId)
         .then(() => {
           this.$emit("location-changed");
+          this.loadDeleteRequest = false;
         })
         .catch((err: AxiosError) => {
           this.emitter.emit("err", err);
+          this.loadDeleteRequest = false;
         });
-      this.loadDeleteRequest = false;
     }
   }
 
@@ -190,11 +195,12 @@ export default class AddRoom extends Vue {
             )
           )
         );
+        this.loading = false;
       })
       .catch((err: AxiosError) => {
+        this.loading = false;
         this.emitter.emit("err", err);
       });
-    this.loading = false;
   }
 }
 </script>

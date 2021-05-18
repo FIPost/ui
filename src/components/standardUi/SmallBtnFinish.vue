@@ -60,7 +60,7 @@ export default class BtnFinish extends Vue {
 
 .disabled {
   box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.2);
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .purple {
