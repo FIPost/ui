@@ -102,7 +102,7 @@ export default class LocationOverviewTable extends Vue {
         } as TableCell,
         Gebouw: {
           id: value.building.id,
-          displayName: value.building.name,
+          displayName: value.building.name + ", " + value.building.address.street + " " + value.building.address.number,
           type: ColumnType.BUILDING,
         } as TableCell,
         Ruimte: {

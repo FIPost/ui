@@ -68,7 +68,7 @@ export default class CBSearchSuggestions extends Vue {
     this.selectedRef.id = "";
     this.$emit("select-changed", this.selectedRef);
     this.suggestions = this.options.filter((el: SelectOption) =>
-      el.name.includes(this.selectedRef.name)
+      el.name.toLocaleLowerCase().includes(this.selectedRef.name.toLocaleLowerCase())
     );
     this.open = true;
   }

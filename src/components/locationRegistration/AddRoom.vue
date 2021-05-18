@@ -28,7 +28,7 @@
             :red="true"
             @click="deleteLocation()"
           />
-          <SmallBtnFinish text="Bevestigen" v-on:click="addRoom" />
+          <SmallBtnFinish text="Bevestigen" v-on:click="addRoom" :isLoading="loadPostRequest"/>
           <transition name="modal" v-if="showModal" close="showModal = false">
             <link-or-stay-modal link="locaties" @close="showModal = false" />
           </transition>
@@ -75,6 +75,7 @@ export default class AddRoom extends Vue {
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
   private loading: boolean = true;
+  private loadPostRequest: boolean = false;
   private showModal: boolean = false;
   private buildings: Array<SelectOption> = new Array<SelectOption>();
   private allBuildings: Array<Building> = new Array<Building>();
@@ -90,6 +91,7 @@ export default class AddRoom extends Vue {
   }
 
   async addRoom() {
+    this.loadPostRequest = true;
     if (this.validate()) {
       if (this.roomId) {
         roomService
@@ -112,6 +114,7 @@ export default class AddRoom extends Vue {
           });
       }
     }
+    this.loadPostRequest = false;
   }
 
   deleteLocation() {
@@ -176,12 +179,11 @@ export default class AddRoom extends Vue {
             )
           )
         );
-        this.loading = false;
       })
       .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
-        this.loading = false;
       });
+    this.loading = false;
   }
 }
 </script>

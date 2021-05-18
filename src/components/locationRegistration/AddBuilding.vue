@@ -47,14 +47,19 @@
             v-if="buildingId"
             text="Delete"
             :red="true"
-            @click="deleteLocation()"
+            @btn-clicked="deleteLocation()"
+            :isLoading="loadDeleteRequest"
           />
 
           <h4 class="error-text" v-if="error.length > 0">
             {{ error }}
           </h4>
 
-          <SmallBtnFinish text="Bevestigen" v-on:click="addBuilding()" />
+          <SmallBtnFinish
+            text="Bevestigen"
+            @btn-clicked="addBuilding()"
+            :isLoading="loadPostRequest"
+          />
           <transition name="modal" v-if="showModal" close="showModal = false">
             <link-or-stay-modal link="locaties" @close="showModal = false" />
           </transition>
@@ -104,11 +109,13 @@ export default class AddBuilding extends Vue {
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
   private loading: boolean = true;
+  private loadPostRequest: boolean = false;
+  private loadDeleteRequest: boolean = false;
   private showModal: boolean = false;
+
   private cities: Array<SelectOption> = new Array<SelectOption>();
   private selectedCityOption: SelectOption = new SelectOption("", "");
   private allCities: Array<City> = new Array<City>();
-
   private building: BuildingRequest = new BuildingRequest(
     "",
     new AddressRequest("", "", "", 0, "")
@@ -130,11 +137,9 @@ export default class AddBuilding extends Vue {
         this.allCities.forEach((city) =>
           this.cities.push(new SelectOption(city.id, city.name))
         );
-        this.loading = false;
       })
       .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
-        this.loading = false;
       });
 
     if (this.buildingId) {
@@ -153,6 +158,7 @@ export default class AddBuilding extends Vue {
         );
       });
     }
+    this.loading = false;
   }
 
   private clearModel() {
@@ -168,6 +174,7 @@ export default class AddBuilding extends Vue {
   }
 
   addBuilding() {
+    this.loadPostRequest = true;
     if (this.validate()) {
       this.building.Address.Number = Number(this.building.Address.Number);
 
@@ -191,11 +198,13 @@ export default class AddBuilding extends Vue {
             this.emitter.emit("err", err);
           });
       }
+      this.loadPostRequest = false;
     }
   }
 
   deleteLocation() {
     if (confirm("Weet je zeker dat je deze locatie wilt verwijderen?")) {
+      this.loadDeleteRequest = true;
       buildingService
         .delete(this.buildingId)
         .then(() => {
@@ -204,6 +213,7 @@ export default class AddBuilding extends Vue {
         .catch((err: AxiosError) => {
           this.emitter.emit("err", err);
         });
+      this.loadDeleteRequest = false;
     }
   }
 
@@ -264,5 +274,4 @@ export default class AddBuilding extends Vue {
 .wrapper {
   margin-top: 1em;
 }
-
 </style>

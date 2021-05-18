@@ -1,10 +1,17 @@
 <template>
-<div class="loader"></div>
+  <div :class="isSmall ? 'loader small' : 'loader'"></div>
 </template>
 
-<script>
-export default {
-  name: "LoadingIcon"
+<script lang="ts">
+import { Options, Vue } from "vue-class-component";
+
+@Options({
+  props: {
+    isSmall: Boolean,
+  },
+})
+export default class LoadingIcon extends Vue {
+  isSmall: Boolean = false;
 }
 </script>
 
@@ -23,8 +30,21 @@ export default {
   margin-top: 50px;
 }
 
+.small {
+  width: 12px;
+  height: 12px;
+  border: 5px solid #e3e3e3; /* Light grey */
+  border-top: 5px solid $modern-purple-color; /* Blue */
+  margin-top: 0px;
+  position: inherit;
+}
+
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
