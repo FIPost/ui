@@ -61,6 +61,7 @@
           :text="btnText"
           :red="btnText == 'Vorige' ? true : false"
           v-on:click="toggleStep"
+          :disabled="loadPostRequest"
         />
         <SmallBtnFinish
           text="Bevestigen"
