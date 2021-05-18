@@ -26,9 +26,16 @@
             v-if="roomId"
             text="Delete"
             :red="true"
-            @click="deleteLocation()"
+            @btn-clicked="deleteLocation()"
+            :isLoading="loadDeleteRequest"
+            :disabled="loadPostRequest"
           />
-          <SmallBtnFinish text="Bevestigen" v-on:click="addRoom" :isLoading="loadPostRequest"/>
+          <SmallBtnFinish
+            text="Bevestigen"
+            @btn-clicked="addRoom"
+            :isLoading="loadPostRequest"
+            :disabled="loadDeleteRequest"
+          />
           <transition name="modal" v-if="showModal" close="showModal = false">
             <link-or-stay-modal link="locaties" @close="showModal = false" />
           </transition>
@@ -76,6 +83,8 @@ export default class AddRoom extends Vue {
     .emitter;
   private loading: boolean = true;
   private loadPostRequest: boolean = false;
+  private loadDeleteRequest: boolean = false;
+
   private showModal: boolean = false;
   private buildings: Array<SelectOption> = new Array<SelectOption>();
   private allBuildings: Array<Building> = new Array<Building>();
@@ -119,6 +128,7 @@ export default class AddRoom extends Vue {
 
   deleteLocation() {
     if (confirm("Weet je zeker dat je deze locatie wilt verwijderen?")) {
+      this.loadDeleteRequest = true;
       roomService
         .delete(this.roomId)
         .then(() => {
@@ -127,6 +137,7 @@ export default class AddRoom extends Vue {
         .catch((err: AxiosError) => {
           this.emitter.emit("err", err);
         });
+      this.loadDeleteRequest = false;
     }
   }
 

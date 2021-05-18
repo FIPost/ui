@@ -49,6 +49,7 @@
             :red="true"
             @btn-clicked="deleteLocation()"
             :isLoading="loadDeleteRequest"
+            :disabled="loadPostRequest"
           />
 
           <h4 class="error-text" v-if="error.length > 0">
@@ -59,6 +60,7 @@
             text="Bevestigen"
             @btn-clicked="addBuilding()"
             :isLoading="loadPostRequest"
+            :disabled="loadDeleteRequest"
           />
           <transition name="modal" v-if="showModal" close="showModal = false">
             <link-or-stay-modal link="locaties" @close="showModal = false" />
@@ -198,8 +200,8 @@ export default class AddBuilding extends Vue {
             this.emitter.emit("err", err);
           });
       }
-      this.loadPostRequest = false;
     }
+    this.loadPostRequest = false;
   }
 
   deleteLocation() {

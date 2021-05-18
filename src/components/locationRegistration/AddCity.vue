@@ -19,9 +19,16 @@
           v-if="cityId"
           text="Delete"
           :red="true"
-          @click="deleteLocation()"
+          @btn-clicked="deleteLocation()"
+          :isLoading="loadDeleteRequest"
+          :disabled="loadPostRequest"
         />
-        <SmallBtnFinish text="Bevestigen" v-on:click="addCity" :isLoading="loadPostRequest"/>
+        <SmallBtnFinish
+          text="Bevestigen"
+          @btn-clicked="addCity"
+          :isLoading="loadPostRequest"
+          :disabled="loadDeleteRequest"
+        />
         <transition name="modal" v-if="showModal" close="showModal = false">
           <link-or-stay-modal link="locaties" @close="showModal = false" />
         </transition>
@@ -61,6 +68,7 @@ export default class AddCity extends Vue {
   private error: string = "";
   private isLoading: boolean = false;
   private loadPostRequest: boolean = false;
+  private loadDeleteRequest: boolean = false;
 
   @Prop()
   public cityId: string = "";
@@ -76,7 +84,6 @@ export default class AddCity extends Vue {
         cityService
           .updateCity(this.cityId, this.city)
           .then(() => {
-            this.city.Name = "";
             this.$emit("location-changed");
           })
           .catch((err: AxiosError) => {
@@ -110,6 +117,7 @@ export default class AddCity extends Vue {
 
   deleteLocation() {
     if (confirm("Weet je zeker dat je deze locatie wilt verwijderen?")) {
+      this.loadDeleteRequest = true;
       cityService
         .deleteCity(this.cityId)
         .then(() => {
@@ -118,6 +126,7 @@ export default class AddCity extends Vue {
         .catch((err: AxiosError) => {
           this.emitter.emit("err", err);
         });
+      this.loadDeleteRequest = false;
     }
   }
   nameChanged(input: string): void {

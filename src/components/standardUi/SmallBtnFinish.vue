@@ -1,6 +1,6 @@
 <template>
   <button
-    :class="red ? 'small-btn-finish red' : 'small-btn-finish purple'"
+    :class="[red ? 'small-btn-finish red' : 'small-btn-finish purple', disabled ? ' disabled' : '']"
     @click="onClick()"
   >
     <LoadingIcon v-if="isLoading" :isSmall="true"/>
@@ -22,15 +22,17 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
     text: String,
     red: Boolean,
     isLoading: Boolean,
+    disabled: Boolean
   },
   emits: ["btn-clicked"],
 })
 export default class BtnFinish extends Vue {
   red: Boolean = false;
   isLoading: Boolean = false;
+  disabled: Boolean = false;
 
   onClick(): void {
-    if(!this.isLoading){
+    if(!this.isLoading && !this.disabled){
       this.$emit("btn-clicked");
     }
   }
@@ -54,6 +56,11 @@ export default class BtnFinish extends Vue {
 
   font-weight: bold;
   cursor: pointer;
+}
+
+.disabled {
+  box-shadow: inset 0 0 0 50px rgba(0, 0, 0, 0.2);
+  cursor: default;
 }
 
 .purple {
