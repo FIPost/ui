@@ -106,6 +106,9 @@ export default class AddCity extends Vue {
           });
       }
     }
+    else{
+      this.loadPostRequest = false;
+    }
   }
 
   private validate(): boolean {

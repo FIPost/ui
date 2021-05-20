@@ -205,6 +205,9 @@ export default class AddBuilding extends Vue {
           });
       }
     }
+    else{
+      this.loadPostRequest = false;
+    }
   }
 
   deleteLocation() {

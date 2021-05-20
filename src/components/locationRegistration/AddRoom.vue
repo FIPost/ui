@@ -128,6 +128,9 @@ export default class AddRoom extends Vue {
           });
       }
     }
+    else{
+      this.loadPostRequest = false;
+    }
   }
 
   deleteLocation() {
