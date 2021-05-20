@@ -20,6 +20,7 @@
             <CBSearchSuggestions
               :options="receivers"
               label="Ontvanger:"
+              :selectedOption="fpacker.RecieverId"
               @selectChanged="receiverChanged"
               :valid="receiverValid"
             />
@@ -38,6 +39,7 @@
             <CBSearchSuggestions
               :options="rooms"
               label="Afhaalpunt:"
+              :selectedOption="fpackage.CollectionPointId"
               @selectChanged="collectionPointChanged"
               :valid="collectionPointValid"
             />
