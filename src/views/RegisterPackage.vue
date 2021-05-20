@@ -20,7 +20,7 @@
             <CBSearchSuggestions
               :options="receivers"
               label="Ontvanger:"
-              :selectedOption="fpacker.RecieverId"
+              :selectedOption="getReceiver()"
               @selectChanged="receiverChanged"
               :valid="receiverValid"
             />
@@ -39,7 +39,7 @@
             <CBSearchSuggestions
               :options="rooms"
               label="Afhaalpunt:"
-              :selectedOption="fpackage.CollectionPointId"
+              :selectedOption="getRoom()"
               @selectChanged="collectionPointChanged"
               :valid="collectionPointValid"
             />
@@ -92,6 +92,8 @@ import SelectOption from "@/classes/helpers/SelectOption";
 import { getCurrentInstance, watch } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+import Building from "@/classes/Building";
+import Address from "@/classes/Address";
 
 @Options({
   components: {
@@ -192,6 +194,19 @@ export default class RegisterPackage extends Vue {
         this.emitter.emit("err", err);
         this.loadPostRequest = false;
       });
+  }
+
+  getReceiver(){
+    if(this.receiver){
+          return this.receiver;
+    }
+
+  }
+
+  getRoom(){
+    if(this.room){
+      return this.room;
+    }
   }
 
   receiverChanged(input: SelectOption): void {
