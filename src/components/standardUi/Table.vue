@@ -51,7 +51,6 @@ export default defineComponent({
     }
   },
 
-
   computed: {
     filteredItems(): Object[] {
       let filtered = this.items as Object[];
