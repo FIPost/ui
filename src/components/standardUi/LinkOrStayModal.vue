@@ -73,13 +73,13 @@
         </div>
         <small-btn-finish
           class="button-tray"
-          text="Sluiten"
+          text="Naar locatiepagina"
           v-on:click="goToLink"
           :red="true"
         />
         <small-btn-finish
           class="button-tray"
-          text="Volgende"
+          text="Meer toevoegen"
           @click="$emit('close')"
         />
       </div>
