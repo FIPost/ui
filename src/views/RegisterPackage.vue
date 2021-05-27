@@ -6,17 +6,19 @@
       <LoadingIcon v-if="loadPers || loadRoom" />
       <div v-else>
         <div v-if="!overview">
-          <div>
+          <div class="group">
             <h3>Pakketinformatie</h3>
             <InputField
               label="Afzender:"
               v-model:input="fpackage.Sender"
               :valid="v.SenderHasValue"
+              @update:input="v.SenderHasValue = true"
             />
             <InputField
               label="Pakketnaam:"
               v-model:input="fpackage.Name"
               :valid="v.NameHasValue"
+              @update:input="v.NameHasValue = true"
             />
             <CBSearchSuggestions
               :options="receivers"
@@ -33,7 +35,7 @@
               :valid="v.CollectionPointIdValid"
             />
           </div>
-          <div>
+          <div class="group">
             <h3>Registratieinformatie</h3>
             <CBSearchSuggestions
               :options="receivers"
@@ -58,26 +60,19 @@
 
         <div v-else>
           <div class="container">
-            <h2>Pakketinformatie</h2>
-            <h3>Afzender</h3>
-            <p>{{ fpackage.Sender }}</p>
-            <h3>Pakket</h3>
-            <p>{{ fpackage.Name }}</p>
-            <h3>Ontvanger</h3>
-            <p>
-              {{ receiverName }}
-            </p>
-            <h3>Afhaalpunt</h3>
-            <p>{{ collectionPointName }}</p>
-          </div>
-          <div class="container">
-            <h2>Registratieinformatie</h2>
-            <h3>Registreerder</h3>
-            <p>
-              {{ registratorName }}
-            </p>
-            <h3>Ontvangstlocatie</h3>
-            <p>{{ createdAtPointName }}</p>
+            <div class="group">
+              <h2>Pakketinformatie</h2>
+              <p><b>Afzender:</b> {{ fpackage.Sender }}</p>
+              <p><b>Pakketnaam:</b> {{ fpackage.Name }}</p>
+              <p><b>Pakket:</b> {{ receiverName }}</p>
+              <p><b>Afhaalpunt:</b> {{ collectionPointName }}</p>
+            </div>
+            <hr/>
+            <div class="group">
+              <h2>Registratieinformatie</h2>
+              <p><b>Registreerder:</b> {{ registratorName }}</p>
+              <p><b>Ontvangslocatie:</b> {{ createdAtPointName }}</p>
+            </div>
           </div>
         </div>
         <SmallBtnFinish
@@ -105,10 +100,10 @@ import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
 import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
 import RegisterPackageModel from "@/classes/requests/PackageRequest";
 import { pakketService } from "@/services/pakketService/pakketservice";
-import Room from "@/classes/Room";
 import { roomService } from "@/services/locatieService/roomservice";
 import { personeelService } from "@/services/personeelService/personeelService";
 import Person from "@/classes/Person";
+import Room from "@/classes/Room";
 import PackageValidation from "@/classes/validation/PackageValidation";
 import SelectOption from "@/classes/helpers/SelectOption";
 import { getCurrentInstance, watch } from "@vue/runtime-core";
@@ -158,7 +153,7 @@ export default class RegisterPackage extends Vue {
   private createdAtPointName: String = "";
 
   // Selected Prop Refs.
-  private SelectedOption = SelectOption
+  private SelectedOption = SelectOption;
 
   public getPerson(id: String): Person | undefined {
     return this.allreceivers.find((receiver) => receiver.id == id);
@@ -167,7 +162,6 @@ export default class RegisterPackage extends Vue {
   public getRoom(id: String): Room | undefined {
     return this.allRooms.find((room) => room.id == id);
   }
-
 
   toggleStep() {
     // Clear errors
@@ -279,7 +273,7 @@ export default class RegisterPackage extends Vue {
           )
         );
         this.loadRoom = false;
-        
+
         // Default.
         this.fpackage.CreatedAtLocationId = this.rooms[0].id;
         this.createdAtPointName = this.rooms[0].id;
@@ -308,9 +302,9 @@ export default class RegisterPackage extends Vue {
     var id = "";
     var name = "";
     var existing = this.fpackage.CollectionPointId;
-    if(existing) {
-      var found = this.rooms.find(r => r.id == existing);
-      if(found) {
+    if (existing) {
+      var found = this.rooms.find((r) => r.id == existing);
+      if (found) {
         id = found.id;
         name = found.name;
       }
@@ -322,9 +316,9 @@ export default class RegisterPackage extends Vue {
     var id = "";
     var name = "";
     var existing = this.fpackage.CreatedAtLocationId;
-    if(existing) {
-      var found = this.rooms.find(r => r.id == existing);
-      if(found) {
+    if (existing) {
+      var found = this.rooms.find((r) => r.id == existing);
+      if (found) {
         id = found.id;
         name = found.name;
       }
@@ -336,9 +330,9 @@ export default class RegisterPackage extends Vue {
     var id = "";
     var name = "";
     var existing = this.fpackage.ReceiverId;
-    if(existing) {
-      var found = this.receivers.find(r => r.id == existing);
-      if(found) {
+    if (existing) {
+      var found = this.receivers.find((r) => r.id == existing);
+      if (found) {
         id = found.id;
         name = found.name;
       }
@@ -349,10 +343,10 @@ export default class RegisterPackage extends Vue {
   public selectedRegistrator(): SelectOption {
     var id = "";
     var name = "";
-    var existing = this.fpackage.ReceiverId;
-    if(existing) {
-      var found = this.receivers.find(r => r.id == existing);
-      if(found) {
+    var existing = this.fpackage.CreatedByPersonId;
+    if (existing) {
+      var found = this.receivers.find((r) => r.id == existing);
+      if (found) {
         id = found.id;
         name = found.name;
       }
@@ -370,5 +364,18 @@ export default class RegisterPackage extends Vue {
 }
 .margin-button {
   margin-right: 5%;
+}
+
+hr {
+  opacity: 0.4;
+  margin: 0px 0;
+}
+
+.group {
+  margin-bottom: 2em;
+}
+
+p {
+  margin-bottom: 1em;
 }
 </style>

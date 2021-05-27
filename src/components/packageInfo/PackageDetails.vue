@@ -86,16 +86,7 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
   },
 })
 export default class PackageDetails extends Vue {
-  private packageM: Package = new Package(
-    "",
-    (null as unknown) as Person,
-    (null as unknown) as Room,
-    "",
-    "",
-    "",
-    false,
-    []
-  );
+  private packageM: Package = new Package();
   private isLoading: Boolean = true;
   private error: Boolean = false;
 
