@@ -20,8 +20,9 @@
         v-for="entry in filteredItems"
         :key="entry"
       >
-        <td v-for="cell in entry" :key="cell" @click="$emit('cell-clicked', cell)">{{ cell.displayName }}</td>
+        <td v-for="cell in entry" :key="cell" @click="$emit('cell-clicked', cell)" >{{ cell.displayName }} </td>
       </tr>
+
     </tbody>
   </table>
 </template>
@@ -29,12 +30,20 @@
 <script lang="ts">
 import { TableCell } from "@/classes/table/TableCell";
 import { defineComponent } from "vue";
+import { ref } from "vue";
 
 export default defineComponent({
   props: {
     items: Array,
   },
   emits: ["cell-clicked"],
+ setup (props) {
+    const hovering = ref(false)  
+
+    return {
+      hovering
+    }
+  },
 
   data() {
     return { sortKey: 0, sortOrders: Array<number>() };
@@ -71,7 +80,6 @@ export default defineComponent({
       this.sortKey = key;
       this.sortOrders[key] = this.sortOrders[key] * -1;
     },
-
 
     sortedItems(items: Object[]): Object[] {
       const sortKey = this.sortKey;
@@ -115,6 +123,10 @@ th {
 
 td:first-child {
   font-weight: bold;
+}
+
+td:hover::after{
+content: url("../assets/edit_icon_sized.png");
 }
 
 .active {
