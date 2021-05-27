@@ -126,7 +126,7 @@ td:first-child {
 }
 
 td:hover::after{
-content: url("../assets/edit_icon_sized.png");
+content: url('~@/assets/edit_icon_sized.png');
 }
 
 .active {
