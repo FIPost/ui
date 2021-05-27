@@ -32,9 +32,12 @@ export default class RouteComp extends Vue {
   async mounted() {
     const packageId = this.$router.currentRoute.value.params.id.toString();
     if (packageId) {
-      await pakketService.get(packageId).then((p) => {
-        this.tickets = p.tickets;
-      });
+      await pakketService
+        .get(packageId)
+        .then((p) => {
+          this.tickets = p.tickets;
+        })
+        .catch((err) => {});
     }
     this.loading = false;
   }
