@@ -1,7 +1,7 @@
 export default interface Ticket {
   id: String;
   location: String;
-  finishedAt: Number;
+  finishedAt: number;
   completedByPerson: String;
   receivedByPerson: String;
 }

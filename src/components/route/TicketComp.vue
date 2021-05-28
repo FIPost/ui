@@ -5,7 +5,7 @@
     </div>
     <div class="ticket-info">
       <div class="ticket-info-top">
-        {{ getDateString(ticket.finishedAt) }}
+        {{ getDateString() }}
       </div>
       <div class="ticket-info-bot">
         Pakket is naar <u>{{ ticket.location }}</u> gebracht. 
@@ -20,16 +20,12 @@
 <script lang="ts">
 import { Vue } from "vue-class-component";
 import Ticket from "@/classes/Ticket";
-import { Prop, Emit } from "vue-property-decorator";
+import { Prop } from "vue-property-decorator";
+import { dateConverter } from "@/classes/helpers/DateConverter";
 
 export default class TicketComp extends Vue {
   @Prop()
   public ticket: Ticket = {} as Ticket;
-
-  private getDateString(timeStamp: number): string {
-    var date = new Date(timeStamp * 1000);
-    return date.toLocaleString();
-  }
 
   private destinationReached() {
     if(this.ticket) {
@@ -38,6 +34,10 @@ export default class TicketComp extends Vue {
       }
     }
     return false;
+  }
+
+  private getDateString(){
+    return dateConverter.getFullDateString(this.ticket.finishedAt);
   }
 }
 </script>

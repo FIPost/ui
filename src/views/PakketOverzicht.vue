@@ -32,7 +32,7 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
   },
 })
 export default class PakketOverzicht extends Vue {
-  private columns: string[] = ["Naam", "Ontvanger", "Status", "Locatie", "Datum"];
+  private columns: string[] = ["Naam", "Ontvanger", "Status", "Huidige locatie", "Laatste wijziging", "Uitgevoerd door", "Eindlocatie"];
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
   private loading: boolean = true;
@@ -41,8 +41,10 @@ export default class PakketOverzicht extends Vue {
     "name",
     "receiverId",
     "status",
-    "collectionPointId",
+    "tickets",
     "sender",
+    "senders",
+    "collectionPointId"
   ];
   private packages: Array<Package> = [];
 
