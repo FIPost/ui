@@ -9,6 +9,12 @@
       :columnKeys="columnKeys"
       v-bind:packages="packages"
     />
+    <Pagination
+        :currentPage="currentPage"
+        :pageCount="pageCount"
+        @nextPage="pageChangeHandleValue('next')"
+        @previousPage="pageChangeHandleValue('previous')"
+    />
   </div>
 </template>
 
@@ -22,6 +28,7 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+import Pagination from "@/components/Pagination.vue"
 
 @Options({
   components: {
@@ -29,6 +36,7 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
     SearchContainer,
     BtnBack,
     LoadingIcon,
+    Pagination,
   },
 })
 export default class PakketOverzicht extends Vue {
@@ -46,17 +54,35 @@ export default class PakketOverzicht extends Vue {
   ];
   private packages: Array<Package> = [];
 
+  private visibleItemsPerPageCount = 5;
+  private pageCount = 0;
+  private currentPage = 1;
+
   async created() {
     pakketService
       .getAll()
       .then((res) => {
         this.packages = res;
+        this.pageCount = Math.ceil(this.packages.length / this.visibleItemsPerPageCount);
         this.loading = false;
       })
       .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
         this.loading = false;
       });
+  }
+
+  public pageChangeHandleValue(value){
+    switch(value){
+      case 'next':
+        this.currentPage += 1;
+        break
+      case 'previous':
+        this.currentPage -= 1;
+        break
+      default:
+        this.currentPage = value;
+    }
   }
 }
 </script>
