@@ -33,9 +33,9 @@
             <StatusBadge
               :completeText="getDateString()"
               inCompleteText="Onbekend"
-              :complete="packageM.tickets > 0"
+              :complete="packageM.tickets.length >= 0"
             />
-            <RoomDetails :room="deliveryLocation" title="Binnen gekomen bij" />
+            <RoomDetails :room="packageM.tickets[lastTicketIndex].location" title="Binnen gekomen bij" />
           </div>
 
           <div>
@@ -92,8 +92,6 @@ export default class PackageDetails extends Vue {
   private error: Boolean = false;
   private lastTicketIndex: number = 0;
 
-  private deliveryLocation: Room | undefined = undefined;
-
   async mounted() {
     pakketService
       .get(this.$router.currentRoute.value.params.id)
@@ -102,10 +100,6 @@ export default class PackageDetails extends Vue {
         this.isLoading = false;
         this.lastTicketIndex = this.packageM.tickets.length - 1;
 
-        if(this.lastTicketIndex >= 0) {
-          //this.deliveryLocation = this.packageM.tickets[this.lastTicketIndex].location;
-          console.log("this.packageM", this.packageM)
-        }
       })
       .catch((err: AxiosError) => {
         this.error = true;

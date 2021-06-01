@@ -1,14 +1,17 @@
 <template>
   <div class="ticket">
     <div class="ticket-image">
-      <font-awesome-icon :icon="destinationReached() ? 'home' : 'check-circle'" :class="destinationReached() ? 'finished big' : 'finished'" />
+      <font-awesome-icon
+        :icon="destinationReached() ? 'home' : 'check-circle'"
+        :class="destinationReached() ? 'finished big' : 'finished'"
+      />
     </div>
     <div class="ticket-info">
       <div class="ticket-info-top">
         {{ getDateString() }}
       </div>
       <div class="ticket-info-bot">
-        Pakket is naar <u>{{ ticket.location }}</u> gebracht. 
+        Pakket is naar <u>{{ getLocationString() }}</u> gebracht.
       </div>
       <div class="ticket-info-bot">
         Uitgevoerd door: {{ ticket.completedByPerson }}
@@ -22,22 +25,28 @@ import { Vue } from "vue-class-component";
 import Ticket from "@/classes/Ticket";
 import { Prop } from "vue-property-decorator";
 import { dateConverter } from "@/classes/helpers/DateConverter";
+import { roomHelper } from "@/classes/Room";
 
 export default class TicketComp extends Vue {
   @Prop()
   public ticket: Ticket = {} as Ticket;
 
   private destinationReached() {
-    if(this.ticket) {
-      if(this.ticket.receivedByPerson) {
+    if (this.ticket) {
+      if (this.ticket.receivedByPerson) {
         return true;
       }
     }
     return false;
   }
 
-  private getDateString(){
+  private getDateString() {
     return dateConverter.getFullDateString(this.ticket.finishedAt);
+  }
+
+  private getLocationString(): string {
+    var room = this.ticket.location;
+    return roomHelper.getLocationString(room);
   }
 }
 </script>
@@ -80,9 +89,9 @@ export default class TicketComp extends Vue {
   font-size: 1.5em;
 
   &.big {
-      font-size: 2em;
-      color: $modern-purple-color;
-    }
+    font-size: 2em;
+    color: $modern-purple-color;
+  }
 }
 
 @media only screen and (max-width: 700px) {

@@ -1,6 +1,8 @@
+import Room from "@/classes/Room"
+
 export default interface Ticket {
   id: String;
-  location: String;
+  location: Room;
   finishedAt: number;
   completedByPerson: String;
   receivedByPerson: String;

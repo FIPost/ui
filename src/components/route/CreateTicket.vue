@@ -101,6 +101,9 @@ import { getCurrentInstance, watch } from "@vue/runtime-core";
 import { Emit, Prop } from "vue-property-decorator";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import Package from "@/classes/Package";
+import Building from "@/classes/Building";
+import Address from "@/classes/Address";
+import City from "@/classes/City";
 
 @Options({
   components: {
@@ -115,7 +118,7 @@ export default class CreateTicket extends Vue {
 
   public ticket: Ticket = {
     id: "",
-    location: "",
+    location: new Room("", "", new Building("", "", new Address(new City("", ""), "", "", 0, ""))),
     finishedAt: 0,
     completedByPerson: "",
     receivedByPerson: "",

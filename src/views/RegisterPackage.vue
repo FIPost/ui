@@ -109,6 +109,7 @@ import SelectOption from "@/classes/helpers/SelectOption";
 import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+import { roomHelper } from "@/classes/Room";
 
 @Options({
   components: {
@@ -260,11 +261,7 @@ export default class RegisterPackage extends Vue {
           this.rooms.push(
             new SelectOption(
               room.id,
-              room.building.address.city.name +
-                ", " +
-                room.building.name +
-                ", " +
-                room.name
+              roomHelper.getLocationString(room)
             )
           )
         );

@@ -1,6 +1,6 @@
 import Building from "./Building";
 
-export default class Room{
+export default class Room {
     public id: string;
     public name: string;
     public building: Building;
@@ -11,3 +11,10 @@ export default class Room{
         this.building = building;
     }
 }
+
+class RoomHelper {
+  getLocationString(room: Room): string {
+    return `${room.building.address.city.name}, ${room.building.name}, ${room.name}`;
+  }
+}
+export const roomHelper = new RoomHelper();
