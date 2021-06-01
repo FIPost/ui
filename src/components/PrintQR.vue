@@ -240,7 +240,6 @@ export default PrintQR;
   box-shadow: $shadow;
   border-radius: $border-radius;
   cursor: pointer;
-  
 }
 
 .text {

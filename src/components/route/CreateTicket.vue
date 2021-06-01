@@ -91,6 +91,7 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 // Types.
 import Person from "@/classes/Person";
 import Room from "@/classes/Room";
+import { roomHelper } from "@/classes/Room";
 import Ticket from "@/classes/Ticket";
 import TicketRequest from "@/classes/requests/TicketRequest";
 
@@ -118,7 +119,7 @@ export default class CreateTicket extends Vue {
 
   public ticket: Ticket = {
     id: "",
-    location: new Room("", "", new Building("", "", new Address(new City("", ""), "", "", 0, ""))),
+    location: roomHelper.getEmptyRoom(),
     finishedAt: 0,
     completedByPerson: "",
     receivedByPerson: "",
