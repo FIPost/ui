@@ -36,7 +36,7 @@
               :complete="packageM.tickets.length >= 0"
             />
             <RoomDetails 
-              :room="packageM.tickets[lastTicketIndex].location"
+              :room="packageM.tickets[lastTicketIndex] ? packageM.tickets[lastTicketIndex].location : null"
               title="Binnen gekomen bij"
             />
           </div>
@@ -114,7 +114,7 @@ export default class PackageDetails extends Vue {
         this.packageM.tickets[this.lastTicketIndex].finishedAt
       );
     } else {
-      return "";
+      return "Onbekend";
     }
   }
 }
