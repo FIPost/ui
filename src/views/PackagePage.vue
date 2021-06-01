@@ -7,7 +7,7 @@
         <RoutePackageInfo :key="ticketKey" :tickets="tickets" />
       </div>
       <div class="pi-item-container">
-        <PrintQR :code="packageId" />
+        <PrintQR :code="packageId" :addresscode="addressData" />
         <PackageDetails :packageId="packageId" :key="ticketKey"/>
       </div>
     </div>
@@ -39,6 +39,8 @@ export default class PackagePage extends Vue {
   private isLoading: Boolean = true;
 
   private ticketKey: number = 0;
+
+  private addressData: String = "";
   
   private reloadTickets() {
     this.ticketKey++;

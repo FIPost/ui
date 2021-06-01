@@ -208,12 +208,13 @@ var pdfMake = require("pdfmake/build/pdfmake.js");
 
 const PrintQR = defineComponent({
   props: {
-    code: String
+    code: String,
+    addresscode: String
   },
   methods: {
     onClick(): void {
       var dd = {
-        content: [{ qr: this.getPackageURL()}],
+        content: [{ qr: this.getPackageURL(), qr2: this.addresscode}],
       };
       pdfMake.createPdf(dd).open({}, window);
     },
