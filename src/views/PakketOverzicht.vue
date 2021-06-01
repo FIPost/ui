@@ -4,17 +4,19 @@
     <h1>Pakketoverzicht</h1>
     <SearchContainer />
     <LoadingIcon v-if="loading" />
-    <PakketTable class="pakket-table" v-else
-      :columns="columns"
-      :columnKeys="columnKeys"
-      v-bind:packages="packages"
-    />
-    <Pagination
-        :currentPage="currentPage"
-        :pageCount="pageCount"
-        @nextPage="pageChangeHandleValue('next')"
-        @previousPage="pageChangeHandleValue('previous')"
-    />
+    <div v-else>
+      <PakketTable class="pakket-table"
+       :columns="columns"
+       :columnKeys="columnKeys"
+       v-bind:packages="packages"
+      />
+      <Pagination v-if="allPackages.length > visibleItemsPerPageCount"
+        :page-count="pageCount"
+        :visible-items-per-page-count="visibleItemsPerPageCount"
+        :visible-pages-count="Math.min(pageCount, 5)"
+        @loadPage="loadPage"
+      />
+    </div>
   </div>
 </template>
 
@@ -28,7 +30,8 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
-import Pagination from "@/components/Pagination.vue"
+import Pagination from "@/components/standardUi/Pagination/BasePagination.vue"
+import mockPackages from "@/data/package_mock";
 
 @Options({
   components: {
@@ -52,18 +55,19 @@ export default class PakketOverzicht extends Vue {
     "collectionPointId",
     "sender",
   ];
+  private allPackages: Array<Package> = [];
   private packages: Array<Package> = [];
 
-  private visibleItemsPerPageCount = 5;
   private pageCount = 0;
-  private currentPage = 1;
+  private visibleItemsPerPageCount = 6;
 
   async created() {
     pakketService
       .getAll()
       .then((res) => {
-        this.packages = res;
-        this.pageCount = Math.ceil(this.packages.length / this.visibleItemsPerPageCount);
+        this.allPackages = res;
+        this.pageCount = Math.ceil(this.allPackages.length / this.visibleItemsPerPageCount);
+        this.loadPage(1);
         this.loading = false;
       })
       .catch((err: AxiosError) => {
@@ -72,17 +76,9 @@ export default class PakketOverzicht extends Vue {
       });
   }
 
-  public pageChangeHandleValue(value){
-    switch(value){
-      case 'next':
-        this.currentPage += 1;
-        break
-      case 'previous':
-        this.currentPage -= 1;
-        break
-      default:
-        this.currentPage = value;
-    }
+  public loadPage(value){
+    const pageIndex = (value - 1) * this.visibleItemsPerPageCount
+    this.packages = this.allPackages.slice(pageIndex, pageIndex + this.visibleItemsPerPageCount);
   }
 }
 </script>
