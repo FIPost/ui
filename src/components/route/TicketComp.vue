@@ -95,6 +95,9 @@ export default class TicketComp extends Vue {
 }
 
 @media only screen and (max-width: 700px) {
+  .ticket-image {
+    width: 5%;
+  }
   .ticket-info {
     font-size: 12px;
   }
