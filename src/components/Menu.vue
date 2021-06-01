@@ -17,23 +17,29 @@
       class="item"
       labelText="Scannen"
       :source="getImgUrl('scan.png')"
-    />
+    >
+    </MenuItem>
     <MenuItem
       @click="locationClicked()"
       class="item"
       labelText="Locaties"
       :source="getImgUrl('map.png')"
     />
+    <QrReader />
+
+    
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import MenuItem from "@/components/MenuItem.vue";
+import QrReader from "@/components/QrReader.vue";
 
 const Menu = defineComponent({
   components: {
     MenuItem,
+    QrReader
   },
   data() {
     return {};
@@ -49,7 +55,13 @@ const Menu = defineComponent({
       this.$router.push("/overzicht");
     },
     scanClicked(): void {
-      this.$router.push("/pakket/1");
+      if (
+        "mediaDevices" in navigator &&
+        "getUserMedia" in navigator.mediaDevices
+      ) {
+        // ok, browser supports it
+        alert("supoort");
+      }
     },
     locationClicked(): void {
       this.$router.push("/locaties");
