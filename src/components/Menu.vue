@@ -25,21 +25,16 @@
       labelText="Locaties"
       :source="getImgUrl('map.png')"
     />
-    <QrReader />
-
-    
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import MenuItem from "@/components/MenuItem.vue";
-import QrReader from "@/components/QrReader.vue";
 
 const Menu = defineComponent({
   components: {
     MenuItem,
-    QrReader
   },
   data() {
     return {};
