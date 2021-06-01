@@ -33,7 +33,7 @@ import Room from "@/classes/Room";
 
 @Options({
   props: {
-    room: Room,
+    room: Object,
     title: String,
   },
 })
