@@ -35,7 +35,10 @@
               inCompleteText="Onbekend"
               :complete="packageM.tickets.length >= 0"
             />
-            <RoomDetails :room="packageM.tickets[lastTicketIndex].location" title="Binnen gekomen bij" />
+            <RoomDetails 
+              :room="packageM.tickets[lastTicketIndex].location"
+              title="Binnen gekomen bij"
+            />
           </div>
 
           <div>
@@ -65,6 +68,11 @@ import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
 import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
 import StatusBadge from "@/components/standardUi/StatusBadge.vue";
 import { pakketService } from "@/services/pakketService/pakketservice";
+<<<<<<< HEAD
+import Person from "@/classes/Person";
+import Room, { roomHelper } from "@/classes/Room";
+=======
+>>>>>>> a72804cfe7b8dd541522432577838f534bc718b6
 import Package from "@/classes/Package";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
@@ -86,6 +94,9 @@ export default class PackageDetails extends Vue {
   private isLoading: Boolean = true;
   private error: Boolean = false;
   private lastTicketIndex: number = 0;
+  private createdAtRoom: Room = roomHelper.getEmptyRoom();
+  private deliveryRoom: Room = roomHelper.getEmptyRoom();
+
 
   async mounted() {
     pakketService
@@ -94,7 +105,6 @@ export default class PackageDetails extends Vue {
         this.packageM = res;
         this.isLoading = false;
         this.lastTicketIndex = this.packageM.tickets.length - 1;
-
       })
       .catch((err: AxiosError) => {
         this.error = true;
