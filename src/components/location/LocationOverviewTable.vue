@@ -3,6 +3,14 @@
     <LoadingIcon v-if="loading" />
     <div v-else>
       <Table :items="items" @cell-clicked="CellClicked" />
+      <Pagination v-if="allRooms.length > visibleItemsPerPageCount"
+                  :page-count="pageCount"
+                  :visible-items-per-page-count="visibleItemsPerPageCount"
+                  :visible-pages-count="Math.min(pageCount, 5)"
+                  @nextPage="loadPage('next')"
+                  @previousPage="loadPage('previous')"
+                  @loadPage="loadPage"
+      />
       <LocationModal v-if="modalOpen" @close-location="CloseModal()">
         <LocationInfo
           :ColumnType="ColumnType"
@@ -28,9 +36,11 @@ import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { TableCell } from "@/classes/table/TableCell";
+import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
 
 @Options({
   components: {
+    Pagination,
     Table,
     LoadingIcon,
     LocationInfo,
@@ -54,9 +64,14 @@ export default class LocationOverviewTable extends Vue {
 
   /* LocationTable */
   private items: Array<Object> = new Array<Object>();
+  private allRooms: Array<Room> = new Array<Room>();
   private rooms: Array<Room> = new Array<Room>();
+
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
+
+  private visibleItemsPerPageCount = 10;
+  private pageCount = 0;
 
   beforeMount() {
     this.GetRooms();
@@ -66,8 +81,9 @@ export default class LocationOverviewTable extends Vue {
     roomService
       .getAll()
       .then((res) => {
-        this.rooms = res;
-        this.GenerateTableObjects(this.rooms);
+        this.allRooms = res;
+        this.pageCount = Math.ceil(this.allRooms.length / this.visibleItemsPerPageCount);
+        this.loadPage(1);
         this.loading = false;
       })
       .catch((err: AxiosError) => {
@@ -93,6 +109,7 @@ export default class LocationOverviewTable extends Vue {
 
   //Format objects to display in the table
   GenerateTableObjects(rooms: Room[]) {
+    this.items = new Array<Object>();
     rooms.forEach((value) => {
       this.items.push({
         Stad: {
@@ -118,6 +135,12 @@ export default class LocationOverviewTable extends Vue {
     this.items = [];
     this.modalOpen = false;
     this.GetRooms();
+  }
+
+  public loadPage(value: number){
+    const pageIndex = (value - 1) * this.visibleItemsPerPageCount
+    this.rooms = this.allRooms.slice(pageIndex, pageIndex + this.visibleItemsPerPageCount);
+    this.GenerateTableObjects(this.rooms);
   }
 }
 </script>

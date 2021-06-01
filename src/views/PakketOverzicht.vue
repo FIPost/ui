@@ -6,6 +6,15 @@
     <LoadingIcon v-if="loading" />
     <div v-else>
       <Table :items="items" @cell-clicked="CellClicked" />
+      <Pagination
+        v-if="allPackages.length > visibleItemsPerPageCount"
+        :page-count="pageCount"
+        :visible-items-per-page-count="visibleItemsPerPageCount"
+        :visible-pages-count="Math.min(pageCount, 5)"
+        @loadPage="loadPage"
+        @nextPage="loadPage('next')"
+        @previousPage="loadPage('previous')"
+      />
     </div>
   </div>
 </template>
@@ -24,6 +33,7 @@ import Table from "@/components/standardUi/Table.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import { dateConverter } from "@/classes/helpers/DateConverter";
 import { roomHelper } from "@/classes/Room";
+import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
 
 @Options({
   components: {
@@ -31,6 +41,7 @@ import { roomHelper } from "@/classes/Room";
     SearchContainer,
     BtnBack,
     LoadingIcon,
+    Pagination,
   },
 })
 export default class PakketOverzicht extends Vue {
@@ -38,8 +49,12 @@ export default class PakketOverzicht extends Vue {
     .emitter;
   private loading: boolean = true;
 
-  private items: Array<Object> = new Array<Object>();
+  private allPackages: Array<Package> = new Array<Package>();
   private packages: Array<Package> = new Array<Package>();
+  private items: Array<Object> = new Array<Object>();
+
+  private pageCount = 0;
+  private visibleItemsPerPageCount = 10;
 
   beforeMount() {
     this.GetPackages();
@@ -49,8 +64,11 @@ export default class PakketOverzicht extends Vue {
     pakketService
       .getAll()
       .then((res) => {
-        this.packages = res;
-        this.GenerateTableObjects(this.packages);
+        this.allPackages = res;
+        this.pageCount = Math.ceil(
+          this.allPackages.length / this.visibleItemsPerPageCount
+        );
+        this.loadPage(1);
         this.loading = false;
       })
       .catch((err: AxiosError) => {
@@ -61,13 +79,14 @@ export default class PakketOverzicht extends Vue {
 
   public CellClicked(cell: TableCell): void {
     this.$router.push({
-        name: "PackagePage",
-        params: { id: cell.id },
-      });
+      name: "PackagePage",
+      params: { id: cell.id },
+    });
   }
 
   //Format objects to display in the table
   GenerateTableObjects(packages: Package[]) {
+    this.items = new Array<Object>();
     packages.forEach((value) => {
       this.items.push({
         Naam: {
@@ -120,6 +139,14 @@ export default class PakketOverzicht extends Vue {
   }
   getDateString(date: number): string {
     return dateConverter.getDateString(date);
+  }
+  public loadPage(value: number) {
+    const pageIndex = (value - 1) * this.visibleItemsPerPageCount;
+    this.packages = this.allPackages.slice(
+      pageIndex,
+      pageIndex + this.visibleItemsPerPageCount
+    );
+    this.GenerateTableObjects(this.packages);
   }
 }
 </script>
