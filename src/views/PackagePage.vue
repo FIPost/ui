@@ -8,7 +8,7 @@
           <RoutePackageInfo :ticketModels="ticketModels" />
         </div>
         <div class="pi-item-container">
-          <PrintQR :code="packageId" />
+          <PrintQR :addresscode="null" :code="packageId"  />
           <PackageDetails :packageId="packageId" />
         </div>
       </div>
