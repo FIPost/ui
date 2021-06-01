@@ -44,7 +44,6 @@ export default class PackagePage extends Vue {
     this.ticketKey++;
   }
 
-
   async mounted() {
     this.packageId = this.$router.currentRoute.value.params.id.toString();
   }

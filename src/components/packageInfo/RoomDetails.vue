@@ -22,7 +22,7 @@
       <div class="container-subheader">
         {{ title }}
       </div>
-      <div class="cpd-item">Deze locatie kon niet worden opgehaald</div>
+      <div class="cpd-item">Deze locatie kon niet worden opgehaald. </div>
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ import Room from "@/classes/Room";
 
 @Options({
   props: {
-    room: Object,
+    room: Room,
     title: String,
   },
 })

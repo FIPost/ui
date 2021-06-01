@@ -32,13 +32,10 @@
           <div>
             <StatusBadge
               :completeText="getDateString()"
-              inCompleteText="Niet binnen gekomen"
-              :complete="true"
+              inCompleteText="Onbekend"
+              :complete="packageM.tickets > 0"
             />
-            <RoomDetails
-              :room="deliveryLocation"
-              title="Binnen gekomen bij"
-            />
+            <RoomDetails :room="deliveryLocation" title="Binnen gekomen bij" />
           </div>
 
           <div>
@@ -95,19 +92,7 @@ export default class PackageDetails extends Vue {
   private error: Boolean = false;
   private lastTicketIndex: number = 0;
 
-  fAddress: Address = new Address(
-    new City("Tilburg", "1"),
-    "Professor Goossenslaan",
-    "1234AB",
-    1,
-    ""
-  );
-
-  private deliveryLocation: Room = new Room(
-    "1",
-    "Postkamer",
-    new Building("1", "P8", this.fAddress)
-  );
+  private deliveryLocation: Room | undefined = undefined;
 
   async mounted() {
     pakketService
@@ -116,6 +101,11 @@ export default class PackageDetails extends Vue {
         this.packageM = res;
         this.isLoading = false;
         this.lastTicketIndex = this.packageM.tickets.length - 1;
+
+        if(this.lastTicketIndex >= 0) {
+          //this.deliveryLocation = this.packageM.tickets[this.lastTicketIndex].location;
+          console.log("this.packageM", this.packageM)
+        }
       })
       .catch((err: AxiosError) => {
         this.error = true;
@@ -124,9 +114,13 @@ export default class PackageDetails extends Vue {
   }
 
   private getDateString() {
-    return dateConverter.getDateString(
-      this.packageM.tickets[this.lastTicketIndex].finishedAt
-    );
+    if (this.lastTicketIndex != -1) {
+      return dateConverter.getDateString(
+        this.packageM.tickets[this.lastTicketIndex].finishedAt
+      );
+    } else {
+      return "";
+    }
   }
 }
 </script>
