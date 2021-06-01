@@ -87,7 +87,6 @@ const PakketTable = defineComponent({
   },
   methods: {
     sortBy: function (sortKey: string) {
-      console.log(sortKey);
       this.reverse = this.sortKey == sortKey ? !this.reverse : false;
       this.sortKey = sortKey;
     },

@@ -6,7 +6,7 @@
     <LoadingIcon v-if="loading" />
     <div
       v-else
-      class="component-container overflow"
+      class="component-container overflow table-container"
       style="padding: 0 !important"
     >
       <Table :items="items" @cell-clicked="CellClicked" />
@@ -27,7 +27,6 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import Table from "@/components/standardUi/Table.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import { dateConverter } from "@/classes/helpers/DateConverter";
-import Room from "@/classes/Room";
 import { roomHelper } from "@/classes/Room";
 
 @Options({
@@ -39,19 +38,9 @@ import { roomHelper } from "@/classes/Room";
   },
 })
 export default class PakketOverzicht extends Vue {
-  private columns: string[] = [
-    "Naam",
-    "Ontvanger",
-    "Status",
-    "Huidige locatie",
-    "Laatste wijziging",
-    "Uitgevoerd door",
-    "Eindlocatie",
-  ];
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
   private loading: boolean = true;
-  public ColumnType: ColumnType = ColumnType.ROOM;
 
   private items: Array<Object> = new Array<Object>();
   private packages: Array<Package> = new Array<Package>();
@@ -141,4 +130,8 @@ export default class PakketOverzicht extends Vue {
 
 <style scoped lang="scss">
 @import "@/styling/main.scss";
+
+.table-container {
+  padding: 0 !important;
+}
 </style>
