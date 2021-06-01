@@ -68,11 +68,7 @@ import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
 import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
 import StatusBadge from "@/components/standardUi/StatusBadge.vue";
 import { pakketService } from "@/services/pakketService/pakketservice";
-<<<<<<< HEAD
-import Person from "@/classes/Person";
 import Room, { roomHelper } from "@/classes/Room";
-=======
->>>>>>> a72804cfe7b8dd541522432577838f534bc718b6
 import Package from "@/classes/Package";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
