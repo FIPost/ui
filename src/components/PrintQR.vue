@@ -213,10 +213,13 @@ const PrintQR = defineComponent({
   methods: {
     onClick(): void {
       var dd = {
-        content: [{ qr: this.code }],
+        content: [{ qr: this.getPackageURL()}],
       };
       pdfMake.createPdf(dd).open({}, window);
     },
+    getPackageURL() {
+      return process.env.VUE_APP_URL + "/#/pakket/" + this.code
+    }
   },
 });
 export default PrintQR;
@@ -246,7 +249,6 @@ export default PrintQR;
   display: flex;
   flex-direction: column;
   justify-content: center;
-
 
   .qr-subheader {
     font-size: 20px;

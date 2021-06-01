@@ -17,7 +17,8 @@
       class="item"
       labelText="Scannen"
       :source="getImgUrl('scan.png')"
-    />
+    >
+    </MenuItem>
     <MenuItem
       @click="locationClicked()"
       class="item"
@@ -49,7 +50,13 @@ const Menu = defineComponent({
       this.$router.push("/overzicht");
     },
     scanClicked(): void {
-      this.$router.push("/pakket/1");
+      if (
+        "mediaDevices" in navigator &&
+        "getUserMedia" in navigator.mediaDevices
+      ) {
+        // ok, browser supports it
+        alert("supoort");
+      }
     },
     locationClicked(): void {
       this.$router.push("/locaties");

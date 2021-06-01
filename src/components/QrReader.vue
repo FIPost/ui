@@ -4,6 +4,7 @@
       <!-- The hidden file `input` for opening the native camera -->
       <input
         id="cameraFileInput"
+        ref="input"
         type="file"
         accept="image/*"
         capture="environment"
@@ -13,9 +14,15 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
+import { Emit } from "vue-property-decorator";
+import { ref } from 'vue'
 import { defineComponent } from "vue";
 
-const Search = defineComponent({});
+const Search = defineComponent({
+  mounted() {
+    (this.$refs.input as HTMLInputElement).click()
+  }
+});
 
 export default Search;
 </script>
