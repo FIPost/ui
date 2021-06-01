@@ -102,9 +102,6 @@ import { getCurrentInstance, watch } from "@vue/runtime-core";
 import { Emit, Prop } from "vue-property-decorator";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import Package from "@/classes/Package";
-import Building from "@/classes/Building";
-import Address from "@/classes/Address";
-import City from "@/classes/City";
 
 @Options({
   components: {
@@ -348,5 +345,16 @@ blockquote {
   font-size: 3em;
   color: $modern-purple-color;
   margin-left: 20%;
+}
+
+@media only screen and (max-width: 700px) {
+  .finished-comp {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fc {
+    font-size: 0px;
+  }
 }
 </style>
