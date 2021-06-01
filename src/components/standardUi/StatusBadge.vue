@@ -1,7 +1,6 @@
 <template>
   <div
     :class="complete ? 'badge complete' : 'badge incomplete'"
-    @click="onClick()"
   >
     {{ complete ? completeText : inCompleteText }}
   </div>

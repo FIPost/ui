@@ -1,7 +1,6 @@
 <template>
   <div class="component-container overflow table-container">
-    <table class="table"
-        aria-describedby="Table that displays all packages.">
+    <table class="table" aria-describedby="Table that displays all packages.">
       <thead>
         <tr>
           <th :id="index" v-for="(column, index) in columns" :key="column">
@@ -34,12 +33,27 @@
       <tbody>
         <tr v-for="item in sortedList" :key="item" @click="onClick(item.id)">
           <td>{{ item.name }}</td>
-          <td v-if="item.receiver">
+          <td>
             {{
               item.receiver ? item.receiver.name : "Kon niet worden opgehaald"
             }}
           </td>
-          <td>{{ item.routeFinished ? "afgeleverd" : "In behandeling" }}</td>
+          <td>{{ item.routeFinished ? "Afgeleverd" : "In behandeling" }}</td>
+
+          <td v-if="item.tickets[0]">
+            {{ item.tickets[0].location }}
+          </td>
+          <td v-else>Kon niet worden opgehaald</td>
+
+          <td v-if="item.tickets[0]">
+            {{ getDateString(item.tickets[0].finishedAt) }}
+          </td>
+          <td v-else>Geen Datum</td>
+
+          <td v-if="item.tickets[0]">
+            {{ item.tickets[0].completedByPerson }}
+          </td>
+          <td v-else>Kon niet gevonden worden</td>
 
           <td v-if="item.collectionPoint">
             {{ item.collectionPoint.building.address.city.name }}
@@ -48,8 +62,6 @@
           </td>
           <td v-else>Kon niet worden opgehaald</td>
 
-          <td v-if="item.tickets[0]">{{ item.tickets[0].createdAt }}</td>
-          <td v-else>Geen Datum</td>
         </tr>
       </tbody>
     </table>
@@ -59,6 +71,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import _ from "lodash";
+import { dateConverter } from "@/classes/helpers/DateConverter";
 
 const PakketTable = defineComponent({
   data() {
@@ -74,8 +87,12 @@ const PakketTable = defineComponent({
   },
   methods: {
     sortBy: function (sortKey: string) {
+      console.log(sortKey);
       this.reverse = this.sortKey == sortKey ? !this.reverse : false;
       this.sortKey = sortKey;
+    },
+    getDateString(date: number): string {
+      return dateConverter.getDateString(date);
     },
     onClick: function (id: string) {
       this.$router.push({

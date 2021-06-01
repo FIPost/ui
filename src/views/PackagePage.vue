@@ -3,12 +3,12 @@
     <btn-back />
     <div class="page">
       <div class="pi-item-container">
-        <CreateTicket @new-ticket="reloadTickets" />
+        <CreateTicket @new-ticket="reloadTickets" :key="ticketKey"/>
         <RoutePackageInfo :key="ticketKey" :tickets="tickets" />
       </div>
       <div class="pi-item-container">
         <PrintQR :code="packageId" />
-        <PackageDetails :packageId="packageId" />
+        <PackageDetails :packageId="packageId" :key="ticketKey"/>
       </div>
     </div>
   </div>
@@ -39,6 +39,7 @@ export default class PackagePage extends Vue {
   private isLoading: Boolean = true;
 
   private ticketKey: number = 0;
+  
   private reloadTickets() {
     this.ticketKey++;
   }

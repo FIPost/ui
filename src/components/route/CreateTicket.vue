@@ -173,8 +173,7 @@ export default class CreateTicket extends Vue {
 
   private async runValidation() {
     this.errors = [];
-
-    personeelService
+    await personeelService
       .get(this.selectedPersonOption.id)
       .then(() => (this.personValid = true))
       .catch(() => {
@@ -183,7 +182,7 @@ export default class CreateTicket extends Vue {
       });
 
     if (this.showPersonConfirmation) {
-      personeelService
+      await personeelService
         .get(this.selectedPersonConfirmedOption.id)
         .then(() => (this.personConfirmedValid = true))
         .catch(() => {
@@ -192,7 +191,7 @@ export default class CreateTicket extends Vue {
         });
     }
 
-    roomService
+    await roomService
       .getById(this.selectedRoomOption.id)
       .then(() => (this.roomValid = true))
       .catch(() => {

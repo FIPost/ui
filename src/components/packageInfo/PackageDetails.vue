@@ -31,17 +31,20 @@
 
           <div>
             <StatusBadge
-              completeText="20-apr-2021 asdasdasdaads"
+              :completeText="getDateString()"
               inCompleteText="Niet binnen gekomen"
               :complete="true"
             />
-            <RoomDetails :room="deliveryLocation" title="Binnen gekomen bij" />
+            <RoomDetails
+              :room="deliveryLocation"
+              title="Binnen gekomen bij"
+            />
           </div>
 
           <div>
             <StatusBadge
-              completeText="Aangekomen"
-              inCompleteText="nog niet binnen"
+              completeText="Afgeleverd"
+              inCompleteText="In behandeling"
               :complete="packageM.routeFinished"
             />
             <RoomDetails
@@ -73,6 +76,7 @@ import City from "@/classes/City";
 import Building from "@/classes/Building";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+import { dateConverter } from "@/classes/helpers/DateConverter";
 
 @Options({
   props: {
@@ -89,6 +93,7 @@ export default class PackageDetails extends Vue {
   private packageM: Package = new Package();
   private isLoading: Boolean = true;
   private error: Boolean = false;
+  private lastTicketIndex: number = 0;
 
   fAddress: Address = new Address(
     new City("Tilburg", "1"),
@@ -110,11 +115,18 @@ export default class PackageDetails extends Vue {
       .then((res) => {
         this.packageM = res;
         this.isLoading = false;
+        this.lastTicketIndex = this.packageM.tickets.length - 1;
       })
       .catch((err: AxiosError) => {
         this.error = true;
         this.isLoading = false;
       });
+  }
+
+  private getDateString() {
+    return dateConverter.getDateString(
+      this.packageM.tickets[this.lastTicketIndex].finishedAt
+    );
   }
 }
 </script>

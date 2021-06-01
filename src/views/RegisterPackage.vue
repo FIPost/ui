@@ -64,10 +64,10 @@
               <h2>Pakketinformatie</h2>
               <p><b>Afzender:</b> {{ fpackage.Sender }}</p>
               <p><b>Pakketnaam:</b> {{ fpackage.Name }}</p>
-              <p><b>Pakket:</b> {{ receiverName }}</p>
+              <p><b>Ontvanger:</b> {{ receiverName }}</p>
               <p><b>Afhaalpunt:</b> {{ collectionPointName }}</p>
             </div>
-            <hr/>
+            <hr />
             <div class="group">
               <h2>Registratieinformatie</h2>
               <p><b>Registreerder:</b> {{ registratorName }}</p>
@@ -106,7 +106,7 @@ import Person from "@/classes/Person";
 import Room from "@/classes/Room";
 import PackageValidation from "@/classes/validation/PackageValidation";
 import SelectOption from "@/classes/helpers/SelectOption";
-import { getCurrentInstance, watch } from "@vue/runtime-core";
+import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
@@ -176,15 +176,9 @@ export default class RegisterPackage extends Vue {
 
     // Check if locations are correct.
     const collectionRoom = this.getRoom(this.fpackage.CollectionPointId);
-    if (collectionRoom) {
-      this.collectionPointName = collectionRoom.name;
-    }
     this.v.CollectionPointIdValid = !!collectionRoom;
 
     const createdAtRoom = this.getRoom(this.fpackage.CreatedAtLocationId);
-    if (createdAtRoom) {
-      this.createdAtPointName = createdAtRoom.name;
-    }
     this.v.CreatedAtLocationIdValid = !!createdAtRoom;
 
     if (!this.v.locationsCorrect()) {
@@ -237,22 +231,24 @@ export default class RegisterPackage extends Vue {
 
   receiverChanged(input: SelectOption): void {
     this.fpackage.ReceiverId = input.id;
-    this.v.ReceiverIdValid;
+    this.v.ReceiverIdValid = true;
   }
 
   collectionPointChanged(input: SelectOption): void {
     this.fpackage.CollectionPointId = input.id;
-    this.v.CollectionPointIdValid;
+    this.v.CollectionPointIdValid = true;
+    this.collectionPointName = input.name;
   }
 
   registratorChanged(input: SelectOption): void {
     this.fpackage.CreatedByPersonId = input.id;
-    this.v.CreatedByPersonIdValid;
+    this.v.CreatedByPersonIdValid = true;
   }
 
   registerLocationChanged(input: SelectOption): void {
     this.fpackage.CreatedAtLocationId = input.id;
-    this.v.CreatedAtLocationIdHasValue;
+    this.v.CreatedAtLocationIdHasValue = true;
+    this.createdAtPointName = input.name;
   }
 
   async mounted() {
@@ -276,7 +272,7 @@ export default class RegisterPackage extends Vue {
 
         // Default.
         this.fpackage.CreatedAtLocationId = this.rooms[0].id;
-        this.createdAtPointName = this.rooms[0].id;
+        this.createdAtPointName = this.selectedCreatedAtLocation().name;
       })
       .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
