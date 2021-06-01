@@ -7,7 +7,7 @@
         <RoutePackageInfo :key="ticketKey" :tickets="tickets" />
       </div>
       <div class="pi-item-container">
-        <PrintQR :code="packageId" />
+        <PrintQR :code="packageId" :addresscode="addressData" />
         <PackageDetails :packageId="packageId" :key="ticketKey"/>
       </div>
     </div>
@@ -22,6 +22,8 @@ import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
 import CreateTicket from "@/components/route/CreateTicket.vue";
 import Ticket from "@/classes/Ticket";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
+import { pakketService } from "@/services/pakketService/pakketservice";
+import Package from "@/classes/Package";
 
 @Options({
   components: {
@@ -39,6 +41,9 @@ export default class PackagePage extends Vue {
   private isLoading: Boolean = true;
 
   private ticketKey: number = 0;
+
+  private addressData: String = "";
+  private pakket: Package = new Package();
   
   private reloadTickets() {
     this.ticketKey++;
@@ -47,6 +52,8 @@ export default class PackagePage extends Vue {
 
   async mounted() {
     this.packageId = this.$router.currentRoute.value.params.id.toString();
+    pakketService.get(this.packageId).then((res) => { this.pakket = res;})
+    this.addressData = JSON.stringify(this.pakket);
   }
 }
 </script>
