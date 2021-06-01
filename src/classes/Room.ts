@@ -16,5 +16,9 @@ class RoomHelper {
   getLocationString(room: Room): string {
     return `${room.building.address.city.name}, ${room.building.name}, ${room.name}`;
   }
+
+  getEmptyRoom(): Room {
+    return new Room("", "", new Building("","", new Address(new City("",""),"","", 0,"")));
+  }
 }
 export const roomHelper = new RoomHelper();
