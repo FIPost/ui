@@ -59,7 +59,7 @@ export default class PakketOverzicht extends Vue {
   private packages: Array<Package> = [];
 
   private pageCount = 0;
-  private visibleItemsPerPageCount = 6;
+  private visibleItemsPerPageCount = 10;
 
   async created() {
     pakketService

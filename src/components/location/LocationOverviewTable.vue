@@ -72,7 +72,7 @@ export default class LocationOverviewTable extends Vue {
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
 
-  private visibleItemsPerPageCount = 5;
+  private visibleItemsPerPageCount = 10;
   private pageCount = 0;
 
   beforeMount() {
