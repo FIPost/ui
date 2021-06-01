@@ -123,7 +123,7 @@ export default class PackageDetails extends Vue {
       });
   }
 
-  private getDateString() {
+  private getDateString() : string {
     return dateConverter.getDateString(
       this.packageM.tickets[this.lastTicketIndex].finishedAt
     );

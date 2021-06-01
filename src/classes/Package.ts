@@ -7,7 +7,7 @@ import City from "./City";
 
 export default class Package {
     public id: String = "";
-    public person: Person = new Person("", "", "");
+    public receiver: Person = new Person("", "", "");
     public collectionPoint: Room = new Room("", "", new Building("","", new Address(new City("",""),"","", 0,"")));
     public sender: String = "";
     public name: String = "";
