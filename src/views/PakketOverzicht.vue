@@ -4,11 +4,7 @@
     <h1>Pakketoverzicht</h1>
     <SearchContainer />
     <LoadingIcon v-if="loading" />
-    <div
-      v-else
-      class="component-container overflow table-container"
-      style="padding: 0 !important"
-    >
+    <div v-else>
       <Table :items="items" @cell-clicked="CellClicked" />
     </div>
   </div>
@@ -130,8 +126,4 @@ export default class PakketOverzicht extends Vue {
 
 <style scoped lang="scss">
 @import "@/styling/main.scss";
-
-.table-container {
-  padding: 0 !important;
-}
 </style>
