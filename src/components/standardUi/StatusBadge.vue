@@ -42,6 +42,7 @@ export default class StatusBadge extends Vue {}
     height: 20px;
     line-height: 20px;
   }
+  margin-bottom: 5px;
 }
 
 .complete {

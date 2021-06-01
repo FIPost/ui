@@ -5,7 +5,7 @@
       <LoadingIcon v-if="isLoading" />
 
       <div v-else>
-        <div v-if="!error">
+        <div class="details-wrapper" v-if="!error">
           <div class="pd-content">
             <div class="container-subheader-small">Omschrijving</div>
             <div class="pd-item">{{ packageM.name }}</div>
@@ -175,5 +175,11 @@ img {
     left: 0px;
     top: 0px;
   }
+}
+
+.details-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
 }
 </style>

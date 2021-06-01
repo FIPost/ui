@@ -7,7 +7,7 @@
         <RoutePackageInfo :key="ticketKey" :tickets="tickets" />
       </div>
       <div class="pi-item-container">
-        <PrintQR :code="packageId" :addresscode="addressData" />
+        <PrintQR :code="packageId" :addresscode="'Professor Goossenslaan 51'" />
         <PackageDetails :packageId="packageId" :key="ticketKey"/>
       </div>
     </div>

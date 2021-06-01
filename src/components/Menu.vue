@@ -13,13 +13,6 @@
       :source="getImgUrl('search.png')"
     />
     <MenuItem
-      @click="scanClicked()"
-      class="item"
-      labelText="Scannen"
-      :source="getImgUrl('scan.png')"
-    >
-    </MenuItem>
-    <MenuItem
       @click="locationClicked()"
       class="item"
       labelText="Locaties"
