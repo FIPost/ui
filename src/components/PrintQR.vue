@@ -208,15 +208,19 @@ var pdfMake = require("pdfmake/build/pdfmake.js");
 
 const PrintQR = defineComponent({
   props: {
-    code: String
+    code: String,
+    addresscode: String
   },
   methods: {
     onClick(): void {
       var dd = {
-        content: [{ qr: this.code }],
+        content: [{ qr: this.getPackageURL(), qr2: this.addresscode}],
       };
       pdfMake.createPdf(dd).open({}, window);
     },
+    getPackageURL() {
+      return process.env.VUE_APP_URL + "/#/pakket/" + this.code
+    }
   },
 });
 export default PrintQR;
@@ -236,7 +240,6 @@ export default PrintQR;
   box-shadow: $shadow;
   border-radius: $border-radius;
   cursor: pointer;
-  
 }
 
 .text {
@@ -246,7 +249,6 @@ export default PrintQR;
   display: flex;
   flex-direction: column;
   justify-content: center;
-
 
   .qr-subheader {
     font-size: 20px;

@@ -1,6 +1,7 @@
 <template>
   <div class="cbsearch-container">
-    <p class="header">{{ label }}</p>
+    <p v-if="!custom" class="header hw">{{ label }}</p>
+    <slot class="hw" v-else></slot>
 
     <div :class="valid ? 'custom-select' : 'custom-select error'">
       <input
@@ -36,6 +37,7 @@ import SelectOption from "@/classes/helpers/SelectOption";
     options: Array as () => Array<SelectOption>,
     label: String,
     valid: Boolean,
+    custom: Boolean,
   },
   emits: ["select-changed"],
 })
@@ -68,7 +70,9 @@ export default class CBSearchSuggestions extends Vue {
     this.selectedRef.id = "";
     this.$emit("select-changed", this.selectedRef);
     this.suggestions = this.options.filter((el: SelectOption) =>
-      el.name.toLocaleLowerCase().includes(this.selectedRef.name.toLocaleLowerCase())
+      el.name
+        .toLocaleLowerCase()
+        .includes(this.selectedRef.name.toLocaleLowerCase())
     );
     this.open = true;
   }
@@ -87,6 +91,17 @@ export default class CBSearchSuggestions extends Vue {
 
 <style scoped lang="scss">
 @import "@/styling/main.scss";
+
+.cbsearch-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.header {
+  min-width: 200px;
+  text-align: left;
+}
 
 .custom-select {
   border: none;
@@ -180,9 +195,5 @@ export default class CBSearchSuggestions extends Vue {
   margin-bottom: 0.6rem;
   margin-top: 0.6rem;
   max-width: 100%;
-}
-
-.header {
-  flex-basis: 100px;
 }
 </style>

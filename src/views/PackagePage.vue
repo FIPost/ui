@@ -1,16 +1,14 @@
 <template>
   <div>
-    <div>
-      <btn-back />
-      <div class="pi-container">
-        <div class="pi-item-container">
-          <NextStep :ticket="ticketModels[0]" />
-          <RoutePackageInfo :ticketModels="ticketModels" />
-        </div>
-        <div class="pi-item-container">
-          <PrintQR :code="packageId" />
-          <PackageDetails :packageId="packageId" />
-        </div>
+    <btn-back />
+    <div class="page">
+      <div class="pi-item-container">
+        <CreateTicket @new-ticket="reloadTickets" :key="ticketKey"/>
+        <RoutePackageInfo :key="ticketKey" :tickets="tickets" />
+      </div>
+      <div class="pi-item-container">
+        <PrintQR :code="packageId" :addresscode="'Professor Goossenslaan 51'" />
+        <PackageDetails :packageId="packageId" :key="ticketKey"/>
       </div>
     </div>
   </div>
@@ -21,8 +19,8 @@ import { Options, Vue } from "vue-class-component";
 import PackageDetails from "@/components/packageInfo/PackageDetails.vue";
 import PrintQR from "@/components/PrintQR.vue";
 import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
-import NextStep from "@/components/route/NextStep.vue";
-import TicketModel from "@/classes/TicketModel";
+import CreateTicket from "@/components/route/CreateTicket.vue";
+import Ticket from "@/classes/Ticket";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 
 @Options({
@@ -30,55 +28,23 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
     PackageDetails,
     PrintQR,
     RoutePackageInfo,
-    NextStep,
-    BtnBack
+    CreateTicket,
+    BtnBack,
   },
 })
-export default class PackagePage extends Vue {    
+export default class PackagePage extends Vue {
   private packageId: String = "";
 
-  private ticketModels: TicketModel[] = [
-    new TicketModel(
-      "12",
-      "12",
-      1,
-      "13 februari 13:16",
-      "405273",
-      "405273",
-      false,
-      "11",
-      "14 februari 16:32",
-      true,
-      "Zending is aangekomen bij Fontys HVK"
-    ),
-    new TicketModel(
-      "11",
-      "11",
-      1,
-      "12 februari 10:28",
-      "405273",
-      "405273",
-      true,
-      "13",
-      "12 februari 14:23",
-      false,
-      "Zending onderweg naar Fontys HVK"
-    ),
-    new TicketModel(
-      "13",
-      "13",
-      1,
-      "10 februari 13:16",
-      "405273",
-      "405273",
-      true,
-      "13",
-      "11 februari 10:32",
-      false,
-      "Zending is geregistreerd bij Fontys"
-    ),
-  ];
+  private tickets: Ticket[] = [];
   private isLoading: Boolean = true;
+
+  private ticketKey: number = 0;
+
+  private addressData: String = "";
+  
+  private reloadTickets() {
+    this.ticketKey++;
+  }
 
   async mounted() {
     this.packageId = this.$router.currentRoute.value.params.id.toString();
@@ -89,30 +55,26 @@ export default class PackagePage extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
-.pi-container {
-  padding-top: 2em;
-  min-height: 100vh;
+
+.page {
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
-  justify-content: center;
   column-gap: 1em;
-}
 
-.pi-item-container {
-  min-height: 100vh;
-  min-width: 45vw;
-  max-width: 45vw;
-  display: flex;
-  flex-direction: column;
-  flex-wrap: wrap;
-  row-gap: 1em;
-  padding-bottom: 1em;
+  .pi-item-container {
+    width: 48%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 15px;
+  }
 
-  @media only screen and (max-width: 970px) {
-    min-width: 90vw;
-    max-width: 90vw;
-    min-height: unset;
+  @media only screen and (max-width: 865px) {
+    flex-direction: column;
+    row-gap: 15px;
+
+    .pi-item-container {
+      width: 90%;
+    }
   }
 }
 </style>

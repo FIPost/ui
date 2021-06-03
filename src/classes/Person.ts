@@ -1,7 +1,7 @@
 export default class Person {
-    public id: string;
-    public name: string;
-    public email: string;
+    public id: string = "";
+    public name: string = "";
+    public email: string = "";
 
     constructor(id: string, name: string, email: string){
         this.id = id;

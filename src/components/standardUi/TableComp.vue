@@ -1,30 +1,37 @@
 
 <template>
-  <table aria-describedby="Data table" >
-    <thead>
-      <tr>
-        <th
-          v-for="(value, name, index) in items[0]"
-          :id="index"
-          :key="value"
-          @click="sortBy(index)"
-          :class="{ active: sortKey === index }"
-        >
-          {{ name }}
-          <span class="arrow" :class="sortOrders[index] > 0 ? 'asc' : 'dsc'" />
-        </th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr
-        v-for="entry in filteredItems"
-        :key="entry"
-      >
-        <td v-for="cell in entry" :key="cell" @click="$emit('cell-clicked', cell)" >{{ cell.displayName }} </td>
-      </tr>
-
-    </tbody>
-  </table>
+  <div class="component-container overflow table-container">
+    <table class="table" aria-describedby="Data table">
+      <thead>
+        <tr>
+          <th
+            v-for="(value, name, index) in items[0]"
+            :id="index"
+            :key="value"
+            @click="sortBy(index)"
+            :class="{ active: sortKey === index }"
+          >
+            {{ name }}
+            <span
+              class="arrow"
+              :class="sortOrders[index] > 0 ? 'asc' : 'dsc'"
+            />
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="entry in filteredItems" :key="entry">
+          <td
+            v-for="cell in entry"
+            :key="cell"
+            @click="$emit('cell-clicked', cell)"
+          >
+            {{ cell.displayName }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script lang="ts">
@@ -59,7 +66,6 @@ export default defineComponent({
       }
     }
   },
-
 
   computed: {
     filteredItems(): Object[] {
@@ -99,6 +105,9 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
+.table-container {
+  padding: 0 !important;
+}
 
 table {
   border-collapse: collapse;
@@ -110,6 +119,10 @@ thead tr {
   box-shadow: $shadow;
 }
 
+thead {
+  width: 100%;
+}
+
 th {
   cursor: pointer;
   color: $black-color;
@@ -119,6 +132,7 @@ th {
 table td,
 th {
   padding: 0.75em !important;
+  width: 100px;
 }
 
 td:first-child {

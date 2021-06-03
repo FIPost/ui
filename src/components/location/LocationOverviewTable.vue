@@ -1,10 +1,8 @@
 <template>
   <div>
     <LoadingIcon v-if="loading" />
-    <div v-else >
-      <div class="component-container overflow" style="padding: 0 !important">
-        <Table :items="items" @cell-clicked="CellClicked" />
-      </div>
+    <div v-else>
+      <TableComp :items="items" @cell-clicked="CellClicked" />
       <Pagination v-if="allRooms.length > visibleItemsPerPageCount"
                   :page-count="pageCount"
                   :visible-items-per-page-count="visibleItemsPerPageCount"
@@ -28,7 +26,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Table from "@/components/standardUi/Table.vue";
+import TableComp from "@/components/standardUi/TableComp.vue";
 import LocationInfo from "@/components/location/LocationInfo.vue";
 import LocationModal from "@/components/location/LocationModal.vue";
 import { ColumnType } from "@/classes/table/ColumnType";
@@ -39,12 +37,11 @@ import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
-import mockRooms from "@/data/locatie_mock";
 
 @Options({
   components: {
     Pagination,
-    Table,
+    TableComp,
     LoadingIcon,
     LocationInfo,
     LocationModal,
@@ -69,6 +66,7 @@ export default class LocationOverviewTable extends Vue {
   private items: Array<Object> = new Array<Object>();
   private allRooms: Array<Room> = new Array<Room>();
   private rooms: Array<Room> = new Array<Room>();
+
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
 
@@ -139,7 +137,7 @@ export default class LocationOverviewTable extends Vue {
     this.GetRooms();
   }
 
-  public loadPage(value){
+  public loadPage(value: number){
     const pageIndex = (value - 1) * this.visibleItemsPerPageCount
     this.rooms = this.allRooms.slice(pageIndex, pageIndex + this.visibleItemsPerPageCount);
     this.GenerateTableObjects(this.rooms);

@@ -91,6 +91,11 @@ export default class ComboBoxInput extends Vue {
   margin-bottom: 0.6rem;
   margin-top: 0.6rem;
   max-width: 100%;
+
+  .header {
+    min-width: 200px;
+    text-align: left;
+  }
 }
 
 .header {
@@ -115,6 +120,7 @@ export default class ComboBoxInput extends Vue {
   display: flex;
   flex-direction: row;
   cursor: pointer;
+  text-align: left;
 
   @media only screen and (max-width: 600px) {
     width: 150px;
