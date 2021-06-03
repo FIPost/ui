@@ -2,7 +2,7 @@
   <div>
     <LoadingIcon v-if="loading" />
     <div v-else>
-      <TableComp :items="items" @cell-clicked="CellClicked" />
+      <Table :items="items" :editable="true" @cell-clicked="CellClicked" />
       <Pagination v-if="allRooms.length > visibleItemsPerPageCount"
                   :page-count="pageCount"
                   :visible-items-per-page-count="visibleItemsPerPageCount"
@@ -26,7 +26,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import TableComp from "@/components/standardUi/TableComp.vue";
+import Table from "@/components/standardUi/Table.vue";
 import LocationInfo from "@/components/location/LocationInfo.vue";
 import LocationModal from "@/components/location/LocationModal.vue";
 import { ColumnType } from "@/classes/table/ColumnType";
@@ -41,7 +41,7 @@ import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
 @Options({
   components: {
     Pagination,
-    TableComp,
+    Table,
     LoadingIcon,
     LocationInfo,
     LocationModal,
