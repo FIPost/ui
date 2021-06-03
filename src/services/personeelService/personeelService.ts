@@ -8,7 +8,10 @@ export default class PersoneelService {
       return response.data;
    }
 
-   public async get(id): Promise<Person> {
+   public async get(id: string): Promise<Person> {
+      if(!id) {
+        throw new Error("");
+      }
       const response =  await http.get(`/api/persons/${id}`);
       return response.data;
    }

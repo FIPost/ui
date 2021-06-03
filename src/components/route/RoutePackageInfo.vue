@@ -1,7 +1,7 @@
 <template>
   <div class="route-package-info-container" @click="toggle()">
     <div class="title">
-      <div class="container-header text">Route</div>
+      <div class="container-header text">Geschiedenis</div>
       <div v-if="mobile" class="arrow">
         <div v-if="toggled">
           <font-awesome-icon icon="sort-up" size="2x" />
@@ -12,7 +12,7 @@
       </div>
     </div>
     <div v-if="toggled">
-      <RouteComp :ticketModels="ticketModels" />
+      <RouteComp :tickets="tickets" />
     </div>
   </div>
 </template>
@@ -20,21 +20,20 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import RouteComp from "@/components/route/RouteComp.vue";
-import TicketModel from "@/classes/TicketModel";
+import Ticket from "@/classes/Ticket";
+import { Prop } from "vue-property-decorator";
 
 @Options({
   components: {
     RouteComp,
-  },
-  props: {
-    ticketModels: Array,
   }
 })
 export default class RoutePackageInfo extends Vue {
   private toggled: Boolean = true;
   private mobile: Boolean = false;
 
-  ticketModels!: TicketModel[];
+  @Prop()
+  public tickets!: Ticket[];
 
   private toggle() {
     if (this.mobile) {
@@ -85,7 +84,7 @@ export default class RoutePackageInfo extends Vue {
 }
 
 .arrow {
-  color: $fontys-purple;
+  color: $modern-purple-color;
 }
 </style>
 

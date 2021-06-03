@@ -1,38 +1,45 @@
 <template>
   <div class="route-comp">
-    <div v-for="ticket in ticketModels" :key="ticket.Id">
-      <div v-if="ticket.IsLast && ticket.IsFinished">
-        <FinalTicket :ticket="ticket" />
+    <LoadingIcon v-if="loading" />
+    <div v-if="tickets.length > 0">
+      <div v-for="ticket in tickets" :key="ticket.id">
+        <TicketComp class="ticket" :ticket="ticket" />
       </div>
-      <div v-else>
-        <Ticket :ticket="ticket" />
-      </div>
+    </div>
+    <div v-else>
+      <div>Er zijn geen tickets beschikbaar.</div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Ticket from "@/components/route/Ticket.vue";
-import FinalTicket from "@/components/route/FinalTicket.vue";
-import TicketModel from "@/classes/TicketModel";
+import TicketComp from "@/components/route/TicketComp.vue";
+import Ticket from "@/classes/Ticket";
+import { pakketService } from "@/services/pakketService/pakketservice";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   components: {
-    Ticket,
-    FinalTicket
+    TicketComp,
+    LoadingIcon,
   },
-  props: {
-    ticketModels: Array,
-  }
 })
 export default class RouteComp extends Vue {
-  ticketModels!: TicketModel[];
+  private tickets: Ticket[] = [];
+  private loading: boolean = true;
 
-  created(){
-    if(this.ticketModels != null && this.ticketModels.length >= 1){
-      this.ticketModels[0].IsLast = true;
+  async mounted() {
+    const packageId = this.$router.currentRoute.value.params.id.toString();
+    if (packageId) {
+      await pakketService
+        .get(packageId)
+        .then((p) => {
+          this.tickets = p.tickets;
+        })
+        .catch((err) => {});
     }
+    this.loading = false;
   }
 }
 </script>
@@ -49,5 +56,7 @@ export default class RouteComp extends Vue {
   height: 100%;
 }
 
-
+.ticket {
+  margin: 1.5em 0;
+}
 </style>

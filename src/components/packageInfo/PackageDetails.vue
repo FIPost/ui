@@ -5,7 +5,7 @@
       <LoadingIcon v-if="isLoading" />
 
       <div v-else>
-        <div v-if="!error">
+        <div class="details-wrapper" v-if="!error">
           <div class="pd-content">
             <div class="container-subheader-small">Omschrijving</div>
             <div class="pd-item">{{ packageM.name }}</div>
@@ -31,17 +31,20 @@
 
           <div>
             <StatusBadge
-              completeText="20-apr-2021 asdasdasdaads"
-              inCompleteText="Niet binnen gekomen"
-              :complete="true"
+              :completeText="getDateString()"
+              inCompleteText="Onbekend"
+              :complete="packageM.tickets.length >= 0"
             />
-            <RoomDetails :room="deliveryLocation" title="Binnen gekomen bij" />
+            <RoomDetails 
+              :room="packageM.tickets[lastTicketIndex] ? packageM.tickets[lastTicketIndex].location : null"
+              title="Binnen gekomen bij"
+            />
           </div>
 
           <div>
             <StatusBadge
-              completeText="Aangekomen"
-              inCompleteText="nog niet binnen"
+              completeText="Afgeleverd"
+              inCompleteText="In behandeling"
               :complete="packageM.routeFinished"
             />
             <RoomDetails
@@ -65,14 +68,11 @@ import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
 import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
 import StatusBadge from "@/components/standardUi/StatusBadge.vue";
 import { pakketService } from "@/services/pakketService/pakketservice";
-import Person from "@/classes/Person";
-import Room from "@/classes/Room";
+import Room, { roomHelper } from "@/classes/Room";
 import Package from "@/classes/Package";
-import Address from "@/classes/Address";
-import City from "@/classes/City";
-import Building from "@/classes/Building";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+import { dateConverter } from "@/classes/helpers/DateConverter";
 
 @Options({
   props: {
@@ -86,32 +86,13 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
   },
 })
 export default class PackageDetails extends Vue {
-  private packageM: Package = new Package(
-    "",
-    (null as unknown) as Person,
-    (null as unknown) as Room,
-    "",
-    "",
-    "",
-    false,
-    []
-  );
+  private packageM: Package = new Package();
   private isLoading: Boolean = true;
   private error: Boolean = false;
+  private lastTicketIndex: number = 0;
+  private createdAtRoom: Room = roomHelper.getEmptyRoom();
+  private deliveryRoom: Room = roomHelper.getEmptyRoom();
 
-  fAddress: Address = new Address(
-    new City("Tilburg", "1"),
-    "Professor Goossenslaan",
-    "1234AB",
-    1,
-    ""
-  );
-
-  private deliveryLocation: Room = new Room(
-    "1",
-    "Postkamer",
-    new Building("1", "P8", this.fAddress)
-  );
 
   async mounted() {
     pakketService
@@ -119,11 +100,22 @@ export default class PackageDetails extends Vue {
       .then((res) => {
         this.packageM = res;
         this.isLoading = false;
+        this.lastTicketIndex = this.packageM.tickets.length - 1;
       })
       .catch((err: AxiosError) => {
         this.error = true;
         this.isLoading = false;
       });
+  }
+
+  private getDateString() {
+    if (this.lastTicketIndex != -1) {
+      return dateConverter.getDateString(
+        this.packageM.tickets[this.lastTicketIndex].finishedAt
+      );
+    } else {
+      return "Onbekend";
+    }
   }
 }
 </script>
@@ -184,5 +176,11 @@ img {
     left: 0px;
     top: 0px;
   }
+}
+
+.details-wrapper {
+  display: flex;
+  flex-direction: column;
+  row-gap: 1em;
 }
 </style>
