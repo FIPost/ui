@@ -110,6 +110,7 @@ import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { roomHelper } from "@/classes/Room";
+import Package from "@/classes/Package";
 
 @Options({
   components: {
@@ -222,7 +223,11 @@ export default class RegisterPackage extends Vue {
       .post(this.fpackage)
       .then((res) => {
         this.loadPostRequest = false;
-        this.$router.push("/");
+        var result = res;
+        this.$router.push({
+          name: "PackagePage",
+          params: { id: result.id },
+        });
       })
       .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
@@ -259,10 +264,7 @@ export default class RegisterPackage extends Vue {
         this.allRooms = res;
         this.allRooms.forEach((room) =>
           this.rooms.push(
-            new SelectOption(
-              room.id,
-              roomHelper.getLocationString(room)
-            )
+            new SelectOption(room.id, roomHelper.getLocationString(room))
           )
         );
         this.loadRoom = false;

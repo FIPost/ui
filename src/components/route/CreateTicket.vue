@@ -98,8 +98,8 @@ import TicketRequest from "@/classes/requests/TicketRequest";
 // Services.
 import { roomService } from "@/services/locatieService/roomservice";
 import { personeelService } from "@/services/personeelService/personeelService";
-import { getCurrentInstance, watch } from "@vue/runtime-core";
-import { Emit, Prop } from "vue-property-decorator";
+import { getCurrentInstance } from "@vue/runtime-core";
+import { Emit } from "vue-property-decorator";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import Package from "@/classes/Package";
 
@@ -213,9 +213,6 @@ export default class CreateTicket extends Vue {
             ? this.selectedPersonConfirmedOption.id
             : "",
         } as TicketRequest)
-        .then(() => {
-          alert("ticket toegevoegd.");
-        })
         .catch((err) => {});
       this.newTicket();
     }

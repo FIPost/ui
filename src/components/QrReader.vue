@@ -13,9 +13,6 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { Emit } from "vue-property-decorator";
-import { ref } from 'vue'
 import { defineComponent } from "vue";
 
 const Search = defineComponent({

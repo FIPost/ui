@@ -84,7 +84,7 @@ export default class RoutePackageInfo extends Vue {
 }
 
 .arrow {
-  color: $fontys-purple;
+  color: $modern-purple-color;
 }
 </style>
 
