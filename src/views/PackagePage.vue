@@ -1,14 +1,15 @@
 <template>
   <div>
     <btn-back />
-    <div class="page">
+    <LoadingIcon v-if="isLoading" />
+    <div class="page" v-else>
       <div class="pi-item-container">
-        <CreateTicket @new-ticket="reloadTickets" :key="ticketKey"/>
+        <CreateTicket @new-ticket="reloadTickets" :key="ticketKey" />
         <RoutePackageInfo :key="ticketKey" :tickets="tickets" />
       </div>
       <div class="pi-item-container">
         <PrintQR :code="packageId" :addresscode="'Professor Goossenslaan 51'" />
-        <PackageDetails :packageId="packageId" :key="ticketKey"/>
+        <PackageDetails :packageM="packageM" :key="ticketKey" />
       </div>
     </div>
   </div>
@@ -22,6 +23,10 @@ import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
 import CreateTicket from "@/components/route/CreateTicket.vue";
 import Ticket from "@/classes/Ticket";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
+import Package from "@/classes/Package";
+import { AxiosError } from "axios";
+import { pakketService } from "@/services/pakketService/pakketservice";
+import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
   components: {
@@ -30,24 +35,36 @@ import BtnBack from "@/components/standardUi/BtnBack.vue";
     RoutePackageInfo,
     CreateTicket,
     BtnBack,
+    LoadingIcon,
   },
 })
 export default class PackagePage extends Vue {
   private packageId: String = "";
+  private packageM: Package = new Package();
 
   private tickets: Ticket[] = [];
   private isLoading: Boolean = true;
+  private error: Boolean = false;
 
   private ticketKey: number = 0;
-
   private addressData: String = "";
-  
+
   private reloadTickets() {
     this.ticketKey++;
   }
 
   async mounted() {
     this.packageId = this.$router.currentRoute.value.params.id.toString();
+    pakketService
+      .get(this.packageId)
+      .then((res) => {
+        this.packageM = res;
+        this.isLoading = false;
+      })
+      .catch((err: AxiosError) => {
+        this.error = true;
+        this.isLoading = false;
+      });
   }
 }
 </script>

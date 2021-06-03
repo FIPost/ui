@@ -2,60 +2,57 @@
   <div>
     <div class="package-details">
       <div class="container container-header">Pakketgegevens</div>
-      <LoadingIcon v-if="isLoading" />
 
-      <div v-else>
-        <div class="details-wrapper" v-if="!error">
+      <div class="details-wrapper">
+        <div class="pd-content">
+          <div class="container-subheader-small">Omschrijving</div>
+          <div class="pd-item">{{ packageM.name }}</div>
+        </div>
+
+        <PersonDetails :person="packageM.receiver" />
+
+        <div class="pd-container">
           <div class="pd-content">
-            <div class="container-subheader-small">Omschrijving</div>
-            <div class="pd-item">{{ packageM.name }}</div>
-          </div>
-
-          <PersonDetails :person="packageM.receiver" />
-
-          <div class="pd-container">
-            <div class="pd-content">
-              <div class="container-subheader-small">Afzender</div>
-              <div class="pd-item">
-                {{
-                  packageM.sender.length > 1
-                    ? packageM.sender
-                    : "De afzender kan niet worden opgehaald"
-                }}
-              </div>
-            </div>
-            <div class="sd-img">
-              <img alt="BoxQR" src="@/assets/BoxQR.png" />
+            <div class="container-subheader-small">Afzender</div>
+            <div class="pd-item">
+              {{
+                packageM.sender.length > 1
+                  ? packageM.sender
+                  : "De afzender kan niet worden opgehaald"
+              }}
             </div>
           </div>
-
-          <div>
-            <StatusBadge
-              :completeText="getDateString()"
-              inCompleteText="Onbekend"
-              :complete="packageM.tickets.length >= 0"
-            />
-            <RoomDetails 
-              :room="packageM.tickets[lastTicketIndex] ? packageM.tickets[lastTicketIndex].location : null"
-              title="Binnen gekomen bij"
-            />
-          </div>
-
-          <div>
-            <StatusBadge
-              completeText="Afgeleverd"
-              inCompleteText="In behandeling"
-              :complete="packageM.routeFinished"
-            />
-            <RoomDetails
-              :room="packageM.collectionPoint"
-              title="Af te halen op"
-            />
+          <div class="sd-img">
+            <img alt="BoxQR" src="@/assets/BoxQR.png" />
           </div>
         </div>
-        <div v-else>
-          Er ging iets mis bij het ophalen van de pakketgegevens. probeer het
-          later opnieuw.
+
+        <div>
+          <StatusBadge
+            :completeText="getDateString()"
+            inCompleteText="Onbekend"
+            :complete="packageM.tickets.length >= 0"
+          />
+          <RoomDetails
+            :room="
+              packageM.tickets[lastTicketIndex]
+                ? packageM.tickets[lastTicketIndex].location
+                : null
+            "
+            title="Binnen gekomen bij"
+          />
+        </div>
+
+        <div>
+          <StatusBadge
+            completeText="Afgeleverd"
+            inCompleteText="In behandeling"
+            :complete="packageM.routeFinished"
+          />
+          <RoomDetails
+            :room="packageM.collectionPoint"
+            title="Af te halen op"
+          />
         </div>
       </div>
     </div>
@@ -67,45 +64,28 @@ import { Options, Vue } from "vue-class-component";
 import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
 import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
 import StatusBadge from "@/components/standardUi/StatusBadge.vue";
-import { pakketService } from "@/services/pakketService/pakketservice";
 import Room, { roomHelper } from "@/classes/Room";
 import Package from "@/classes/Package";
-import { AxiosError } from "axios";
-import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { dateConverter } from "@/classes/helpers/DateConverter";
 
 @Options({
   props: {
-    packageId: String,
+    packageM: Object,
   },
   components: {
     PersonDetails,
     RoomDetails,
     StatusBadge,
-    LoadingIcon,
   },
 })
 export default class PackageDetails extends Vue {
   private packageM: Package = new Package();
-  private isLoading: Boolean = true;
-  private error: Boolean = false;
   private lastTicketIndex: number = 0;
   private createdAtRoom: Room = roomHelper.getEmptyRoom();
   private deliveryRoom: Room = roomHelper.getEmptyRoom();
 
-
   async mounted() {
-    pakketService
-      .get(this.$router.currentRoute.value.params.id)
-      .then((res) => {
-        this.packageM = res;
-        this.isLoading = false;
-        this.lastTicketIndex = this.packageM.tickets.length - 1;
-      })
-      .catch((err: AxiosError) => {
-        this.error = true;
-        this.isLoading = false;
-      });
+    this.lastTicketIndex = this.packageM.tickets.length - 1;
   }
 
   private getDateString() {

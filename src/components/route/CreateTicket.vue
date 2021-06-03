@@ -68,6 +68,7 @@
                 class="finish"
                 @btn-clicked="addTicketAction()"
                 :text="'Toevoegen'"
+                :isLoading="adding"
               />
             </div>
           </div>
@@ -124,6 +125,7 @@ export default class CreateTicket extends Vue {
 
   // Default.
   private loading: Boolean = true;
+  private adding: boolean = false;
   private fPackage: Package = new Package();
   private showPersonConfirmation = false;
 
@@ -202,19 +204,28 @@ export default class CreateTicket extends Vue {
   }
 
   private async addTicketAction() {
-    await this.runValidation();
-    if (this.errors.length < 1) {
-      await pakketService
-        .createTicket({
-          locationId: this.selectedRoomOption.id,
-          packageId: this.fPackage.id,
-          completedByPersonId: this.selectedPersonOption.id,
-          receivedByPersonId: this.showPersonConfirmation
-            ? this.selectedPersonConfirmedOption.id
-            : "",
-        } as TicketRequest)
-        .catch((err) => {});
-      this.newTicket();
+    if (!this.adding) {
+      this.adding = true;
+      await this.runValidation();
+      if (this.errors.length < 1) {
+        await pakketService
+          .createTicket({
+            locationId: this.selectedRoomOption.id,
+            packageId: this.fPackage.id,
+            completedByPersonId: this.selectedPersonOption.id,
+            receivedByPersonId: this.showPersonConfirmation
+              ? this.selectedPersonConfirmedOption.id
+              : "",
+          } as TicketRequest)
+          .then((res) => {
+            this.adding = false;
+          })
+          .catch((err) => {});
+        this.newTicket();
+      }
+      else{
+        this.adding = false;
+      }
     }
   }
 
