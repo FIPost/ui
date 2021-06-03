@@ -19,12 +19,12 @@ export default class RoomService {
   }
 
   public async update(room: RoomRequest, id: string) {
-    const response = await http.put(`/api/locations/rooms?id=${id}`, room);
+    const response = await http.put(`/api/locations/rooms/${id}`, room);
     return response.data;
   }
 
   public async delete(id: string) {
-    const response = await http.delete(`/api/locations/rooms?id=${id}`);
+    const response = await http.delete(`/api/locations/rooms/${id}`);
     return response.data;
   }
 }

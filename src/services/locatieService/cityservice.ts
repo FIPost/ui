@@ -19,12 +19,12 @@ export default class CityService {
   }
 
   public async updateCity(id: String, cityModel: CityRequest): Promise<City> {
-    const response = await http.put(`/api/locations/cities?id=${id}`, cityModel);
+    const response = await http.put(`/api/locations/cities/${id}`, cityModel);
     return response.data;
   }
 
   public async deleteCity(id: String): Promise<City> {
-    const response = await http.delete(`/api/locations/cities?id=${id}`);
+    const response = await http.delete(`/api/locations/cities/${id}`);
     return response.data;
   }
 }

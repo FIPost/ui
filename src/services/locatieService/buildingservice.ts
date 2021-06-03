@@ -19,12 +19,12 @@ export default class BuildingService {
   }
 
   public async update(buildingModel: BuildingRequest, id: string): Promise<Building> {
-    const response = await http.put(`/api/locations/buildings?id=${id}`, buildingModel);
+    const response = await http.put(`/api/locations/buildings/${id}`, buildingModel);
     return response.data;
   }
 
   public async delete(id: string): Promise<Building> {
-    const response = await http.delete(`/api/locations/buildings?id=${id}`);
+    const response = await http.delete(`/api/locations/buildings/${id}`);
     return response.data;
   }
 }
