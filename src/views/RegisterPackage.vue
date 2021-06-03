@@ -62,16 +62,16 @@
           <div class="container">
             <div class="group">
               <h2>Pakketinformatie</h2>
-              <p><b>Afzender:</b> {{ fpackage.Sender }}</p>
-              <p><b>Pakketnaam:</b> {{ fpackage.Name }}</p>
-              <p><b>Ontvanger:</b> {{ receiverName }}</p>
-              <p><b>Afhaalpunt:</b> {{ collectionPointName }}</p>
+              <p><strong>Afzender:</strong> {{ fpackage.Sender }}</p>
+              <p><strong>Pakketnaam:</strong> {{ fpackage.Name }}</p>
+              <p><strong>Ontvanger:</strong> {{ receiverName }}</p>
+              <p><strong>Afhaalpunt:</strong> {{ collectionPointName }}</p>
             </div>
             <hr />
             <div class="group">
               <h2>Registratieinformatie</h2>
-              <p><b>Registreerder:</b> {{ registratorName }}</p>
-              <p><b>Ontvangslocatie:</b> {{ createdAtPointName }}</p>
+              <p><strong>Registreerder:</strong> {{ registratorName }}</p>
+              <p><strong>Ontvangslocatie:</strong> {{ createdAtPointName }}</p>
             </div>
           </div>
         </div>

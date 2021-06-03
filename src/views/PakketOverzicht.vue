@@ -5,7 +5,7 @@
     <SearchContainer />
     <LoadingIcon v-if="loading" />
     <div v-else>
-      <Table :items="items" @cell-clicked="CellClicked" />
+      <TableComp :items="items" @cell-clicked="CellClicked" />
       <Pagination
         v-if="allPackages.length > visibleItemsPerPageCount"
         :page-count="pageCount"
@@ -29,7 +29,7 @@ import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import { ColumnType } from "@/classes/table/ColumnType";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
-import Table from "@/components/standardUi/Table.vue";
+import TableComp from "@/components/standardUi/TableComp.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import { dateConverter } from "@/classes/helpers/DateConverter";
 import { roomHelper } from "@/classes/Room";
@@ -37,7 +37,7 @@ import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
 
 @Options({
   components: {
-    Table,
+    TableComp,
     SearchContainer,
     BtnBack,
     LoadingIcon,
