@@ -41,7 +41,7 @@
     import {Emit, Prop} from "vue-property-decorator";
     import {Vue} from "vue-class-component";
 
-    export default class Table extends Vue {
+    export default class TableComponent extends Vue {
         @Prop() public hovering: Object = ref(false);
         @Prop() public items!: Array<Object>;
         @Prop() public sortOrders: Array<number> = [];

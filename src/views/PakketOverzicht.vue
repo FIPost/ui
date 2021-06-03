@@ -29,7 +29,7 @@ import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import { ColumnType } from "@/classes/table/ColumnType";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
-import TableComp from "@/components/standardUi/Table.vue";
+import TableComp from "@/components/standardUi/TableComponent.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import { dateConverter } from "@/classes/helpers/DateConverter";
 import { roomHelper } from "@/classes/Room";
