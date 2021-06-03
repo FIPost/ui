@@ -79,7 +79,7 @@
         />
         <small-btn-finish
           class="button-tray"
-          text="Meer toevoegen"
+          text="Volgende"
           @click="$emit('close')"
         />
       </div>

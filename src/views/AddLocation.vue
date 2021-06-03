@@ -3,6 +3,7 @@
   <div class="page-wrapper">
     <div class="component-container">
       <div class="container-header">Locatie toevoegen</div>
+      <p>Selecteer wat u wilt toevoegen:</p>
       <ComboBox
         :options="locationOptions"
         @selectChange="selectedLocationChange"
