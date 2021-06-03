@@ -73,7 +73,7 @@
         </div>
         <small-btn-finish
           class="button-tray"
-          text="Sluiten"
+          text="Naar overzicht"
           v-on:click="goToLink"
           :red="true"
         />

@@ -22,7 +22,7 @@
       <div class="container-subheader">
         {{ title }}
       </div>
-      <div class="cpd-item">Deze locatie kon niet worden opgehaald</div>
+      <div class="cpd-item">Deze locatie kon niet worden opgehaald. </div>
     </div>
   </div>
 </template>

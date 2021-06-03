@@ -1,7 +1,12 @@
 <template>
   <div class="input-container">
     <p class="header">{{ label }}</p>
-    <input :class="cssClass" type="text" :value="input" @keyup="$emit('update:input', $event.target.value)"/>
+    <input
+      :class="cssClass"
+      type="text"
+      :value="input"
+      @keyup="$emit('update:input', $event.target.value)"
+    />
   </div>
 </template>
 
@@ -17,7 +22,6 @@ export default class InputField extends Vue {
   @Prop() public input!: String;
   @Prop() public color!: String;
   @Prop() public valid: Boolean = true; // Default true
-
 
   public get cssClass(): string {
     if (this.valid) {
@@ -41,6 +45,11 @@ export default class InputField extends Vue {
   margin-top: 0.6rem;
   font-weight: normal;
   max-width: 100%;
+
+  .header {
+    min-width: 200px;
+    text-align: left;
+  }
 }
 
 .header {
@@ -58,6 +67,7 @@ export default class InputField extends Vue {
   max-width: 70%;
   width: 200px;
   min-width: 150px;
+
   @media only screen and (max-width: 600px) {
     width: 150px;
     left: 0px;
