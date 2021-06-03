@@ -38,12 +38,8 @@
 <script lang="ts">
     import {TableCell} from "@/classes/table/TableCell";
     import {ref} from "vue";
-    import {Prop} from "vue-property-decorator";
-    import {Options, Vue} from "vue-class-component";
-
-    @Options({
-        emits: ["cell-clicked"]
-    })
+    import {Emit, Prop} from "vue-property-decorator";
+    import {Vue} from "vue-class-component";
 
     export default class Table extends Vue {
         @Prop() public hovering: Object = ref(false);
@@ -51,6 +47,8 @@
         @Prop() public sortOrders: Array<number> = [];
         @Prop() public editable: Boolean = false;
         private sortKey: number = 0;
+
+        @Emit("cell-clicked")
 
         // Gets called automatically.
         beforeUpdate() {
