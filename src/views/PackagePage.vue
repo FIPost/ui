@@ -8,7 +8,7 @@
         <RoutePackageInfo :tickets="packageM.tickets" />
       </div>
       <div class="pi-item-container">
-        <PrintQR :code="packageId" :addresscode="'Professor Goossenslaan 51'" />
+        <PrintQR :packageId="packageId" :address="buildAddressString()" />
         <PackageDetails :packageM="packageM" />
       </div>
     </div>
@@ -68,6 +68,21 @@ export default class PackagePage extends Vue {
         this.error = true;
         this.isLoading = false;
       });
+  }
+
+  buildAddressString() {
+    if (this.packageM.collectionPoint) {
+      this.addressData =
+        this.packageM.collectionPoint.building.address.street.toString() +
+        " " +
+        this.packageM.collectionPoint.building.name +
+        ", " +
+        this.packageM.collectionPoint.name +
+        " " +
+        this.packageM.collectionPoint.building.address.city.name;
+      return this.addressData;
+    }
+    return "Er ging iets mis bij het ophalen van de locatie";
   }
 }
 </script>
