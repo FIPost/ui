@@ -1,25 +1,25 @@
 <template>
   <div>
     <div class="next-step-container">
-      <div
-        v-if="fPackage.routeFinished"
-        class="container container-header modern-purple"
-      >
-        Route voltooid
-      </div>
-      <div v-else class="container container-header">Nieuwe actie</div>
-
-      <LoadingIcon v-if="loading" />
-      <div class="finished-comp" v-else-if="fPackage.routeFinished">
-        <TicketComp :ticket="fPackage.tickets[0]" />
-        <font-awesome-icon class="fc" icon="flag-checkered" />
+      <div v-if="fPackage == null">
+        <div>
+          Er ging iets mis bij het ophalen van de pakketgegevens. Probeer het
+          later opnieuw.
+        </div>
       </div>
       <div v-else>
-        <div v-if="!packageIdExists">
-          <div>
-            Er ging iets mis bij het ophalen van de pakketgegevens. Probeer het
-            later opnieuw.
-          </div>
+        <div
+          v-if="fPackage.routeFinished"
+          class="container container-header modern-purple"
+        >
+          Route voltooid
+        </div>
+        <div v-else class="container container-header">Nieuwe actie</div>
+
+        <LoadingIcon v-if="loading" />
+        <div class="finished-comp" v-else-if="fPackage.routeFinished">
+          <TicketComp :ticket="fPackage.tickets[0]" />
+          <font-awesome-icon class="fc" icon="flag-checkered" />
         </div>
         <div v-else>
           <div v-if="!fPackage.routeFinished">
@@ -103,6 +103,7 @@ import { getCurrentInstance } from "@vue/runtime-core";
 import { Emit } from "vue-property-decorator";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import Package from "@/classes/Package";
+import { Prop } from "vue-property-decorator";
 
 @Options({
   components: {
@@ -113,8 +114,6 @@ import Package from "@/classes/Package";
   },
 })
 export default class CreateTicket extends Vue {
-  private packageIdExists: Boolean = false;
-
   public ticket: Ticket = {
     id: "",
     location: roomHelper.getEmptyRoom(),
@@ -126,7 +125,8 @@ export default class CreateTicket extends Vue {
   // Default.
   private loading: Boolean = true;
   private adding: boolean = false;
-  private fPackage: Package = new Package();
+  @Prop()
+  private fPackage!: Package;
   private showPersonConfirmation = false;
 
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
@@ -167,7 +167,10 @@ export default class CreateTicket extends Vue {
     this.selectedRoomOption = roomOption;
     this.roomValid = true;
     this.errors = [];
-    if (roomOption.id == this.fPackage.collectionPoint.id) {
+    if (
+      this.fPackage.collectionPoint != null &&
+      roomOption.id == this.fPackage.collectionPoint.id
+    ) {
       this.showPersonConfirmation = true;
     } else {
       this.showPersonConfirmation = false;
@@ -176,31 +179,30 @@ export default class CreateTicket extends Vue {
 
   private async runValidation() {
     this.errors = [];
-    await personeelService
-      .get(this.selectedPersonOption.id)
-      .then(() => (this.personValid = true))
-      .catch(() => {
-        this.errors.push("Deze persoon kon niet gevonden worden.");
-        this.personValid = false;
-      });
-
-    if (this.showPersonConfirmation) {
-      await personeelService
-        .get(this.selectedPersonConfirmedOption.id)
-        .then(() => (this.personConfirmedValid = true))
-        .catch(() => {
-          this.errors.push("Deze persoon kon niet gevonden worden.");
-          this.personConfirmedValid = false;
-        });
+    if (this.persons.some((p) => p.id == this.selectedPersonOption.id)) {
+      this.personValid = true;
+    } else {
+      this.errors.push("Deze persoon kon niet gevonden worden.");
+      this.personValid = false;
     }
 
-    await roomService
-      .getById(this.selectedRoomOption.id)
-      .then(() => (this.roomValid = true))
-      .catch(() => {
-        this.errors.push("Deze ruimte kon niet gevonden worden.");
-        this.roomValid = false;
-      });
+    if (this.showPersonConfirmation) {
+      if (
+        this.persons.some((p) => p.id == this.selectedPersonConfirmedOption.id)
+      ) {
+        this.personConfirmedValid = true;
+      } else {
+        this.errors.push("Deze persoon kon niet gevonden worden.");
+        this.personConfirmedValid = false;
+      }
+    }
+
+    if (this.rooms.some((r) => r.id == this.selectedRoomOption.id)) {
+      this.roomValid = true;
+    } else {
+      this.errors.push("Deze ruimte kon niet gevonden worden.");
+      this.roomValid = false;
+    }
   }
 
   private async addTicketAction() {
@@ -222,8 +224,7 @@ export default class CreateTicket extends Vue {
           })
           .catch((err) => {});
         this.newTicket();
-      }
-      else{
+      } else {
         this.adding = false;
       }
     }
@@ -233,19 +234,6 @@ export default class CreateTicket extends Vue {
   newTicket() {}
 
   async mounted() {
-    const packageId = this.$router.currentRoute.value.params.id.toString();
-    if (packageId) {
-      await pakketService
-        .get(packageId)
-        .then((p) => {
-          this.fPackage = p;
-          this.packageIdExists = true;
-        })
-        .catch((err: AxiosError) => {
-          this.packageIdExists = false;
-        });
-    }
-
     await roomService
       .getAll()
       .then((res) => {

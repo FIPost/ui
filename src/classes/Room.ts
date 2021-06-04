@@ -16,7 +16,7 @@ export default class Room {
 
 class RoomHelper {
   getLocationString(room: Room): string {
-    return `${room.building.address.city.name}, ${room.building.name}, ${room.name}`;
+    return room ? `${room.building.address.city.name}, ${room.building.name}, ${room.name}` : "er ging iets mis";
   }
 
   getEmptyRoom(): Room {

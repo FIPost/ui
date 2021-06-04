@@ -1,6 +1,5 @@
 <template>
   <div class="route-comp">
-    <LoadingIcon v-if="loading" />
     <div v-if="tickets.length > 0">
       <div v-for="ticket in tickets" :key="ticket.id">
         <TicketComp class="ticket" :ticket="ticket" />
@@ -16,31 +15,17 @@
 import { Options, Vue } from "vue-class-component";
 import TicketComp from "@/components/route/TicketComp.vue";
 import Ticket from "@/classes/Ticket";
-import { pakketService } from "@/services/pakketService/pakketservice";
-import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+import { Prop } from "vue-property-decorator";
 
 @Options({
   components: {
     TicketComp,
-    LoadingIcon,
   },
 })
 export default class RouteComp extends Vue {
+  @Prop()
   private tickets: Ticket[] = [];
-  private loading: boolean = true;
 
-  async mounted() {
-    const packageId = this.$router.currentRoute.value.params.id.toString();
-    if (packageId) {
-      await pakketService
-        .get(packageId)
-        .then((p) => {
-          this.tickets = p.tickets;
-        })
-        .catch((err) => {});
-    }
-    this.loading = false;
-  }
 }
 </script>
 

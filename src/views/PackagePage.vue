@@ -4,12 +4,12 @@
     <LoadingIcon v-if="isLoading" />
     <div class="page" v-else>
       <div class="pi-item-container">
-        <CreateTicket @new-ticket="reloadTickets" :key="ticketKey" />
-        <RoutePackageInfo :key="ticketKey" :tickets="tickets" />
+        <CreateTicket @new-ticket="reloadPage" :fPackage="packageM" />
+        <RoutePackageInfo :tickets="packageM.tickets" />
       </div>
       <div class="pi-item-container">
         <PrintQR :code="packageId" :addresscode="'Professor Goossenslaan 51'" />
-        <PackageDetails :packageM="packageM" :key="ticketKey" />
+        <PackageDetails :packageM="packageM" />
       </div>
     </div>
   </div>
@@ -21,7 +21,6 @@ import PackageDetails from "@/components/packageInfo/PackageDetails.vue";
 import PrintQR from "@/components/PrintQR.vue";
 import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
 import CreateTicket from "@/components/route/CreateTicket.vue";
-import Ticket from "@/classes/Ticket";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 import Package from "@/classes/Package";
 import { AxiosError } from "axios";
@@ -42,19 +41,23 @@ export default class PackagePage extends Vue {
   private packageId: String = "";
   private packageM: Package = new Package();
 
-  private tickets: Ticket[] = [];
   private isLoading: Boolean = true;
   private error: Boolean = false;
 
   private ticketKey: number = 0;
   private addressData: String = "";
 
-  private reloadTickets() {
-    this.ticketKey++;
+  private async reloadPage() {
+    this.isLoading = true;
+    await this.getPackage();
   }
 
   async mounted() {
     this.packageId = this.$router.currentRoute.value.params.id.toString();
+    await this.getPackage();
+  }
+
+  private async getPackage() {
     pakketService
       .get(this.packageId)
       .then((res) => {

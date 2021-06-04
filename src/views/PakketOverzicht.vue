@@ -54,7 +54,7 @@ export default class PakketOverzicht extends Vue {
   private items: Array<Object> = new Array<Object>();
 
   private pageCount = 0;
-  private visibleItemsPerPageCount = 10;
+  private visibleItemsPerPageCount = 20;
 
   beforeMount() {
     this.GetPackages();
@@ -78,10 +78,12 @@ export default class PakketOverzicht extends Vue {
   }
 
   public CellClicked(cell: TableCell): void {
-    this.$router.push({
-      name: "PackagePage",
-      params: { id: cell.id },
-    });
+    if (cell) {
+      this.$router.push({
+        name: "PackagePage",
+        params: { id: cell.id },
+      });
+    }
   }
 
   //Format objects to display in the table
