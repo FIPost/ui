@@ -23,7 +23,6 @@
     import Ticket from "@/classes/Ticket";
     import BtnBack from "@/components/standardUi/BtnBack.vue";
     import {pakketService} from "@/services/pakketService/pakketservice";
-    import {buildingService} from "@/services/locatieService/buildingservice";
     import Package from "@/classes/Package";
 
     @Options({
