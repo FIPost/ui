@@ -2,14 +2,19 @@
   <div>
     <LoadingIcon v-if="loading" />
     <div v-else>
-      <TableComponent :items="items" :editable="true" @cell-clicked="CellClicked" />
-      <Pagination v-if="allRooms.length > visibleItemsPerPageCount"
-                  :page-count="pageCount"
-                  :visible-items-per-page-count="visibleItemsPerPageCount"
-                  :visible-pages-count="Math.min(pageCount, 5)"
-                  @nextPage="loadPage('next')"
-                  @previousPage="loadPage('previous')"
-                  @loadPage="loadPage"
+      <TableComponent
+        :items="items"
+        :editable="true"
+        @cell-clicked="CellClicked"
+      />
+      <Pagination
+        v-if="allRooms.length > visibleItemsPerPageCount"
+        :page-count="pageCount"
+        :visible-items-per-page-count="visibleItemsPerPageCount"
+        :visible-pages-count="Math.min(pageCount, 5)"
+        @nextPage="loadPage('next')"
+        @previousPage="loadPage('previous')"
+        @loadPage="loadPage"
       />
       <LocationModal v-if="modalOpen" @close-location="CloseModal()">
         <LocationInfo
@@ -82,7 +87,9 @@ export default class LocationOverviewTable extends Vue {
       .getAll()
       .then((res) => {
         this.allRooms = res;
-        this.pageCount = Math.ceil(this.allRooms.length / this.visibleItemsPerPageCount);
+        this.pageCount = Math.ceil(
+          this.allRooms.length / this.visibleItemsPerPageCount
+        );
         this.loadPage(1);
         this.loading = false;
       })
@@ -93,18 +100,20 @@ export default class LocationOverviewTable extends Vue {
   }
 
   public CellClicked(cell: TableCell): void {
-    this.ColumnType = cell.type as ColumnType;
+    if (cell) {
+      this.ColumnType = cell.type as ColumnType;
 
-    if (this.ColumnType == ColumnType.CITY) {
-      this.cityId = cell.id;
-    } else if (this.ColumnType == ColumnType.BUILDING) {
-      this.buildingId = cell.id;
-    } else if (this.ColumnType == ColumnType.ROOM) {
-      this.roomId = cell.id;
-    } else {
-      return;
+      if (this.ColumnType == ColumnType.CITY) {
+        this.cityId = cell.id;
+      } else if (this.ColumnType == ColumnType.BUILDING) {
+        this.buildingId = cell.id;
+      } else if (this.ColumnType == ColumnType.ROOM) {
+        this.roomId = cell.id;
+      } else {
+        return;
+      }
+      this.modalOpen = true;
     }
-    this.modalOpen = true;
   }
 
   //Format objects to display in the table
@@ -119,7 +128,12 @@ export default class LocationOverviewTable extends Vue {
         } as TableCell,
         Gebouw: {
           id: value.building.id,
-          displayName: value.building.name + ", " + value.building.address.street + " " + value.building.address.number,
+          displayName:
+            value.building.name +
+            ", " +
+            value.building.address.street +
+            " " +
+            value.building.address.number,
           type: ColumnType.BUILDING,
         } as TableCell,
         Ruimte: {
@@ -137,9 +151,12 @@ export default class LocationOverviewTable extends Vue {
     this.GetRooms();
   }
 
-  public loadPage(value: number){
-    const pageIndex = (value - 1) * this.visibleItemsPerPageCount
-    this.rooms = this.allRooms.slice(pageIndex, pageIndex + this.visibleItemsPerPageCount);
+  public loadPage(value: number) {
+    const pageIndex = (value - 1) * this.visibleItemsPerPageCount;
+    this.rooms = this.allRooms.slice(
+      pageIndex,
+      pageIndex + this.visibleItemsPerPageCount
+    );
     this.GenerateTableObjects(this.rooms);
   }
 }
