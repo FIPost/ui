@@ -5,6 +5,9 @@ WORKDIR /app
 ARG VUE_APP_APIGATEWAY="http://localhost:8123"
 ENV VUE_APP_API_GATEWAY ${VUE_APP_APIGATEWAY}
 
+ARG VUE_APPURL="http://localhost:8080"
+ENV VUE_APP_URL ${VUE_APPURL}
+
 COPY package*.json ./
 RUN npm install
 COPY . .
