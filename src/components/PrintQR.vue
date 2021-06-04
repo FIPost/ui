@@ -2,7 +2,7 @@
     <div class="qr-container" @click="onClick()">
         <div class="text">
             <div class="container-header">Print Barcode</div>
-            <div class="qr-subheader">ID: {{ packageId }}</div>
+            <div class="qr-subheader">Pakket ID: {{ packageId }}</div>
         </div>
         <svg
                 xmlns="http://www.w3.org/2000/svg"
