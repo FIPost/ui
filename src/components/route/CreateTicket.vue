@@ -19,11 +19,19 @@
         <LoadingIcon v-if="loading" />
         <div class="finished-comp" v-else-if="fPackage.routeFinished">
           <TicketComp :ticket="fPackage.tickets[0]" />
+          
           <font-awesome-icon class="fc" icon="flag-checkered" />
         </div>
         <div v-else>
           <div v-if="!fPackage.routeFinished">
             <div class="form">
+              <!-- <InputField
+              label="Afgeleverd door:"
+              v-model:input="selectedPersonOption"
+              
+              
+              /> -->
+             
               <CBSearchSuggestions
                 :options="personOptions"
                 :custom="true"
@@ -42,12 +50,20 @@
               >
                 <span class="hw">Op locatie: </span>
               </CBSearchSuggestions>
-
+              <div v-if="!showPersonConfirmation">
+              <SmallBtnFinish
+                        class="finish"
+                        @btn-clicked="addTicketAction()"
+                        :text="'Toevoegen'"
+                        :isLoading="adding"
+                    />
+              </div>
               <div v-if="showPersonConfirmation" class="confirm-person">
                 <hr />
                 <div class="container container-header modern-pink">
                   Laatste stap
                 </div>
+                <!--
                 <CBSearchSuggestions
                   :options="personOptions"
                   :custom="true"
@@ -58,18 +74,37 @@
                   <span>
                     Ik bevestig dat het pakket in goede orde is afgeleverd
                   </span>
-                </CBSearchSuggestions>
+                </CBSearchSuggestions> -->
+
+
+                    Scan de fontyspas voor checkout:
+                <StreamBarcodeReader
+                    @decode="onDecode"
+                    @loaded="onLoaded"
+                ></StreamBarcodeReader>
+                <ImageBarcodeReader
+                    @decode="onDecode"
+                    @error="onError"
+                ></ImageBarcodeReader>
+
+                <div v-if="passcan">
+                  <div v-if="completedBy.name !== '' && completedBy != null">
+                      <p>{{completedBy.name}}</p>
+                    <SmallBtnFinish
+                        class="finish"
+                        @btn-clicked="addTicketAction()"
+                        :text="'Toevoegen'"
+                        :isLoading="adding"
+                    />
+                  </div>
+                </div>
+
               </div>
 
               <ul v-if="errors">
                 <li v-for="e in errors" :key="e" class="error-text">{{ e }}</li>
               </ul>
-              <SmallBtnFinish
-                class="finish"
-                @btn-clicked="addTicketAction()"
-                :text="'Toevoegen'"
-                :isLoading="adding"
-              />
+              
             </div>
           </div>
         </div>
@@ -80,7 +115,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import { AxiosError } from "axios";
+import axios, { AxiosError } from "axios";
 
 // Components.
 import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
@@ -88,7 +123,9 @@ import SelectOption from "@/classes/helpers/SelectOption";
 import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
 import TicketComp from "@/components/route/TicketComp.vue";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
-
+import { StreamBarcodeReader } from "vue-barcode-reader";
+import { ImageBarcodeReader } from "vue-barcode-reader";
+import InputField from "@/components/standardUi/InputField.vue";
 // Types.
 import Person from "@/classes/Person";
 import Room from "@/classes/Room";
@@ -111,6 +148,9 @@ import { Prop } from "vue-property-decorator";
     CBSearchSuggestions,
     LoadingIcon,
     TicketComp,
+    StreamBarcodeReader,
+    ImageBarcodeReader,
+    InputField
   },
 })
 export default class CreateTicket extends Vue {
@@ -141,10 +181,15 @@ export default class CreateTicket extends Vue {
     "",
     ""
   );
+  
   private personOptions: Array<SelectOption> = new Array<SelectOption>();
   private persons: Array<Person> = new Array<Person>();
   private personValid: Boolean = true;
   private personConfirmedValid: Boolean = true;
+  private completedBy: Person = new Person("","", "");
+  private textInputId = '';
+  private completedByName = '';
+  private passcan = false;
 
   private personChanged(personOption: SelectOption) {
     this.selectedPersonOption = personOption;
@@ -179,17 +224,18 @@ export default class CreateTicket extends Vue {
 
   private async runValidation() {
     this.errors = [];
-    if (this.persons.some((p) => p.id == this.selectedPersonOption.id)) {
-      this.personValid = true;
-    } else {
-      this.errors.push("Deze persoon kon niet gevonden worden.");
-      this.personValid = false;
-    }
+    //  if (this.persons.some((p) => p.id == this.selectedPersonOption.id)) {
+     this.personValid = true;
+    //  else {
+    //    this.errors.push("Deze persoon kon niet gevonden worden.");
+    //    this.personValid = false;
+    //  }
 
     if (this.showPersonConfirmation) {
       if (
-        this.persons.some((p) => p.id == this.selectedPersonConfirmedOption.id)
+        this.completedBy.id != null && this.completedBy.id !== ""
       ) {
+        console.log(this.completedBy.id)
         this.personConfirmedValid = true;
       } else {
         this.errors.push("Deze persoon kon niet gevonden worden.");
@@ -206,28 +252,68 @@ export default class CreateTicket extends Vue {
   }
 
   private async addTicketAction() {
+
     if (!this.adding) {
       this.adding = true;
       await this.runValidation();
       if (this.errors.length < 1) {
+        console.log(this.selectedPersonOption.id)
+            console.log(this.selectedRoomOption.id)
+            console.log(this.fPackage.id)
+            console.log(this.showPersonConfirmation)
+            
+            console.log(this.completedBy.id)
         await pakketService
           .createTicket({
+            
             locationId: this.selectedRoomOption.id,
             packageId: this.fPackage.id,
-            completedByPersonId: this.selectedPersonOption.id,
+            completedByPersonId: this.selectedPersonOption.id.toString(),
             receivedByPersonId: this.showPersonConfirmation
-              ? this.selectedPersonConfirmedOption.id
+              ? this.completedBy.id
               : "",
           } as TicketRequest)
           .then((res) => {
             this.adding = false;
+            console.log(this.selectedPersonOption.id)
           })
-          .catch((err) => {});
+          .catch((err) => {
+            
+          });
         this.newTicket();
       } else {
         this.adding = false;
       }
     }
+  }
+  beforeMount(){
+    this.completedBy = new Person("","","");
+    
+  }
+  private async scanFontyspas(){
+    await personeelService
+    .getByFontysId(this.textInputId)
+    .then((res) => {
+      this.completedBy = res;
+      this.completedByName = res.name;
+      console.log(this.completedBy);
+      this.passcan = true;
+    })
+  }
+  private async keydowntest(input: string) {
+    console.log(input);
+  }
+  private async onDecode (result) {
+    this.textInputId = result;
+    await personeelService
+        .getByFontysId(this.textInputId)
+        .then((res) => {
+          this.completedBy = res;
+          this.completedByName = res.name;
+          console.log(this.completedBy);
+          this.passcan = true;
+        })
+    console.log(result)
   }
 
   @Emit("new-ticket")
@@ -238,35 +324,61 @@ export default class CreateTicket extends Vue {
       .getAll()
       .then((res) => {
         this.rooms = res;
-        this.rooms.forEach((room) =>
-          this.roomOptions.push(
-            new SelectOption(
-              room.id,
-              room.building.address.city.name +
-                ", " +
-                room.building.name +
-                ", " +
-                room.name
+        this.rooms.forEach((room) =>{
+          if(room.id != this.fPackage.tickets[0].location.id){
+            this.roomOptions.push(
+              new SelectOption(
+                room.id,
+                room.building.address.city.name +
+                  ", " +
+                  room.building.name +
+                  ", " +
+                  room.name
+              )
             )
-          )
-        );
+          }
+      });
       })
       .catch((err: AxiosError) => {
         this.emitter.emit("err", err);
       });
 
-    await personeelService
-      .getAll()
-      .then((res) => {
-        this.persons = res;
-        this.persons.forEach((receiver) =>
-          this.personOptions.push(new SelectOption(receiver.id, receiver.name))
-        );
+    // await personeelService
+      // .getAll()
+      // .then((res) => {
+      var person;
+      axios.get('https://localhost:44369/api/Authentication/singleUser', {
+        headers: {
+          'Authorization' :  'Bearer ' + localStorage.getItem('token')
+        }
       })
-      .catch((err: AxiosError) => {
-        this.emitter.emit("err", err);
+      .then((response)=>{
+        // if(response.data.id !== null && response.data.id !== "" && response.data.id !== 0){
+        //   this.showPersonConfirmation = true;
+        // }
+        person = response.data;
+        this.persons = person;
+        console.log(this.persons)
+        
+        this.selectedPersonOption = new SelectOption(person.id, person.name)
+        console.log(this.selectedPersonOption)
+        this.completedBy = person
+        //console.log(this.personOptions)
+      // });
+      
+        // this.personOptions.push(new SelectOption(person.id, person.name));
+        
+        // this.persons = response;
+      //   this.persons.forEach((receiver) =>
+      //      this.personOptions.push(new SelectOption(receiver.id, receiver.name))
+      //    );
+      // })
       });
-    this.loading = false;
+      // .catch((err: AxiosError) => {
+      //   this.emitter.emit("err", err);
+      //   console.log(err)
+      // });
+     this.loading = false;
   }
 }
 </script>
@@ -352,5 +464,23 @@ blockquote {
   .fc {
     font-size: 0px;
   }
+}
+
+.input {
+  user-select: none;
+  border: 0px;
+  width: 100%;
+  height: 100%;
+  background-color: $background-color;
+  padding: 0px 0px;
+}
+
+.error {
+  background: #ffc9cf;
+}
+
+.input:focus {
+  outline: none;
+  border: 0px;
 }
 </style>

@@ -2,7 +2,7 @@
 FROM node:lts-alpine as build-stage
 WORKDIR /app
 
-ARG GATEWAY_URL="http://localhost:8123"
+ARG GATEWAY_URL="https://localhost:8123"
 ARG APP_URL="http://localhost:8080"
 ENV VUE_APP_API_GATEWAY ${GATEWAY_URL}
 ENV VUE_APP_URL ${APP_URL}}

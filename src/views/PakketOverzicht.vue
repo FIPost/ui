@@ -5,7 +5,11 @@
     <SearchContainer />
     <LoadingIcon v-if="loading" />
     <div v-else>
-      <TableComp :items="items" @cell-clicked="CellClicked" />
+      <TableComp 
+      :allItems="allItems" 
+      :firstItem="firstItem" 
+      :lastItem="lastItem" 
+      @cell-clicked="CellClicked" />
       <Pagination
         v-if="allPackages.length > visibleItemsPerPageCount"
         :page-count="pageCount"
@@ -50,11 +54,12 @@ export default class PakketOverzicht extends Vue {
   private loading: boolean = true;
 
   private allPackages: Array<Package> = new Array<Package>();
-  private packages: Array<Package> = new Array<Package>();
-  private items: Array<Object> = new Array<Object>();
+  private allItems: Array<Object> = new Array<Object>();
+  public firstItem;
+  public lastItem;
 
   private pageCount = 0;
-  private visibleItemsPerPageCount = 20;
+  private visibleItemsPerPageCount = 10;
 
   beforeMount() {
     this.GetPackages();
@@ -87,10 +92,10 @@ export default class PakketOverzicht extends Vue {
   }
 
   //Format objects to display in the table
-  GenerateTableObjects(packages: Package[]) {
-    this.items = new Array<Object>();
+  GenerateAllTableObjects(packages: Package[]) {
+    this.allItems = new Array<Object>();
     packages.forEach((value) => {
-      this.items.push({
+      this.allItems.push({
         Naam: {
           id: value.id,
           displayName: value.name,
@@ -142,13 +147,10 @@ export default class PakketOverzicht extends Vue {
   getDateString(date: number): string {
     return dateConverter.getDateString(date);
   }
-  public loadPage(value: number) {
-    const pageIndex = (value - 1) * this.visibleItemsPerPageCount;
-    this.packages = this.allPackages.slice(
-      pageIndex,
-      pageIndex + this.visibleItemsPerPageCount
-    );
-    this.GenerateTableObjects(this.packages);
+  public loadPage(value: number) {    
+    this.firstItem = value * this.visibleItemsPerPageCount - this.visibleItemsPerPageCount;    
+    this.lastItem = value * this.visibleItemsPerPageCount;
+    this.GenerateAllTableObjects(this.allPackages);
   }
 }
 </script>

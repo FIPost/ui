@@ -121,14 +121,21 @@ export default class AddBuilding extends Vue {
   private building: BuildingRequest = new BuildingRequest(
     "",
     new AddressRequest("", "", "", 0, "")
+    
   );
+   private buildings: Array<SelectOption> = new Array<SelectOption>();
+  
+  private allBuildings: Array<Building> = new Array<Building>();
+  
 
   private nameValid: boolean = true;
   private streetValid: boolean = true;
   private cityValid: boolean = true;
+  private buildingValid: boolean = true;
   private postalCodeValid: boolean = true;
   private numberValid: boolean = true;
   private error: string = "";
+  
 
   async created() {
     if (this.buildingId) {
@@ -173,6 +180,10 @@ export default class AddBuilding extends Vue {
 
   public assignCityToAddress(option: SelectOption): void {
     this.building.Address.CityId = option.id;
+  }
+
+  capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
   }
 
   addBuilding() {
@@ -226,19 +237,19 @@ export default class AddBuilding extends Vue {
   }
 
   private validate(): boolean {
-    this.nameValid = this.building.Name.length > 0;
+    this.nameValid;
     this.cityValid =
       this.allCities.find((city) => city.id == this.building.Address.CityId) !=
       null;
-    this.streetValid = this.building.Address.Street.length > 0;
-    this.postalCodeValid = this.building.Address.PostalCode.length > 0;
+    this.streetValid;
+    this.postalCodeValid;
     this.numberValid =
       !isNaN(this.building.Address.Number) &&
       this.building.Address.Number != null &&
       this.building.Address.Number.toString().length > 0;
 
     if (!this.nameValid || !this.streetValid || !this.postalCodeValid) {
-      this.error = "Niet alle velden zijn ingevoerd";
+      this.error = "Niet alle velden zijn correct ingevuld";
       return false;
     }
 
@@ -255,17 +266,20 @@ export default class AddBuilding extends Vue {
   }
 
   nameChanged(input: string): void {
+    this.building.Name = this.capitalizeFirstLetter(this.building.Name);
     this.nameValid = this.building.Name.length > 0;
     this.error = "";
   }
 
   streetChanged(input: string): void {
+    this.building.Address.Street = this.capitalizeFirstLetter(this.building.Address.Street);
     this.streetValid = this.building.Address.Street.length > 0;
     this.error = "";
   }
 
   postalCodeChanged(input: string): void {
-    this.postalCodeValid = this.building.Address.PostalCode.length > 0;
+    this.postalCodeValid = this.building.Address.PostalCode.length === 6;
+    this.building.Address.PostalCode = this.building.Address.PostalCode.toUpperCase();
     this.error = "";
   }
 
@@ -273,6 +287,17 @@ export default class AddBuilding extends Vue {
     this.numberValid = !isNaN(this.building.Address.Number);
     this.error = "";
   }
+  // async mounted() {
+  //   if (this.buildingId) {
+  //     this.isLoading = true;
+  //     console.log("getcity" + this.buildingId);
+  //     cityService.getById(this.buildingId).then((res) => {
+
+  //       this.building = new BuildingRequest(res.name);
+  //       this.isLoading = false;
+  //     });
+  //   }
+ // }
 }
 </script>
 

@@ -7,6 +7,7 @@
             <h3 name="header">{{ header }}</h3>
           </div>
           <div class="modal-body">
+            <!-- the slot is filled with the data in AddRoom, AddCity or AddBuilding --> 
             <slot> </slot>
             <span name="body"> {{ body }} </span>
           </div>

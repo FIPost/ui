@@ -8,24 +8,39 @@
      <div class="container-group">
       <div class="header">Dashboard</div>
       <hr />
+       <div class="flex-container">
+         <div class="email-inline">
+           {{email}}
+         </div>
+         <div>
+           <button type="button" class="modal-default-button" @click="logout">Logout</button>
+         </div>
+         <br>
+       </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+
 import { defineComponent } from "vue";
 import Menu from "@/components/Menu.vue";
 import LocationSvg from "@/components/svg/LocationSvg.vue";
 import RegisterSvg from "@/components/svg/RegisterSvg.vue";
 import ScanSvg from "@/components/svg/ScanSvg.vue";
 import SearchSvg from "@/components/svg/SearchSvg.vue";
+import axios from "axios";
+
+
 
 const Home = defineComponent({
   components: {
     Menu
   },
   data() {
-    return {};
+    return {
+      email: String
+    };
   },
   methods: {
     registerClicked() : void {
@@ -40,7 +55,24 @@ const Home = defineComponent({
     locationClicked() : void {
       this.$router.push("/locaties");
     },
+    logout(){
+      localStorage.clear();
+      this.$router.push("/login");
+    }
   },
+  mounted() {
+    //axios get
+    const config = {
+      'headers': {'Authorization': 'Bearer ' + localStorage.getItem('token')}
+    }
+    axios.get('https://localhost:44369/api/Authentication/auth', config )
+        .then(response => {
+          this.email = response.data;
+        })
+    .catch(err => {
+      this.$router.push("/login");
+    })
+  }
 });
 export default Home;
 </script>
@@ -69,5 +101,29 @@ export default Home;
     opacity: 0.2;
     margin: 1em 0;
   }
+}
+.modal-default-button {
+  float: left;
+  background-color: $modern-purple-color;
+  border: none;
+  width: 100px;
+  height: 30px;
+  border-radius: $small-border-radius;
+  box-shadow: $shadow;
+  font-family: $font-family;
+  color: white;
+  cursor: pointer;
+}
+.flex-container {
+  display: flex;
+  flex-wrap: nowrap;
+}
+.flex-container > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.email-inline{
+  margin-right: 10px;
 }
 </style>

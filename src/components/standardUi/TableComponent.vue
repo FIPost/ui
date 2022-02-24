@@ -42,11 +42,14 @@ import { Emit, Prop } from "vue-property-decorator";
 import { Vue } from "vue-class-component";
 
 export default class TableComponent extends Vue {
-  @Prop() public hovering: Object = ref(false);
-  @Prop() public items!: Array<Object>;
+  @Prop() public hovering: Object = ref(false);  
+  @Prop() public allItems!: Array<Object>;
   @Prop() public sortOrders: Array<number> = [];
   @Prop() public editable: Boolean = false;
+  @Prop() public firstItem;
+  @Prop() public lastItem;
   private sortKey: number = 0;
+  private items: Array<Object> = new Array<Object>();
 
   @Emit("cell-clicked")
 
@@ -63,7 +66,7 @@ export default class TableComponent extends Vue {
   }
 
   get filteredItems(): Object[] {
-    let filtered = this.items as Object[];
+    let filtered = this.allItems as Object[];
 
     //TODO: filter items here
 
@@ -79,15 +82,17 @@ export default class TableComponent extends Vue {
     this.sortOrders[key] = this.sortOrders[key] * -1;
   }
 
-  sortedItems(items: Object[]): Object[] {
+  sortedItems(filtereditems: Object[]): Object[] {
+    this.items.length = 0;
     const sortKey = this.sortKey;
     const order = this.sortOrders[sortKey] || 1;
-    items.sort(function (a, b) {
+    filtereditems.sort(function (a, b) {
       let x: TableCell = a[Object.keys(a)[sortKey]].displayName;
       let y: TableCell = b[Object.keys(b)[sortKey]].displayName;
       return (x === y ? 0 : x > y ? 1 : -1) * order;
     });
-    return items;
+    for (let i = this.firstItem; i < this.lastItem; i++) this.items.push(filtereditems[i]);
+    return this.items;
   }
 }
 </script>

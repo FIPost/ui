@@ -13,6 +13,7 @@
         v-on:focus="startFocus()"
       />
 
+
       <div class="items" :class="{ selectHide: !open }">
         <div
           v-for="suggestion in suggestions"

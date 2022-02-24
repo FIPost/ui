@@ -5,7 +5,7 @@
 
       <div class="details-wrapper">
         <div class="pd-content">
-          <div class="container-subheader-small">Omschrijving</div>
+          <div class="container-subheader-small">Pakketnaam</div>
           <div class="pd-item">{{ packageM.name }}</div>
         </div>
 
@@ -54,7 +54,9 @@
             title="Af te halen op"
           />
         </div>
+        
       </div>
+        
     </div>
   </div>
 </template>
@@ -67,6 +69,7 @@ import StatusBadge from "@/components/standardUi/StatusBadge.vue";
 import Room, { roomHelper } from "@/classes/Room";
 import Package from "@/classes/Package";
 import { dateConverter } from "@/classes/helpers/DateConverter";
+
 
 @Options({
   props: {

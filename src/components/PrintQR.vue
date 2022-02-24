@@ -1,7 +1,7 @@
 <template>
   <div class="qr-container" @click="onClick()">
     <div class="text">
-      <div class="container-header">Print Barcode</div>
+      <div class="container-header">Print QR code</div>
       <div class="qr-subheader">Pakket ID: {{ packageId }}</div>
     </div>
     <svg
@@ -212,16 +212,31 @@ pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default class PrintQR extends Vue {
   @Prop() public packageId: String = "";
-  @Prop() public address: String = "";
+  @Prop() public receiversAddress1: String = "";
+  @Prop() public receiversAddress2: String = "";
+  @Prop() public receiversName: String = "";
+  @Prop() public sendersName: String = "";
 
   onClick(): void {
-    const address = this.address;
+
+    const receiversAddress1 = this.receiversAddress1;
+    const receiversAddress2 = this.receiversAddress2;
+    const receiversName = this.receiversName;
+    const sendersName = this.sendersName;
     const dd = {
       content: [
-        { qr: this.getPackageURL() },
-        { text: "Eindbestemming: ", style: "default", margin: [0, 6, 0, 0] },
+        //{Image:  },
+        { qr: this.getPackageURL(), margin: [320, 30, 0, 0] },
+         { text: "_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _", style: "default", margin: [0, 40, 0, 0] },
+        { text: "Naam ontvanger: ", style: "default", margin: [30, -220, 0, 0] },
+        { text: receiversName, style: "default", margin: [30, 0 , 0, 0] },
         "\n",
-        { text: address, style: "default" },
+        { text: "Bezorg adres: ", style: "default", margin: [30, 0, 0, 0] },                   
+        { text: receiversAddress1, style: "default", margin: [30, 0, 0, 0] },
+        { text: receiversAddress2, style: "default", margin: [30, 0, 0, 0] },
+        "\n",
+        { text: "Naam afzender: ", style: "default", margin: [30, 0, 0, 0] },
+        { text: sendersName, style: "default", margin: [30, 0, 0, 0] },
       ],
       styles: {
         default: {
@@ -229,7 +244,8 @@ export default class PrintQR extends Vue {
         },
       },
     };
-    pdfMake.createPdf(dd).open({}, window);
+    pdfMake.createPdf(dd).open({}, window.open("_blank"));
+    
   }
 
   getPackageURL() {
@@ -253,6 +269,8 @@ export default class PrintQR extends Vue {
   border-radius: $border-radius;
   cursor: pointer;
 }
+
+ 
 
 .text {
   width: 55%;

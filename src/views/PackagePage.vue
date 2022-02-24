@@ -8,9 +8,10 @@
         <RoutePackageInfo :tickets="packageM.tickets" />
       </div>
       <div class="pi-item-container">
-        <PrintQR :packageId="packageId" :address="buildAddressString()" />
+        <PrintQR :packageId="packageId" :receiversAddress1="buildReceiversAddress1()" :receiversAddress2="buildReceiversAddress2()"
+         :receiversName="buildReceiversName()" :sendersName="buildSendersName()"/>
         <PackageDetails :packageM="packageM" />
-      </div>
+      </div>      
     </div>
   </div>
 </template>
@@ -45,7 +46,10 @@ export default class PackagePage extends Vue {
   private error: Boolean = false;
 
   private ticketKey: number = 0;
-  private addressData: String = "";
+  private receiversAddressData1: String = "";
+  private receiversAddressData2: String = "";
+  private receiversNameData: String = "";
+  private sendersNameData; String = "";
 
   private async reloadPage() {
     this.isLoading = true;
@@ -70,21 +74,50 @@ export default class PackagePage extends Vue {
       });
   }
 
-  buildAddressString() {
+  buildReceiversAddress1() {
     if (this.packageM.collectionPoint) {
-      this.addressData =
+      this.receiversAddressData1 =
         this.packageM.collectionPoint.building.address.street.toString() +
         " " +
         this.packageM.collectionPoint.building.name +
         ", " +
-        this.packageM.collectionPoint.name +
-        " " +
-        this.packageM.collectionPoint.building.address.city.name;
-      return this.addressData;
-    }
+        this.packageM.collectionPoint.name; 
+      return this.receiversAddressData1;
+    }   
     return "Er ging iets mis bij het ophalen van de locatie";
   }
+  
+ buildReceiversAddress2() {
+    if (this.packageM.collectionPoint) {
+      this.receiversAddressData2 =
+        this.packageM.collectionPoint.building.address.postalCode +
+        ", " +
+        this.packageM.collectionPoint.building.address.city.name;
+      return this.receiversAddressData2;
+    }   
+    return "Er ging iets mis bij het ophalen van de locatie";
+  }
+
+  buildReceiversName() {
+    if (this.packageM.collectionPoint) {
+      this.receiversNameData =
+        this.packageM.receiver.name.toString()
+      return this.receiversNameData;
+    }
+    return "Er ging iets mis bij het ophalen van de naam";
+  }
+
+   buildSendersName() {
+    if (this.packageM.collectionPoint) {
+      this.sendersNameData =
+        this.packageM.sender.toString()
+      return this.sendersNameData;
+    }
+    return "Er ging iets mis bij het ophalen van de naam";
+  }
 }
+
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -112,4 +145,5 @@ export default class PackagePage extends Vue {
     }
   }
 }
+
 </style>

@@ -14,6 +14,7 @@ import Navigationbar from "@/components/Navigationbar.vue";
 import Modal from "@/views/Modal.vue";
 import { getCurrentInstance } from "vue";
 import { AxiosError } from "axios";
+import axios from "axios";
 
 @Options({
   components: {
@@ -25,6 +26,7 @@ export default class App extends Vue {
   public modalVisible: boolean = false;
   public body: string = "";
   public stayOnExit = true;
+  public is401Error = false;
 
   public showModal(): void {
     this.modalVisible = true;
@@ -34,6 +36,11 @@ export default class App extends Vue {
     this.modalVisible = false;
     if(!this.stayOnExit){
       this.$router.back();
+    }
+    else{
+      if (this.is401Error){
+        this.$router.push("/login");
+      }
     }
   }
 
@@ -46,7 +53,10 @@ export default class App extends Vue {
             this.stayOnExit = false;
         }
         else{
-            this.stayOnExit = true;
+          if (err.response.status == 401){
+            this.is401Error = true;
+          }
+          this.stayOnExit = true;
         }
         this.body = err.response.data;
       }

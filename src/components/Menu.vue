@@ -18,12 +18,14 @@
       labelText="Locaties"
       :source="getImgUrl('map.png')"
     />
+    
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import MenuItem from "@/components/MenuItem.vue";
+
 
 const Menu = defineComponent({
   components: {
@@ -54,6 +56,7 @@ const Menu = defineComponent({
     locationClicked(): void {
       this.$router.push("/locaties");
     },
+    
   },
 });
 export default Menu;

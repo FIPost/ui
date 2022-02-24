@@ -2,10 +2,18 @@
   <div>
     <LoadingIcon v-if="loading" />
     <div v-else>
-      <TableComponent
+
+     <!-- <TableComponent
         :items="items"
         :editable="true"
         @cell-clicked="CellClicked"
+      />  -->
+
+      <LocationTable
+        :allItems="allItems"
+        :firstItem="firstItem"
+        :lastItem="lastItem"
+        @row-clicked="RowClicked"
       />
       <Pagination
         v-if="allRooms.length > visibleItemsPerPageCount"
@@ -42,7 +50,7 @@ import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
-
+import LocationTable from "@/components/location/LocationTable.vue";
 @Options({
   components: {
     Pagination,
@@ -50,6 +58,7 @@ import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
     LoadingIcon,
     LocationInfo,
     LocationModal,
+    LocationTable
   },
 })
 export default class LocationOverviewTable extends Vue {
@@ -61,6 +70,8 @@ export default class LocationOverviewTable extends Vue {
   public cityId: string = "";
   public buildingId: string = "";
   public roomId: string = "";
+  public firstItem;
+  public lastItem;
 
   public modalOpen: boolean = false;
   public CloseModal(): void {
@@ -68,14 +79,13 @@ export default class LocationOverviewTable extends Vue {
   }
 
   /* LocationTable */
-  private items: Array<Object> = new Array<Object>();
+  private allItems: Array<Object> = new Array<Object>();
   private allRooms: Array<Room> = new Array<Room>();
-  private rooms: Array<Room> = new Array<Room>();
 
   private emitter = getCurrentInstance()?.appContext.config.globalProperties
     .emitter;
 
-  private visibleItemsPerPageCount = 10;
+  private visibleItemsPerPageCount = 8;
   private pageCount = 0;
 
   beforeMount() {
@@ -99,6 +109,14 @@ export default class LocationOverviewTable extends Vue {
       });
   }
 
+  public RowClicked(id: string) {
+    console.log("row-clicked: " + id);
+    this.roomId = id;
+    this.modalOpen = true;
+    console.log(this.allItems);
+  }
+
+
   public CellClicked(cell: TableCell): void {
     if (cell) {
       this.ColumnType = cell.type as ColumnType;
@@ -117,10 +135,10 @@ export default class LocationOverviewTable extends Vue {
   }
 
   //Format objects to display in the table
-  GenerateTableObjects(rooms: Room[]) {
-    this.items = new Array<Object>();
-    rooms.forEach((value) => {
-      this.items.push({
+   GenerateAllTableObjects(allrooms : Room[]) {
+   this.allItems = new Array<Object>();
+    allrooms.forEach((value) => {
+      this.allItems.push({
         Stad: {
           id: value.building.address.city.id,
           displayName: value.building.address.city.name,
@@ -143,25 +161,23 @@ export default class LocationOverviewTable extends Vue {
         } as TableCell,
       });
     });
-  }
+   }
 
   ReloadTable(): void {
-    this.items = [];
+    this.allItems = [];
     this.modalOpen = false;
     this.GetRooms();
   }
 
   public loadPage(value: number) {
-    const pageIndex = (value - 1) * this.visibleItemsPerPageCount;
-    this.rooms = this.allRooms.slice(
-      pageIndex,
-      pageIndex + this.visibleItemsPerPageCount
-    );
-    this.GenerateTableObjects(this.rooms);
+    this.firstItem = value * this.visibleItemsPerPageCount - this.visibleItemsPerPageCount;
+    this.lastItem = value * this.visibleItemsPerPageCount;
+    //this.GenerateTableObjects(this.rooms);
+    this.GenerateAllTableObjects(this.allRooms);
   }
 }
 </script>
 
 <style lang="scss" scoped>
-@import "@/styling/main.scss";
+  @import "@/styling/main.scss";
 </style>

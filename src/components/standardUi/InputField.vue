@@ -2,8 +2,8 @@
   <div class="input-container">
     <p class="header">{{ label }}</p>
     <input
+      :type="textType"
       :class="cssClass"
-      type="text"
       :value="input"
       @keyup="$emit('update:input', $event.target.value)"
     />
@@ -22,6 +22,8 @@ export default class InputField extends Vue {
   @Prop() public input!: String;
   @Prop() public color!: String;
   @Prop() public valid: Boolean = true; // Default true
+
+  @Prop() public textType!: String;
 
   public get cssClass(): string {
     if (this.valid) {
