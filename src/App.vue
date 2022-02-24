@@ -39,7 +39,7 @@ export default class App extends Vue {
     }
     else{
       if (this.is401Error){
-        this.$router.push("/login");
+        //this.$router.push("/login"); bypass login
       }
     }
   }

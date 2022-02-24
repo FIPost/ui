@@ -70,7 +70,7 @@ const Home = defineComponent({
           this.email = response.data;
         })
     .catch(err => {
-      this.$router.push("/login");
+      //this.$router.push("/login");
     })
   }
 });
