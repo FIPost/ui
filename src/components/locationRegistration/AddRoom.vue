@@ -4,6 +4,7 @@
       <LoadingIcon v-if="loading" />
       <div v-else>
         <div class="container-subheader">{{ title }}</div>
+        <div style="display: inline-block">
         <CBSearchSuggestion
           @selectChanged="assignBuildingToRoom"
           :options="buildings"
@@ -11,12 +12,25 @@
           label="Gebouw:"
           :valid="buildingValid"
         />
+        </div>
+        <div class="tooltip" style="display: inline-block" >
+          ?
+          <span class="tooltiptext" >Selecteer het gebouw waar de ruimte zich in bevindt</span>
+        </div>
+        <br/>
+          <div style="display: inline-block">
         <InputField
           label="Ruimte:"
           v-model:input="room.Name"
           :valid="nameValid"
           @update:input="nameChanged"
         />
+          </div>
+          <div class="tooltip" style="display: inline-block" >
+            ?
+            <span class="tooltiptext" >Vul de naam van de ruimte in</span>
+          </div>
+        <br/>
         <h4 class="error-text" v-if="error.length > 0">
           {{ error }}
         </h4>

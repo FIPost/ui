@@ -43,7 +43,7 @@ export default class LocationModal extends Vue {
 @import "@/styling/main.scss";
 .modal-mask {
   position: fixed;
-  z-index: 2;
+  z-index: 6;
   top: 0;
   left: 0;
   width: 100%;
@@ -59,7 +59,7 @@ export default class LocationModal extends Vue {
 }
 
 .modal-container {
-  width: 300px;
+  width: 600px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -68,6 +68,7 @@ export default class LocationModal extends Vue {
   transition: all 0.3s ease;
   font-family: Helvetica, Arial, sans-serif;
   overflow: hidden;
+  text-align: left;
 }
 
 .modal-header h3 {

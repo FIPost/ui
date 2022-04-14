@@ -3,12 +3,19 @@
     <LoadingIcon v-if="isLoading" />
     <div v-else>
       <div class="container-subheader">{{ title }}</div>
+      <div style="display: inline-block;">
       <InputField
         label="Stad:"
         v-model:input="city.Name"
         :valid="nameValid"
         @update:input="nameChanged"
       />
+      </div>
+      <div class="tooltip" style="display: inline-block" >
+        ?
+        <span class="tooltiptext" >Vul de naam van het stad in</span>
+      </div>
+      <br/>
 
       <h4 class="error-text" v-if="error.length > 0">
         {{ error }}
