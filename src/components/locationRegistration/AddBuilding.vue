@@ -4,14 +4,20 @@
       <LoadingIcon v-if="loading" />
       <div v-else>
         <div class="container-subheader">{{ title }}</div>
-        <ComboBoxInput
-          @selectChange="assignCityToAddress"
-          :selectedOption="selectedCityOption"
-          :options="cities"
-          placeholder="selecteer een stad"
-          label="Stad:"
-          :valid="cityValid"
-        />
+        <div style="display: inline-block">
+          <ComboBoxInput
+              @selectChange="assignCityToAddress"
+              :selectedOption="selectedCityOption"
+              :options="cities"
+              placeholder="selecteer een stad"
+              label="Stad:"
+              :valid="cityValid"
+          />
+        </div>
+        <div class="tooltip" style="display: inline-block">
+          ?
+          <span class="tooltiptext" >Selecteer de stad waarin het gebouw zich bevindt</span>
+        </div>
 
         <InputField
           label="Gebouw:"

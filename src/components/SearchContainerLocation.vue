@@ -7,12 +7,12 @@
 
       <div class="search-fields">
         <Search @valueChanged="valueChanged" />
-        <ComboBox :options="options" placeholder="Selecteer een veld" />
-        <font-awesome-icon
-          @click="goToAddLocationPage()"
-          class="plus-location"
-          icon="plus-square"
-        />
+<!--        <ComboBox :options="options" placeholder="Selecteer een veld" />-->
+<!--        <font-awesome-icon-->
+<!--          @click="goToAddLocationPage()"-->
+<!--          class="plus-location"-->
+<!--          icon="plus-square"-->
+<!--        />-->
       </div>
     </div>
   </div>
@@ -26,7 +26,7 @@ import ComboBox from "@/components/standardUi/ComboBox.vue";
 const SearchContainer = defineComponent({
   components: {
     Search,
-    ComboBox,
+    // ComboBox,
   },
   methods: {
     valueChanged(val) {

@@ -129,6 +129,11 @@ td:first-child {
   font-weight: bold;
 }
 
+tr:nth-child(even){
+  //background:   linear-gradient(90deg, #eaeaea 0%, #DA068996 35%, #373FB5DD 100%);
+  background: #e3dfdf;
+}
+
 .hide {
   display: none;
   padding-left: 1rem;
