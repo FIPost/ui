@@ -25,7 +25,6 @@ const SearchContainer = defineComponent({
   methods: {
     valueChanged(val) {
       // Needs implementation.
-      console.log(val);
     },
   },
   data() {
