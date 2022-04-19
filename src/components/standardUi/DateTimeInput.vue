@@ -25,7 +25,6 @@
         date = new Date();
 
         updateInput() {
-            console.log(this.date);
             this.$emit('inputChanged', this.date);
         }
     }
