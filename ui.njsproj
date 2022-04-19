@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    <Name>tsTestapp</Name>
+    <RootNamespace>tsTestapp</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>6d718ada-9434-4753-8f7d-3e711556a97f</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <StartupFile>
+    </StartupFile>
+    <StartWebBrowser>True</StartWebBrowser>
+    <SearchPath>
+    </SearchPath>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <NodejsPort>1337</NodejsPort>
+    <EnableTypeScript>true</EnableTypeScript>
+    <StartWebBrowser>true</StartWebBrowser>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <DebugSymbols>true</DebugSymbols>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include=".browserslistrc" />
+    <Content Include=".env" />
+    <Content Include=".env.example" />
+    <Content Include=".eslintrc.js" />
+    <Content Include=".gitignore" />
+    <Content Include="babel.config.js" />
+    <Content Include="Dockerfile" />
+    <Content Include="package-lock.json" />
+    <Content Include="public\fav.ico" />
+    <Content Include="public\favicon.ico" />
+    <Content Include="public\index.html" />
+    <Content Include="src\App.vue" />
+    <Content Include="src\assets\BezorgStapIcoon.png" />
+    <Content Include="src\assets\BoxLocatie.png" />
+    <Content Include="src\assets\BoxQR.png" />
+    <Content Include="src\assets\fonts\Metropolis-Black.otf" />
+    <Content Include="src\assets\fonts\Metropolis-Bold.otf" />
+    <Content Include="src\assets\fonts\Metropolis-ExtraBold.otf" />
+    <Content Include="src\assets\fonts\Metropolis-ExtraLight.otf" />
+    <Content Include="src\assets\fonts\Metropolis-Light.otf" />
+    <Content Include="src\assets\fonts\Metropolis-Medium.otf" />
+    <Content Include="src\assets\fonts\Metropolis-Regular.otf" />
+    <Content Include="src\assets\fonts\Metropolis-SemiBold.otf" />
+    <Content Include="src\assets\fonts\Metropolis-Thin.otf" />
+    <Content Include="src\assets\FontysLogo.png" />
+    <Content Include="src\assets\icons8-edit.svg" />
+    <Content Include="src\assets\logo.png" />
+    <Content Include="src\assets\PakketRouteVoltooidIcon.png" />
+    <Content Include="src\assets\PlusIcon.png" />
+    <Content Include="src\assets\QRIcoon.png" />
+    <Content Include="src\assets\svg\map.png" />
+    <Content Include="src\assets\svg\register.png" />
+    <Content Include="src\assets\svg\scan.png" />
+    <Content Include="src\assets\svg\search.png" />
+    <Content Include="src\assets\ZoekIcon.png" />
+    <Content Include="src\components\locationRegistration\AddBuilding.vue" />
+    <Content Include="src\components\locationRegistration\AddCity.vue" />
+    <Content Include="src\components\locationRegistration\AddRoom.vue" />
+    <Content Include="src\components\location\LocationInfo.vue" />
+    <Content Include="src\components\location\LocationModal.vue" />
+    <Content Include="src\components\location\LocationOverviewTable.vue" />
+    <Content Include="src\components\Menu.vue" />
+    <Content Include="src\components\MenuItem.vue" />
+    <Content Include="src\components\Navigationbar.vue" />
+    <Content Include="src\components\packageInfo\PackageDetails.vue" />
+    <Content Include="src\components\packageInfo\PackageListItem.vue" />
+    <Content Include="src\components\packageInfo\PersonDetails.vue" />
+    <Content Include="src\components\packageInfo\RoomDetails.vue" />
+    <Content Include="src\components\PrintQR.vue" />
+    <Content Include="src\components\QrReader.vue" />
+    <Content Include="src\components\route\CreateTicket.vue" />
+    <Content Include="src\components\route\RouteComp.vue" />
+    <Content Include="src\components\route\RoutePackageInfo.vue" />
+    <Content Include="src\components\route\TicketComp.vue" />
+    <Content Include="src\components\Search.vue" />
+    <Content Include="src\components\SearchContainer.vue" />
+    <Content Include="src\components\SearchContainerLocation.vue" />
+    <Content Include="src\components\standardUi\BtnBack.vue" />
+    <Content Include="src\components\standardUi\BtnFinish.vue" />
+    <Content Include="src\components\standardUi\CBSearchSuggestions.vue" />
+    <Content Include="src\components\standardUi\CheckBox.vue" />
+    <Content Include="src\components\standardUi\ComboBox.vue" />
+    <Content Include="src\components\standardUi\ComboBoxInput.vue" />
+    <Content Include="src\components\standardUi\DateTimeInput.vue" />
+    <Content Include="src\components\standardUi\InputField.vue" />
+    <Content Include="src\components\standardUi\LinkOrStayModal.vue" />
+    <Content Include="src\components\standardUi\LoadingIcon.vue" />
+    <Content Include="src\components\standardUi\Pagination\BasePagination.vue" />
+    <Content Include="src\components\standardUi\Pagination\BasePaginationTrigger.vue" />
+    <Content Include="src\components\standardUi\SmallBtnFinish.vue" />
+    <Content Include="src\components\standardUi\StatusBadge.vue" />
+    <Content Include="src\components\standardUi\TableComponent.vue" />
+    <Content Include="src\components\svg\LocationSvg.vue" />
+    <Content Include="src\components\svg\RegisterSvg.vue" />
+    <Content Include="src\components\svg\ScanSvg.vue" />
+    <Content Include="src\components\svg\SearchSvg.vue" />
+    <Content Include="src\styling\main.scss" />
+    <Content Include="src\views\AddLocation.vue" />
+    <Content Include="src\views\Home.vue" />
+    <Content Include="src\views\LocationOverview.vue" />
+    <Content Include="src\views\Modal.vue" />
+    <Content Include="src\views\PackagePage.vue" />
+    <Content Include="src\views\PakketOverzicht.vue" />
+    <Content Include="src\views\RegisterPackage.vue" />
+    <Content Include="tsconfig.json" />
+    <Content Include="package.json" />
+    <Content Include="README.md" />
+    <Content Include="webpack.config.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="nginx\" />
+    <Folder Include="public\" />
+    <Folder Include="src\" />
+    <Folder Include="src\assets\" />
+    <Folder Include="src\assets\fonts\" />
+    <Folder Include="src\assets\svg\" />
+    <Folder Include="src\classes\" />
+    <Folder Include="src\classes\helpers\" />
+    <Folder Include="src\classes\requests\" />
+    <Folder Include="src\classes\table\" />
+    <Folder Include="src\classes\validation\" />
+    <Folder Include="src\components\" />
+    <Folder Include="src\components\locationRegistration\" />
+    <Folder Include="src\components\location\" />
+    <Folder Include="src\components\packageInfo\" />
+    <Folder Include="src\components\route\" />
+    <Folder Include="src\components\standardUi\" />
+    <Folder Include="src\components\standardUi\Pagination\" />
+    <Folder Include="src\components\svg\" />
+    <Folder Include="src\router\" />
+    <Folder Include="src\services\" />
+    <Folder Include="src\services\locatieService\" />
+    <Folder Include="src\services\pakketService\" />
+    <Folder Include="src\services\personeelService\" />
+    <Folder Include="src\styling\" />
+    <Folder Include="src\views\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="server.ts" />
+    <TypeScriptCompile Include="src\classes\Address.ts" />
+    <TypeScriptCompile Include="src\classes\Building.ts" />
+    <TypeScriptCompile Include="src\classes\City.ts" />
+    <TypeScriptCompile Include="src\classes\helpers\DateConverter.ts" />
+    <TypeScriptCompile Include="src\classes\helpers\SelectOption.ts" />
+    <TypeScriptCompile Include="src\classes\Location.ts" />
+    <TypeScriptCompile Include="src\classes\Package.ts" />
+    <TypeScriptCompile Include="src\classes\Person.ts" />
+    <TypeScriptCompile Include="src\classes\requests\AddressRequest.ts" />
+    <TypeScriptCompile Include="src\classes\requests\BuildingRequest.ts" />
+    <TypeScriptCompile Include="src\classes\requests\CityRequest.ts" />
+    <TypeScriptCompile Include="src\classes\requests\PackageRequest.ts" />
+    <TypeScriptCompile Include="src\classes\requests\RoomRequest.ts" />
+    <TypeScriptCompile Include="src\classes\requests\TicketRequest.ts" />
+    <TypeScriptCompile Include="src\classes\Room.ts" />
+    <TypeScriptCompile Include="src\classes\table\ColumnType.ts" />
+    <TypeScriptCompile Include="src\classes\table\TableCell.ts" />
+    <TypeScriptCompile Include="src\classes\Ticket.ts" />
+    <TypeScriptCompile Include="src\classes\validation\PackageValidation.ts" />
+    <TypeScriptCompile Include="src\main.ts" />
+    <TypeScriptCompile Include="src\router\index.ts" />
+    <TypeScriptCompile Include="src\services\http.ts" />
+    <TypeScriptCompile Include="src\services\locatieService\buildingservice.ts" />
+    <TypeScriptCompile Include="src\services\locatieService\cityservice.ts" />
+    <TypeScriptCompile Include="src\services\locatieService\roomservice.ts" />
+    <TypeScriptCompile Include="src\services\pakketService\pakketservice.ts" />
+    <TypeScriptCompile Include="src\services\personeelService\personeelService.ts" />
+    <TypeScriptCompile Include="src\shims-vue.d.ts" />
+  </ItemGroup>
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
