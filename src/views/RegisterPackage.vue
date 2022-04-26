@@ -110,7 +110,7 @@ import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { roomHelper } from "@/classes/Room";
-import Package from "@/classes/Package";
+    import { Package } from "@/classes/Package";
 
 @Options({
   components: {

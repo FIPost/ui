@@ -1,17 +1,32 @@
+import ISerializable from "@/classes/helpers/ISerializable"
 import Ticket from "@/classes/Ticket";
 import Person from "@/classes/Person";
-import Room from "@/classes/Room";
-import Building from "./Building";
-import Address from "./Address";
-import City from "./City";
+import { personeelService } from "@/services/personeelService/personeelService"
 
-export default class Package {
-    public id: string = "";
-    public receiver: Person = new Person("", "", "");
-    public collectionPoint: Room = new Room("", "", new Building("","", new Address(new City("",""),"","", 0,"")));
-    public sender: string = "";
-    public name: string = "";
-    public status: string = "";
-    public routeFinished: boolean = false;
-    public tickets: Array<Ticket> = [];
+export class Package implements ISerializable<Package> {
+    id?: string;
+    receiverId?: string;
+    collectionPointId?: string;
+    sender?: string;
+    name?: string;
+    status?: string;
+    routeFinished?: boolean;
+    tickets?: Array<Ticket>;
+
+    deserialize(data: Object): Package {
+        this.id = data["id"];
+        this.receiverId = data["receiverId"];
+        this.collectionPointId = data["collectionPointId"];
+        this.sender = data["sender"];
+        this.status = data["status"];
+        this.routeFinished = data["routeFinished"];
+        this.tickets = data["tickets"];
+        this.name = data["name"];
+        return this;
+    }
+
+    public getReceiver() {
+        if (this.receiverId)
+        return personeelService.get(this.receiverId);
+    }
 }

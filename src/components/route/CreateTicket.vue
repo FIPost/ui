@@ -79,196 +79,189 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { AxiosError } from "axios";
+    import { Options, Vue } from "vue-class-component";
+    import { AxiosError } from "axios";
 
-// Components.
-import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
-import SelectOption from "@/classes/helpers/SelectOption";
-import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
-import TicketComp from "@/components/route/TicketComp.vue";
-import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+    // Components.
+    import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
+    import SelectOption from "@/classes/helpers/SelectOption";
+    import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
+    import TicketComp from "@/components/route/TicketComp.vue";
+    import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
-// Types.
-import Person from "@/classes/Person";
-import Room from "@/classes/Room";
-import { roomHelper } from "@/classes/Room";
-import Ticket from "@/classes/Ticket";
-import TicketRequest from "@/classes/requests/TicketRequest";
+    // Types.
+    import Person from "@/classes/Person";
+    import Room from "@/classes/Room";
+    import { roomHelper } from "@/classes/Room";
+    import Ticket from "@/classes/Ticket";
+    import TicketRequest from "@/classes/requests/TicketRequest";
 
-// Services.
-import { roomService } from "@/services/locatieService/roomservice";
-import { personeelService } from "@/services/personeelService/personeelService";
-import { getCurrentInstance } from "@vue/runtime-core";
-import { Emit } from "vue-property-decorator";
-import { pakketService } from "@/services/pakketService/pakketservice";
-import Package from "@/classes/Package";
-import { Prop } from "vue-property-decorator";
+    // Services.
+    import { roomService } from "@/services/locatieService/roomservice";
+    import { personeelService } from "@/services/personeelService/personeelService";
+    import { getCurrentInstance } from "@vue/runtime-core";
+    import { Emit } from "vue-property-decorator";
+    import { pakketService } from "@/services/pakketService/pakketservice";
+    import { Package } from "@/classes/Package";
+    import { Prop } from "vue-property-decorator";
 
-@Options({
-  components: {
-    SmallBtnFinish,
-    CBSearchSuggestions,
-    LoadingIcon,
-    TicketComp,
-  },
-})
-export default class CreateTicket extends Vue {
-  public ticket: Ticket = {
-    id: "",
-    location: roomHelper.getEmptyRoom(),
-    finishedAt: 0,
-    completedByPerson: "",
-    receivedByPerson: "",
-  } as Ticket;
+    @Options({
+        components: {
+            SmallBtnFinish,
+            CBSearchSuggestions,
+            LoadingIcon,
+            TicketComp,
+        },
+    })
+    export default class CreateTicket extends Vue {
+        public ticket?: Ticket;
 
-  // Default.
-  private loading: Boolean = true;
-  private adding: boolean = false;
-  @Prop()
-  private fPackage!: Package;
-  private showPersonConfirmation = false;
+        // Default.
+        private loading: Boolean = true;
+        private adding: boolean = false;
+        @Prop() private fPackage!: Package;
+        private showPersonConfirmation = false;
 
-  private emitter = getCurrentInstance()?.appContext.config.globalProperties
-    .emitter;
+        private emitter = getCurrentInstance()?.appContext.config.globalProperties
+            .emitter;
 
-  // Errors.
-  private errors: String[] = [];
+        // Errors.
+        private errors: String[] = [];
 
-  // Employee data.
-  private selectedPersonOption: SelectOption = new SelectOption("", "");
-  private selectedPersonConfirmedOption: SelectOption = new SelectOption(
-    "",
-    ""
-  );
-  private personOptions: Array<SelectOption> = new Array<SelectOption>();
-  private persons: Array<Person> = new Array<Person>();
-  private personValid: Boolean = true;
-  private personConfirmedValid: Boolean = true;
-
-  private personChanged(personOption: SelectOption) {
-    this.selectedPersonOption = personOption;
-    this.personValid = true;
-    this.errors = [];
-  }
-
-  private personConfirmedChanged(personOption: SelectOption) {
-    this.selectedPersonConfirmedOption = personOption;
-    this.personConfirmedValid = true;
-    this.errors = [];
-  }
-
-  // Room data.
-  private selectedRoomOption: SelectOption = new SelectOption("", "");
-  private roomOptions: Array<SelectOption> = new Array<SelectOption>();
-  private rooms: Array<Room> = new Array<Room>();
-  private roomValid: Boolean = true;
-  private roomChanged(roomOption: SelectOption) {
-    this.selectedRoomOption = roomOption;
-    this.roomValid = true;
-    this.errors = [];
-    if (
-      this.fPackage.collectionPoint != null &&
-      roomOption.id == this.fPackage.collectionPoint.id
-    ) {
-      this.showPersonConfirmation = true;
-    } else {
-      this.showPersonConfirmation = false;
-    }
-  }
-
-  private async runValidation() {
-    this.errors = [];
-    if (this.persons.some((p) => p.id == this.selectedPersonOption.id)) {
-      this.personValid = true;
-    } else {
-      this.errors.push("Deze persoon kon niet gevonden worden.");
-      this.personValid = false;
-    }
-
-    if (this.showPersonConfirmation) {
-      if (
-        this.persons.some((p) => p.id == this.selectedPersonConfirmedOption.id)
-      ) {
-        this.personConfirmedValid = true;
-      } else {
-        this.errors.push("Deze persoon kon niet gevonden worden.");
-        this.personConfirmedValid = false;
-      }
-    }
-
-    if (this.rooms.some((r) => r.id == this.selectedRoomOption.id)) {
-      this.roomValid = true;
-    } else {
-      this.errors.push("Deze ruimte kon niet gevonden worden.");
-      this.roomValid = false;
-    }
-  }
-
-  private async addTicketAction() {
-    if (!this.adding) {
-      this.adding = true;
-      await this.runValidation();
-      if (this.errors.length < 1) {
-        await pakketService
-          .createTicket({
-            locationId: this.selectedRoomOption.id,
-            packageId: this.fPackage.id,
-            completedByPersonId: this.selectedPersonOption.id,
-            receivedByPersonId: this.showPersonConfirmation
-              ? this.selectedPersonConfirmedOption.id
-              : "",
-          } as TicketRequest)
-          .then((res) => {
-            this.adding = false;
-          })
-          .catch((err) => {});
-        this.newTicket();
-      } else {
-        this.adding = false;
-      }
-    }
-  }
-
-  @Emit("new-ticket")
-  newTicket() {}
-
-  async mounted() {
-    await roomService
-      .getAll()
-      .then((res) => {
-        this.rooms = res;
-        this.rooms.forEach((room) =>
-          this.roomOptions.push(
-            new SelectOption(
-              room.id,
-              room.building.address.city.name +
-                ", " +
-                room.building.name +
-                ", " +
-                room.name
-            )
-          )
+        // Employee data.
+        private selectedPersonOption: SelectOption = new SelectOption("", "");
+        private selectedPersonConfirmedOption: SelectOption = new SelectOption(
+            "",
+            ""
         );
-      })
-      .catch((err: AxiosError) => {
-        this.emitter.emit("err", err);
-      });
+        private personOptions: Array<SelectOption> = new Array<SelectOption>();
+        private persons: Array<Person> = new Array<Person>();
+        private personValid: Boolean = true;
+        private personConfirmedValid: Boolean = true;
 
-    await personeelService
-      .getAll()
-      .then((res) => {
-        this.persons = res;
-        this.persons.forEach((receiver) =>
-          this.personOptions.push(new SelectOption(receiver.id, receiver.name))
-        );
-      })
-      .catch((err: AxiosError) => {
-        this.emitter.emit("err", err);
-      });
-    this.loading = false;
-  }
-}
+        private personChanged(personOption: SelectOption) {
+            this.selectedPersonOption = personOption;
+            this.personValid = true;
+            this.errors = [];
+        }
+
+        private personConfirmedChanged(personOption: SelectOption) {
+            this.selectedPersonConfirmedOption = personOption;
+            this.personConfirmedValid = true;
+            this.errors = [];
+        }
+
+        // Room data.
+        private selectedRoomOption: SelectOption = new SelectOption("", "");
+        private roomOptions: Array<SelectOption> = new Array<SelectOption>();
+        private rooms: Array<Room> = new Array<Room>();
+        private roomValid: Boolean = true;
+        private roomChanged(roomOption: SelectOption) {
+            this.selectedRoomOption = roomOption;
+            this.roomValid = true;
+            this.errors = [];
+            if (
+                this.fPackage.collectionPointId != null &&
+                roomOption.id == this.fPackage.collectionPointId
+            ) {
+                this.showPersonConfirmation = true;
+            } else {
+                this.showPersonConfirmation = false;
+            }
+        }
+
+        private async runValidation() {
+            this.errors = [];
+            if (this.persons.some((p) => p.id == this.selectedPersonOption.id)) {
+                this.personValid = true;
+            } else {
+                this.errors.push("Deze persoon kon niet gevonden worden.");
+                this.personValid = false;
+            }
+
+            if (this.showPersonConfirmation) {
+                if (
+                    this.persons.some((p) => p.id == this.selectedPersonConfirmedOption.id)
+                ) {
+                    this.personConfirmedValid = true;
+                } else {
+                    this.errors.push("Deze persoon kon niet gevonden worden.");
+                    this.personConfirmedValid = false;
+                }
+            }
+
+            if (this.rooms.some((r) => r.id == this.selectedRoomOption.id)) {
+                this.roomValid = true;
+            } else {
+                this.errors.push("Deze ruimte kon niet gevonden worden.");
+                this.roomValid = false;
+            }
+        }
+
+        private async addTicketAction() {
+            if (!this.adding) {
+                this.adding = true;
+                await this.runValidation();
+                if (this.errors.length < 1) {
+                    await pakketService
+                        .createTicket({
+                            locationId: this.selectedRoomOption.id,
+                            packageId: this.fPackage.id,
+                            completedByPersonId: this.selectedPersonOption.id,
+                            receivedByPersonId: this.showPersonConfirmation
+                                ? this.selectedPersonConfirmedOption.id
+                                : "",
+                        } as TicketRequest)
+                        .then((res) => {
+                            this.adding = false;
+                        })
+                        .catch((err) => { });
+                    this.newTicket();
+                } else {
+                    this.adding = false;
+                }
+            }
+        }
+
+        @Emit("new-ticket")
+        newTicket() { }
+
+        async mounted() {
+            await roomService
+                .getAll()
+                .then((res) => {
+                    this.rooms = res;
+                    this.rooms.forEach((room) =>
+                        this.roomOptions.push(
+                            new SelectOption(
+                                room.id,
+                                room.building.address.city.name +
+                                ", " +
+                                room.building.name +
+                                ", " +
+                                room.name
+                            )
+                        )
+                    );
+                })
+                .catch((err: AxiosError) => {
+                    this.emitter.emit("err", err);
+                });
+
+            await personeelService
+                .getAll()
+                .then((res) => {
+                    this.persons = res;
+                    this.persons.forEach((receiver) =>
+                        this.personOptions.push(new SelectOption(receiver.id, receiver.name))
+                    );
+                })
+                .catch((err: AxiosError) => {
+                    this.emitter.emit("err", err);
+                });
+            this.loading = false;
+        }
+    }
 </script>
 
 <style scoped lang="scss">

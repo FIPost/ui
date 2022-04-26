@@ -22,7 +22,7 @@
     import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
     import CreateTicket from "@/components/route/CreateTicket.vue";
     import BtnBack from "@/components/standardUi/BtnBack.vue";
-    import Package from "@/classes/Package";
+    import { Package } from "@/classes/Package";
     import { AxiosError } from "axios";
     import { pakketService } from "@/services/pakketService/pakketservice";
     import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
@@ -72,16 +72,16 @@
         }
 
         buildAddressString() {
-            if (this.packageM.collectionPoint) {
-                this.addressData =
-                    this.packageM.collectionPoint.building.address.street.toString() +
-                    " " +
-                    this.packageM.collectionPoint.building.name +
-                    ", " +
-                    this.packageM.collectionPoint.name +
-                    " " +
-                    this.packageM.collectionPoint.building.address.city.name;
-                return this.addressData;
+            if (this.packageM.collectionPointId) {
+                //this.addressData =
+                //    this.packageM.collectionPoint.building.address.street.toString() +
+                //    " " +
+                //    this.packageM.collectionPoint.building.name +
+                //    ", " +
+                //    this.packageM.collectionPoint.name +
+                //    " " +
+                //    this.packageM.collectionPoint.building.address.city.name;
+                //return this.addressData;
             }
             return "Er ging iets mis bij het ophalen van de locatie";
         }

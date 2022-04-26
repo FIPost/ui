@@ -155,7 +155,13 @@
     <TypeScriptCompile Include="src\classes\Building.ts" />
     <TypeScriptCompile Include="src\classes\City.ts" />
     <TypeScriptCompile Include="src\classes\helpers\DateConverter.ts" />
+    <TypeScriptCompile Include="src\classes\helpers\ISerializable.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\classes\helpers\SelectOption.ts" />
+    <TypeScriptCompile Include="src\classes\IPackage.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\classes\Location.ts" />
     <TypeScriptCompile Include="src\classes\Package.ts" />
     <TypeScriptCompile Include="src\classes\Person.ts" />

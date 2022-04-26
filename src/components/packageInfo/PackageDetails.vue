@@ -44,7 +44,7 @@
     import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
     import StatusBadge from "@/components/standardUi/StatusBadge.vue";
     import Room, { roomHelper } from "@/classes/Room";
-    import Package from "@/classes/Package";
+    import { Package } from "@/classes/Package";
     import { dateConverter } from "@/classes/helpers/DateConverter";
 
     @Options({
@@ -60,9 +60,10 @@
         private getDateString(): string {
             let date = "Onbekend";
 
-            let length = this.packageM.tickets.length;
-            if (length > 0) {
-                date = dateConverter.getDateString(this.packageM.tickets[length - 1].finishedAt);
+            if (this.packageM.tickets) {
+                let length = this.packageM.tickets?.length;
+                if(length > 0)
+                    date = this.packageM.tickets[length - 1].getDateString();
             }
 
             return date;
