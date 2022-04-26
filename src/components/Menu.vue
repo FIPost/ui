@@ -47,8 +47,9 @@ const Menu = defineComponent({
         "mediaDevices" in navigator &&
         "getUserMedia" in navigator.mediaDevices
       ) {
+        //moet dit nog steeds hier staan?
         // ok, browser supports it
-        alert("supoort");
+        alert("support");
       }
     },
     locationClicked(): void {
