@@ -5,6 +5,7 @@
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
     <Name>tsTestapp</Name>
     <RootNamespace>tsTestapp</RootNamespace>
+    <SaveNodeJsSettingsInProjectFile>True</SaveNodeJsSettingsInProjectFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -21,9 +22,9 @@
     <OutputPath>.</OutputPath>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
-    <NodejsPort>1337</NodejsPort>
+    <NodejsPort>8080</NodejsPort>
     <EnableTypeScript>true</EnableTypeScript>
-    <StartWebBrowser>true</StartWebBrowser>
+    <StartWebBrowser>True</StartWebBrowser>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <DebugSymbols>true</DebugSymbols>
@@ -73,11 +74,10 @@
     <Content Include="src\components\location\LocationInfo.vue" />
     <Content Include="src\components\location\LocationModal.vue" />
     <Content Include="src\components\location\LocationOverviewTable.vue" />
-    <Content Include="src\components\Menu.vue" />
+    <Content Include="src\components\MenuComp.vue" />
     <Content Include="src\components\MenuItem.vue" />
-    <Content Include="src\components\Navigationbar.vue" />
+    <Content Include="src\components\NavigationBar.vue" />
     <Content Include="src\components\packageInfo\PackageDetails.vue" />
-    <Content Include="src\components\packageInfo\PackageListItem.vue" />
     <Content Include="src\components\packageInfo\PersonDetails.vue" />
     <Content Include="src\components\packageInfo\RoomDetails.vue" />
     <Content Include="src\components\PrintQR.vue" />
@@ -86,7 +86,7 @@
     <Content Include="src\components\route\RouteComp.vue" />
     <Content Include="src\components\route\RoutePackageInfo.vue" />
     <Content Include="src\components\route\TicketComp.vue" />
-    <Content Include="src\components\Search.vue" />
+    <Content Include="src\components\SearchBar.vue" />
     <Content Include="src\components\SearchContainer.vue" />
     <Content Include="src\components\SearchContainerLocation.vue" />
     <Content Include="src\components\standardUi\BtnBack.vue" />
@@ -110,7 +110,7 @@
     <Content Include="src\components\svg\SearchSvg.vue" />
     <Content Include="src\styling\main.scss" />
     <Content Include="src\views\AddLocation.vue" />
-    <Content Include="src\views\Home.vue" />
+    <Content Include="src\views\HomePage.vue" />
     <Content Include="src\views\LocationOverview.vue" />
     <Content Include="src\views\Modal.vue" />
     <Content Include="src\views\PackagePage.vue" />

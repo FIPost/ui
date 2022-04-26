@@ -11,7 +11,11 @@ export default class Room {
     this.id = id;
     this.name = name;
     this.building = building;
-  }
+    }
+
+    public getLocationString(): string {
+        return `${this.building.address.city.name}, ${this.building.name}, ${this.name}`;
+    }
 }
 
 class RoomHelper {
