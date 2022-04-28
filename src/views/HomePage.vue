@@ -47,9 +47,7 @@
 .container-group {
   margin: 2em;
   margin-bottom: 4em;
-}
 
-.container-group {
   .header {
     font-family: $font-family;
     font-size: 2em;

@@ -2,10 +2,11 @@
     <div class="card">
         <h1>{{fPackage.routeFinished ? "Route voltooid" : "Nieuwe actie"}}</h1>
         <LoadingIcon v-if="loading" />
-        <div v-if="fPackage.routeFinished" class="finished-comp">
-            <TicketComp :ticket="fPackage.tickets[0]" />
-            <font-awesome-icon class="fc" icon="flag-checkered" />
-        </div>
+        <!--<div v-if="fPackage.routeFinished" class="finished-comp">
+            {{fPackage}}-->
+            <!--<TicketComp :ticket="fPackage.tickets[0]" />-->
+            <!--<font-awesome-icon class="fc" icon="flag-checkered" />
+        </div>-->
         <div v-else class="form">
             <CBSearchSuggestions :options="personOptions"
                                  :custom="true"

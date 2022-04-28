@@ -1,6 +1,7 @@
 <template>
     <div class="card">
         <table class="table table-striped">
+            <caption>locations in system</caption>
             <thead>
                 <tr>
                     <th>Stad</th>

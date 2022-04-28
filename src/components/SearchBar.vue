@@ -17,7 +17,7 @@
     export default class SearchBar extends Vue {
         @Prop() private inputValue: string = "";
 
-        @Watch('inputValue') private inputValueChanged(val, oldVal) {
+        @Watch('inputValue') private inputValueChanged(val, _oldVal) {
             this.$emit("valueChanged", val);
         }
     }

@@ -3,23 +3,23 @@
         <h1>Pakketgegevens</h1>
         <ul class="listGroup gap-1">
             <li class="listItem">
-                <div class="col-6"><b>Omschrijving:</b></div>
+                <div class="col-6"><strong>Omschrijving:</strong></div>
                 <div class="col-6">{{pkg.name}}</div>
             </li>
             <li class="listItem">
-                <div class="col-6"><b>Ontvanger:</b></div>
+                <div class="col-6"><strong>Ontvanger:</strong></div>
                 <div class="col-6">{{pkg.receiverId}}</div>
             </li>
             <li class="listItem">
-                <div class="col-6"><b>Afzender:</b></div>
+                <div class="col-6"><strong>Afzender:</strong></div>
                 <div class="col-6">{{pkg.sender}}</div>
             </li>
             <li class="listItem">
-                <div class=""><b>Huidige locatie:</b></div>
+                <div class=""><strong>Huidige locatie:</strong></div>
                 <RoomDetails :id="pkg.tickets[0].locationId" />
             </li>
             <li class="listItem">
-                <div class=""><b>Eind locatie:</b></div>
+                <div class=""><strong>Eind locatie:</strong></div>
                 <RoomDetails :id="pkg.collectionPointId" />
             </li>
         </ul>

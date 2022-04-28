@@ -28,7 +28,6 @@
     import LocationInfo from "@/components/location/LocationInfo.vue";
     import LocationModal from "@/components/location/LocationModal.vue";
     import { getCurrentInstance } from "@vue/runtime-core";
-    import { AxiosError } from "axios";
     import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
 
     @Options({

@@ -1,7 +1,7 @@
 import { Package } from '@/package/Package';
 import http from '@/services/http';
 import TicketRequest from '@/classes/requests/TicketRequest';
-import axios, { AxiosInstance } from 'axios';
+import axios from 'axios';
 
 /*
 interface IPackageRepository {

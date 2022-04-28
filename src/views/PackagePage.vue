@@ -8,7 +8,7 @@
                 <RoutePackageInfo :tickets="pkg.tickets" />
             </div>
             <div class="pi-item-container">
-                <PrintQR :packageId="pkg.id" :address="buildAddressString()" />
+                <PrintQR :packageId="pkg.id" />
                 <PackageDetails :pkg="pkg" />
             </div>
         </div>
@@ -58,22 +58,6 @@
                     this.pkg = res;
                     this.isLoading = false;
                 })
-                .catch((err: AxiosError) => {});
-        }
-
-        buildAddressString() {
-            if (this.pkg && this.pkg.collectionPointId) {
-                //this.addressData =
-                //    this.packageM.collectionPoint.building.address.street.toString() +
-                //    " " +
-                //    this.packageM.collectionPoint.building.name +
-                //    ", " +
-                //    this.packageM.collectionPoint.name +
-                //    " " +
-                //    this.packageM.collectionPoint.building.address.city.name;
-                //return this.addressData;
-            }
-            return "Er ging iets mis bij het ophalen van de locatie";
         }
     }
 </script>

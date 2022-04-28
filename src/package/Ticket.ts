@@ -1,5 +1,3 @@
-import Room from "@/location/Room"
-
 export class Ticket {
     id: string;
     locationId: string;
