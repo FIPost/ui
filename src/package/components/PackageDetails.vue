@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <h1>Pakketgegevens</h1>
-        <ul class="listGroup">
+        <ul class="listGroup gap-1">
             <li class="listItem">
                 <div class="col-6"><b>Omschrijving:</b></div>
                 <div class="col-6">{{pkg.name}}</div>
@@ -45,22 +45,6 @@
 
 <style scoped lang="scss">
     @import "@/styling/main.scss";
-
-    .listGroup {
-        list-style: none;
-        margin: 0;
-        padding: 0;
-
-        display: flex;
-        flex-direction: column;
-
-        row-gap: 1em;
-    }
-
-    .listItem {
-        display: flex;
-        flex-wrap: wrap;
-    }
 
     .col-6{
         flex-grow: 6;

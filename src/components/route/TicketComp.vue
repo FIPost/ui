@@ -5,39 +5,30 @@
                                :class="destinationReached() ? 'finished big' : 'finished'" />
         </div>
         <div class="ticket-info">
-            <div class="ticket-info-top">
-                {{ getDateString() }}
-            </div>
-            <div class="ticket-info-bot">
-                Pakket is naar <u>{{ getLocationString() }}</u> gebracht.
-            </div>
-            <div class="ticket-info-bot">
-                Uitgevoerd door: {{ ticket.completedByPerson }}
-            </div>
+            <div class="ticket-info-top">{{ ticket.getDateString() }}</div>
+            <div class="ticket-info-bot">Pakket is naar <u>{{ ticket.locationId }}</u> gebracht.</div>
+            <div class="ticket-info-bot">Uitgevoerd door: {{ ticket.completedByPersonId }}</div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
     import { Vue } from "vue-class-component";
-    import Ticket from "@/package/Ticket";
+    import { Ticket } from "@/package/Ticket";
     import { Prop } from "vue-property-decorator";
 
     export default class TicketComp extends Vue {
-        @Prop() public ticket: Ticket = {} as Ticket;
+        @Prop() public ticket!: Ticket;
 
-        private destinationReached() {
-            if (this.ticket) {
-                if (this.ticket.receivedByPersonId) {
-                    return true;
-                }
-            }
-            return false;
+        mounted() {
+            console.log(this.ticket);
         }
 
-        private getDateString(): string {
-            let date = this.ticket?.getDateString()
-            return date ? date : "Geen datum";
+        private destinationReached() {
+            if (this.ticket.receivedByPersonId) {
+                return true;
+            }
+            return false;
         }
 
         private getLocationString(): string {

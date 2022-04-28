@@ -35,6 +35,23 @@ $text-yellow: #7C7540;
     background-color: whitesmoke;
 }
 
+.listGroup {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.gap-1 {
+    row-gap: 1em;
+}
+
+.listItem {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .component-container {
   display: flex;
   flex-direction: column;

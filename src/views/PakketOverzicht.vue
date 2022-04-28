@@ -25,7 +25,6 @@
     import { pakketService } from "@/package/pakketservice";
    
     import { Package } from "@/package/Package";
-    import Ticket from "@/package/Ticket";
 
     import SearchContainer from "@/components/SearchContainer.vue";
     import BtnBack from "@/components/standardUi/BtnBack.vue";
@@ -61,6 +60,7 @@
                 .getAll()
                 .then((res: Package[]) => {
                     this.allPackages = res;
+                    console.log(this.allPackages);
                     this.pageCount = Math.ceil(this.allPackages.length / this.visibleItemsPerPageCount);
                     this.loadPage(1);
                     this.isLoaded = true;

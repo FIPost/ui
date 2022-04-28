@@ -5,7 +5,7 @@
         <div class="page" v-else>
             <div class="pi-item-container">
                 <CreateTicket @new-ticket="reloadPage" :fPackage="pkg" />
-                <!--<RoutePackageInfo :tickets="packageM.tickets" />-->
+                <RoutePackageInfo :tickets="pkg.tickets" />
             </div>
             <div class="pi-item-container">
                 <PrintQR :packageId="pkg.id" :address="buildAddressString()" />
@@ -49,7 +49,6 @@
 
         async beforeMount() {
             this.getPackage();
-            console.log(this.pkg);
         }
 
         async getPackage() {
@@ -59,8 +58,7 @@
                     this.pkg = res;
                     this.isLoading = false;
                 })
-                .catch((err: AxiosError) => {
-                });
+                .catch((err: AxiosError) => {});
         }
 
         buildAddressString() {

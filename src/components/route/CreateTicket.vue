@@ -56,7 +56,7 @@
     // Types.
     import { Person } from "@/employee/Person";
     import Room from "@/location/Room";
-    import Ticket from "@/package/Ticket";
+    import { Ticket } from "@/package/Ticket";
     import TicketRequest from "@/classes/requests/TicketRequest";
 
     // Services.

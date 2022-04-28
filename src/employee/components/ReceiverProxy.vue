@@ -1,7 +1,7 @@
 <template>
     <div>
         <span class="placeholder fade" v-if="!isLoaded" />
-        <p v-else>{{this.text}}</p>
+        <span v-else>{{this.text}}</span>
     </div>
 </template>
 

@@ -13,7 +13,7 @@
     import { Options, Vue } from "vue-class-component";
     import { Prop } from "vue-property-decorator";
     import TicketComp from "@/components/route/TicketComp.vue";
-    import Ticket from "@/package/Ticket";
+    import { Ticket } from "@/package/Ticket";
 
     @Options({
         components: {
@@ -21,7 +21,7 @@
         },
     })
     export default class RouteComp extends Vue {
-        @Prop() private tickets: Ticket[] = [];
+        @Prop() private tickets!: Ticket[];
     }
 </script>
 

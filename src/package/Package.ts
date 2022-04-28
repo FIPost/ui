@@ -1,5 +1,4 @@
-import ISerializable from "@/classes/helpers/ISerializable"
-import Ticket from "@/package/Ticket";
+import { Ticket } from "@/package/Ticket";
 
 export class Package {
     id: string;
@@ -31,7 +30,7 @@ export class Package {
             data["name"],
             data["status"],
             data["routeFinished"],
-            data["tickets"]
+            data["tickets"].map((ticket) => Ticket.deserialize(ticket))
         );
     }
 

@@ -1,15 +1,20 @@
 <template>
-    <div class="route-package-info-container" @click="toggle()">
-        <div class="title">
-            <div class="container-header text">Geschiedenis</div>
-            <div v-if="mobile" class="arrow">
-                <font-awesome-icon v-if="toggled" icon="sort-up" size="2x" />
-                <font-awesome-icon v-else icon="sort-down" size="2x" />
-            </div>
+    <div class="card" @click="toggle()">
+        <h1>Geschiedenis</h1>
+        <div v-if="mobile" class="arrow">
+            <font-awesome-icon v-if="toggled" icon="sort-up" size="2x" />
+            <font-awesome-icon v-else icon="sort-down" size="2x" />
         </div>
-        <div v-if="toggled">
-            <RouteComp :tickets="tickets" />
-        </div>
+        <ul class="listGroup gap-1" v-if="toggled">
+            <li class="listItem card stack" v-for="item in tickets" :key="item.id">
+                <font-awesome-icon icon="check-circle" />
+                <ul class="listGroup">
+                    <li class="listItem">{{new Date(item.finishedAt * 1000).toLocaleDateString()}}</li>
+                    <li class="listItem"><LocationProxy :id="item.locationId" /></li>
+                    <li class="listItem"><ReceiverProxy :id ="item.completedByPersonId" /></li>
+                </ul>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -17,18 +22,23 @@
     import { Options, Vue } from "vue-class-component";
     import { Prop } from "vue-property-decorator";
     import RouteComp from "@/components/route/RouteComp.vue";
-    import Ticket from "@/package/Ticket";
+    import { Ticket } from "@/package/Ticket";
+
+    import LocationProxy from '@/location/components/LocationProxy.vue'
+    import ReceiverProxy from '@/employee/components/ReceiverProxy.vue'
 
     @Options({
         components: {
             RouteComp,
+            LocationProxy,
+            ReceiverProxy
         }
     })
     export default class RoutePackageInfo extends Vue {
         private toggled: Boolean = true;
         private mobile: Boolean = false;
 
-        @Prop() public tickets!: Ticket[];
+        @Prop() public tickets!: Array<Ticket>;
 
         private toggle() {
             if (this.mobile) {
@@ -47,6 +57,13 @@
 
 <style scoped lang="scss">
     @import "@/styling/main.scss";
+
+    .stack {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        column-gap: 1em;
+    }
 
     .route-package-info-container {
         display: flex;

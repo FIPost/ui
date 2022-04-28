@@ -1,25 +1,31 @@
 import Room from "@/location/Room"
-import { dateConverter } from "@/classes/helpers/DateConverter"
 
-export default class Ticket {
-    public id?: string;
-    public locationId?: string;
-    public finishedAt?: number;
-    public completedByPersonId?: string;
-    public receivedByPersonId?: string;
+export class Ticket {
+    id: string;
+    locationId: string;
+    finishedAt: number;
+    completedByPersonId: string;
+    receivedByPersonId: string;
 
-    staic deserialize(data: Object): Ticket {
-        this.id = data["id"];
-        this.locationId = data["locationId"];
-        this.finishedAt = data["finishedAt"];
-        this.completedByPersonId = data["completedByPersonId"];
-        this.receivedByPersonId = data["recievedByPersonId"];
-        return this;
+    constructor(id: string, locationId: string, finishedAt: number, completedByPersonId: string, receivedByPersonId: string) {
+        this.id = id;
+        this.locationId = locationId;
+        this.finishedAt = finishedAt;
+        this.completedByPersonId = completedByPersonId;
+        this.receivedByPersonId = receivedByPersonId;
     }
 
-    public getDateString(): string {
-        let date = this.finishedAt;
-        if (date == undefined) date = 0;
-        return dateConverter.getDateString(date);
+    static deserialize(data: Object): Ticket {
+        return new Ticket(
+            data["id"],
+            data["locationId"],
+            data["finishedAt"],
+            data["completedByPersonId"],
+            data["recievedByPersonId"]
+        );
+    }
+
+    getDateString(): string {
+        return new Date(this.finishedAt * 1000).toLocaleDateString();
     }
 }

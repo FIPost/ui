@@ -73,17 +73,17 @@
     <Content Include="src\components\locationRegistration\AddRoom.vue" />
     <Content Include="src\components\location\LocationInfo.vue" />
     <Content Include="src\components\location\LocationModal.vue" />
-    <Content Include="src\components\tables\LocationTable.vue" />
+    <Content Include="src\location\components\LocationTable.vue" />
     <Content Include="src\components\MenuComp.vue" />
     <Content Include="src\components\MenuItem.vue" />
     <Content Include="src\components\NavigationBar.vue" />
-    <Content Include="src\components\packageInfo\PackageDetails.vue" />
+    <Content Include="src\package\components\PackageDetails.vue" />
     <Content Include="src\components\packageInfo\PersonDetails.vue" />
     <Content Include="src\components\packageInfo\RoomDetails.vue" />
-    <Content Include="src\components\package\LocationProxy.vue">
+    <Content Include="src\location\components\LocationProxy.vue">
       <SubType>Code</SubType>
     </Content>
-    <Content Include="src\components\package\ReceiverProxy.vue">
+    <Content Include="src\employee\components\ReceiverProxy.vue">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\components\PrintQR.vue" />
@@ -109,7 +109,6 @@
     <Content Include="src\components\standardUi\Pagination\BasePaginationTrigger.vue" />
     <Content Include="src\components\standardUi\SmallBtnFinish.vue" />
     <Content Include="src\components\standardUi\StatusBadge.vue" />
-    <Content Include="src\components\standardUi\TableComponent.vue" />
     <Content Include="src\components\svg\LocationSvg.vue" />
     <Content Include="src\components\svg\RegisterSvg.vue" />
     <Content Include="src\components\svg\ScanSvg.vue" />
@@ -119,7 +118,7 @@
     <Content Include="src\views\HomePage.vue" />
     <Content Include="src\views\LocationOverview.vue" />
     <Content Include="src\views\Modal.vue" />
-    <Content Include="src\components\tables\PackageTable.vue">
+    <Content Include="src\package\components\PackageTable.vue">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\views\PackagePage.vue" />
@@ -140,58 +139,55 @@
     <Folder Include="src\classes\" />
     <Folder Include="src\classes\helpers\" />
     <Folder Include="src\classes\requests\" />
-    <Folder Include="src\classes\table\" />
     <Folder Include="src\classes\validation\" />
     <Folder Include="src\components\" />
+    <Folder Include="src\employee\components\" />
     <Folder Include="src\components\locationRegistration\" />
     <Folder Include="src\components\location\" />
-    <Folder Include="src\components\tables\" />
-    <Folder Include="src\components\package\" />
+    <Folder Include="src\employee\" />
     <Folder Include="src\components\packageInfo\" />
     <Folder Include="src\components\route\" />
     <Folder Include="src\components\standardUi\" />
     <Folder Include="src\components\standardUi\Pagination\" />
     <Folder Include="src\components\svg\" />
+    <Folder Include="src\location\" />
+    <Folder Include="src\location\components\" />
+    <Folder Include="src\package\" />
+    <Folder Include="src\package\components\" />
     <Folder Include="src\router\" />
     <Folder Include="src\services\" />
-    <Folder Include="src\services\locatieService\" />
-    <Folder Include="src\services\pakketService\" />
-    <Folder Include="src\services\personeelService\" />
     <Folder Include="src\styling\" />
     <Folder Include="src\views\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="server.ts" />
-    <TypeScriptCompile Include="src\classes\Address.ts" />
-    <TypeScriptCompile Include="src\classes\Building.ts" />
-    <TypeScriptCompile Include="src\classes\City.ts" />
+    <TypeScriptCompile Include="src\location\Address.ts" />
+    <TypeScriptCompile Include="src\location\Building.ts" />
+    <TypeScriptCompile Include="src\location\City.ts" />
     <TypeScriptCompile Include="src\classes\helpers\DateConverter.ts" />
     <TypeScriptCompile Include="src\classes\helpers\ISerializable.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\classes\helpers\SelectOption.ts" />
-    <TypeScriptCompile Include="src\classes\Location.ts" />
-    <TypeScriptCompile Include="src\classes\Package.ts" />
-    <TypeScriptCompile Include="src\classes\Person.ts" />
+    <TypeScriptCompile Include="src\package\Package.ts" />
+    <TypeScriptCompile Include="src\employee\Person.ts" />
     <TypeScriptCompile Include="src\classes\requests\AddressRequest.ts" />
     <TypeScriptCompile Include="src\classes\requests\BuildingRequest.ts" />
     <TypeScriptCompile Include="src\classes\requests\CityRequest.ts" />
     <TypeScriptCompile Include="src\classes\requests\PackageRequest.ts" />
     <TypeScriptCompile Include="src\classes\requests\RoomRequest.ts" />
     <TypeScriptCompile Include="src\classes\requests\TicketRequest.ts" />
-    <TypeScriptCompile Include="src\classes\Room.ts" />
-    <TypeScriptCompile Include="src\classes\table\ColumnType.ts" />
-    <TypeScriptCompile Include="src\classes\table\TableCell.ts" />
-    <TypeScriptCompile Include="src\classes\Ticket.ts" />
+    <TypeScriptCompile Include="src\location\Room.ts" />
+    <TypeScriptCompile Include="src\package\Ticket.ts" />
     <TypeScriptCompile Include="src\classes\validation\PackageValidation.ts" />
     <TypeScriptCompile Include="src\main.ts" />
     <TypeScriptCompile Include="src\router\index.ts" />
     <TypeScriptCompile Include="src\services\http.ts" />
-    <TypeScriptCompile Include="src\services\locatieService\buildingservice.ts" />
-    <TypeScriptCompile Include="src\services\locatieService\cityservice.ts" />
-    <TypeScriptCompile Include="src\services\locatieService\roomservice.ts" />
-    <TypeScriptCompile Include="src\services\pakketService\pakketservice.ts" />
-    <TypeScriptCompile Include="src\services\personeelService\personeelService.ts" />
+    <TypeScriptCompile Include="src\location\buildingservice.ts" />
+    <TypeScriptCompile Include="src\location\cityservice.ts" />
+    <TypeScriptCompile Include="src\location\roomservice.ts" />
+    <TypeScriptCompile Include="src\package\pakketservice.ts" />
+    <TypeScriptCompile Include="src\employee\personeelService.ts" />
     <TypeScriptCompile Include="src\shims-vue.d.ts" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
