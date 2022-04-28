@@ -13,7 +13,8 @@ import { Vue, Options } from "vue-class-component";
 import Navigationbar from "@/components/Navigationbar.vue";
 import Modal from "@/views/Modal.vue";
 import { getCurrentInstance } from "vue";
-import { AxiosError } from "axios";
+    import { AxiosError } from "axios";
+
 
 @Options({
   components: {

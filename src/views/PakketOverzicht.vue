@@ -94,9 +94,9 @@
 
         }
 
-        private CreateTableRowFromPackage(pkg: Package): Object {
+        private async CreateTableRowFromPackage(pkg: Package): Promise<Object> {
             var name = pkg.name;
-            var receiver = (pkg as Package).getReceiver();
+            var receiver = await pkg.getReceiver();
             var status = pkg.routeFinished ? "Afgeleverd" : "In behandeling";
             var targetLocation = pkg.collectionPointId ? pkg.collectionPointId : "Kon niet gevonden worden";
 

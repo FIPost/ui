@@ -1,22 +1,49 @@
 import { Package } from '@/classes/Package';
 import http from '@/services/http';
 import TicketRequest from '@/classes/requests/TicketRequest';
-import axios from 'axios';
+import axios, { AxiosInstance } from 'axios';
 
-export default class PakketService {
+/*
+interface IPackageRepository {
+    getAll(): Promise<Array<Package>>;
+    getById(): Package;
+    addPackage(pkg: Package): void;
+}
+
+export class RemotePackageRepo implements IPackageRepository {
+    private axiosInst: AxiosInstance;
+
+    constructor() {
+        this.axiosInst = axios.create({
+            baseURL: `${process.env.VUE_APP_API_GATEWAY}/api/packages`
+        });
+    }
+
+    async getAll(): Promise<Package[]> {
+        const { data } = await this.axiosInst.get(``);
+        const packages: Array<Package> = data.map((pkg) => new Package().deserialize(pkg)) as Package[];
+        return packages;
+    }
+
+    getById(): Package {
+        throw new Error('Method not implemented.');
+    }
+
+    addPackage(pkg: Package): void {
+        throw new Error('Method not implemented.');
+    }
+
+}
+*/
+
+export class PakketService {
     axiosInst = axios.create({
-        baseURL: process.env.VUE_APP_API_GATEWAY + `/api/packages`,
-        params: {
-            // API params go here
-        }
+        baseURL: `${process.env.VUE_APP_API_GATEWAY}/api/packages`
     });
 
     public async getAll(): Promise<Array<Package>> {
         const { data } = await this.axiosInst.get(``);
-        const arr = data as Array<Object>;
-        const res: Array<Package> = [];
-        arr.forEach((pkg) => res.push(new Package().deserialize(pkg)))
-        return res;
+        return data.map((pkg) => new Package().deserialize(pkg));
     }
 
     public async post(packageModel): Promise<Package> {

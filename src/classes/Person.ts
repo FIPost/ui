@@ -1,4 +1,6 @@
-export default class Person {
+import ISerializable from "./helpers/ISerializable";
+
+export class Person implements ISerializable<Person> {
     public id: string = "";
     public name: string = "";
     public email: string = "";
@@ -7,5 +9,12 @@ export default class Person {
         this.id = id;
         this.name = name;
         this.email = email;
+    }
+
+    deserialize(data: Object): Person {
+        this.id = data["id"];
+        this.name = data["name"];
+        this.email = data["email"];
+        return this;
     }
 }

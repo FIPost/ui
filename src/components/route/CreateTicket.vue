@@ -90,7 +90,7 @@
     import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
     // Types.
-    import Person from "@/classes/Person";
+    import { Person } from "@/classes/Person";
     import Room from "@/classes/Room";
     import { roomHelper } from "@/classes/Room";
     import Ticket from "@/classes/Ticket";

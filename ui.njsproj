@@ -113,6 +113,9 @@
     <Content Include="src\views\HomePage.vue" />
     <Content Include="src\views\LocationOverview.vue" />
     <Content Include="src\views\Modal.vue" />
+    <Content Include="src\views\PackageList.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\views\PackagePage.vue" />
     <Content Include="src\views\PakketOverzicht.vue" />
     <Content Include="src\views\RegisterPackage.vue" />

@@ -1,6 +1,6 @@
 import ISerializable from "@/classes/helpers/ISerializable"
 import Ticket from "@/classes/Ticket";
-import Person from "@/classes/Person";
+import { Person } from "@/classes/Person";
 import { personeelService } from "@/services/personeelService/personeelService"
 
 export class Package implements ISerializable<Package> {
@@ -25,8 +25,8 @@ export class Package implements ISerializable<Package> {
         return this;
     }
 
-    public getReceiver() {
+    async getReceiver() {
         if (this.receiverId)
-        return personeelService.get(this.receiverId);
+        return await personeelService.get(this.receiverId);
     }
 }
