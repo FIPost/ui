@@ -10,4 +10,12 @@ export default class Building{
         this.name = name;
         this.address = address;
     }
+
+    static deserialize(data: Object): Building {
+        return new Building(
+            data["id"],
+            data["name"],
+            Address.deserialize(data["address"])
+        );
+    }
 }

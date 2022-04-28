@@ -4,19 +4,19 @@
         <LoadingIcon v-if="isLoading" />
         <div class="page" v-else>
             <div class="pi-item-container">
-                <CreateTicket @new-ticket="reloadPage" :fPackage="packageM" />
-                <RoutePackageInfo :tickets="packageM.tickets" />
+                <CreateTicket @new-ticket="reloadPage" :fPackage="pkg" />
+                <!--<RoutePackageInfo :tickets="packageM.tickets" />-->
             </div>
             <div class="pi-item-container">
-                <PrintQR :packageId="packageId" :address="buildAddressString()" />
-                <PackageDetails :packageM="packageM" />
+                <PrintQR :packageId="pkg.id" :address="buildAddressString()" />
+                <PackageDetails :pkg="pkg" />
             </div>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import { Options, Vue } from "vue-class-component";
+    import { Vue, Options } from "vue-class-component";
     import PackageDetails from "@/components/packageInfo/PackageDetails.vue";
     import PrintQR from "@/components/PrintQR.vue";
     import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
@@ -38,41 +38,33 @@
         },
     })
     export default class PackagePage extends Vue {
-        private packageId: String = "";
-        private packageM: Package = new Package();
+        private pkg?: Package;
 
         private isLoading: Boolean = true;
-        private error: Boolean = false;
 
-        private ticketKey: number = 0;
-        private addressData: String = "";
-
-        private async reloadPage() {
+        async reloadPage() {
             this.isLoading = true;
             await this.getPackage();
         }
 
-        async mounted() {
-            this.packageId = this.$router.currentRoute.value.params.id.toString();
-            await this.getPackage();
-            console.log(this.packageM);
+        async beforeMount() {
+            this.getPackage();
+            console.log(this.pkg);
         }
 
-        private async getPackage() {
-            await pakketService
-                .get(this.packageId)
+        async getPackage() {
+            pakketService
+                .get(this.$router.currentRoute.value.params.id.toString())
                 .then((res) => {
-                    this.packageM = res;
+                    this.pkg = res;
                     this.isLoading = false;
                 })
                 .catch((err: AxiosError) => {
-                    this.error = true;
-                    this.isLoading = false;
                 });
         }
 
         buildAddressString() {
-            if (this.packageM.collectionPointId) {
+            if (this.pkg && this.pkg.collectionPointId) {
                 //this.addressData =
                 //    this.packageM.collectionPoint.building.address.street.toString() +
                 //    " " +

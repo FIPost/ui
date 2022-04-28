@@ -17,6 +17,24 @@ $gradient: linear-gradient(90deg, rgba(193,71,153,1) 0%, rgba(79,60,201,1) 100%)
 $background-yellow: #EACF73;
 $text-yellow: #7C7540;
 
+.card {
+    background-color: white;
+    border-radius: $border-radius;
+    box-shadow: $shadow;
+    text-align: left;
+    padding: .35em .65em;
+}
+
+.table {
+    width: 100%;
+    background-color: white;
+    border-collapse: collapse;
+}
+
+.table-striped tbody tr:nth-child(odd) {
+    background-color: whitesmoke;
+}
+
 .component-container {
   display: flex;
   flex-direction: column;

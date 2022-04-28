@@ -96,6 +96,7 @@ export default class CBSearchSuggestions extends Vue {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  align-items: baseline;
 }
 
 .header {

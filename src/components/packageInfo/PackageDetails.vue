@@ -1,78 +1,72 @@
 <template>
-    <div>
-        <div class="package-details">
-            <div class="container container-header">Pakketgegevens</div>
-
-            <div class="details-wrapper">
-                <div class="pd-content">
-                    <div class="container-subheader-small">Omschrijving</div>
-                    <div class="pd-item">{{ packageM.name }}</div>
-                </div>
-
-                <PersonDetails :person="packageM.receiver" />
-
-                <div class="pd-container">
-                    <div class="pd-content">
-                        <div class="container-subheader-small">Afzender</div>
-                        <div class="pd-item">
-                            {{ packageM.sender.length > 1 ? packageM.sender : "De afzender kan niet worden opgehaald" }}
-                        </div>
-                    </div>
-                    <div class="sd-img">
-                        <img alt="BoxQR" src="@/assets/BoxQR.png" />
-                    </div>
-                </div>
-
-                <div>
-                    <StatusBadge :completeText="getDateString()" inCompleteText="Onbekend" :complete="packageM.tickets.length >= 0" />
-                    <RoomDetails :room="packageM.tickets.length > 0 ? packageM.tickets[packageM.tickets.length - 1].location : null" title="Binnen gekomen bij" />
-                </div>
-
-                <div>
-                    <StatusBadge completeText="Afgeleverd" inCompleteText="In behandeling" :complete="packageM.routeFinished" />
-                    <RoomDetails :room="packageM.collectionPoint" title="Af te halen op" />
-                </div>
-            </div>
-        </div>
+    <div class="card">
+        <h1>Pakketgegevens</h1>
+        <ul class="listGroup">
+            <li class="listItem">
+                <div class="col-6"><b>Omschrijving:</b></div>
+                <div class="col-6">{{pkg.name}}</div>
+            </li>
+            <li class="listItem">
+                <div class="col-6"><b>Ontvanger:</b></div>
+                <div class="col-6">{{pkg.receiverId}}</div>
+            </li>
+            <li class="listItem">
+                <div class="col-6"><b>Afzender:</b></div>
+                <div class="col-6">{{pkg.sender}}</div>
+            </li>
+            <li class="listItem">
+                <div class=""><b>Huidige locatie:</b></div>
+                <RoomDetails :id="pkg.tickets[0].locationId" />
+            </li>
+            <li class="listItem">
+                <div class=""><b>Eind locatie:</b></div>
+                <RoomDetails :id="pkg.collectionPointId" />
+            </li>
+        </ul>
     </div>
 </template>
 
 <script lang="ts">
     import { Options, Vue } from "vue-class-component";
     import { Prop } from "vue-property-decorator";
-    import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
-    import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
-    import StatusBadge from "@/components/standardUi/StatusBadge.vue";
-    import Room, { roomHelper } from "@/classes/Room";
     import { Package } from "@/classes/Package";
-    import { dateConverter } from "@/classes/helpers/DateConverter";
+    import RoomDetails from "@/components/packageInfo/RoomDetails.vue"
 
     @Options({
         components: {
-            PersonDetails,
-            RoomDetails,
-            StatusBadge,
+            RoomDetails
         },
     })
     export default class PackageDetails extends Vue {
-        @Prop() private packageM: Package = new Package();
+        @Prop() pkg!: Package;
 
-        private getDateString(): string {
-            let date = "Onbekend";
-
-            if (this.packageM.tickets) {
-                let length = this.packageM.tickets?.length;
-                if(length > 0)
-                    date = this.packageM.tickets[length - 1].getDateString();
-            }
-
-            return date;
-        }
     }
 </script>
 
 <style scoped lang="scss">
     @import "@/styling/main.scss";
+
+    .listGroup {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        display: flex;
+        flex-direction: column;
+
+        row-gap: 1em;
+    }
+
+    .listItem {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .col-6{
+        flex-grow: 6;
+    }
+
+
 
     .package-details {
         background-color: white;

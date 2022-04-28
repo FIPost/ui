@@ -9,8 +9,8 @@ export default class RoomService {
   }
 
   public async getAll(): Promise<Array<Room>> {
-    const response = await http.get(`/api/locations/rooms`);
-    return response.data;
+      const response = await http.get(`/api/locations/rooms`);
+      return response.data.map((room) => Room.deserialize(room));
   }
 
   public async getById(id: string): Promise<Room> {

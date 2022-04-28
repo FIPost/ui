@@ -1,81 +1,45 @@
 <template>
-  <div>
-    <div class="next-step-container">
-      <div v-if="fPackage == null">
-        <div>
-          Er ging iets mis bij het ophalen van de pakketgegevens. Probeer het
-          later opnieuw.
-        </div>
-      </div>
-      <div v-else>
-        <div
-          v-if="fPackage.routeFinished"
-          class="container container-header modern-purple"
-        >
-          Route voltooid
-        </div>
-        <div v-else class="container container-header">Nieuwe actie</div>
-
+    <div class="card">
+        <h1>{{fPackage.routeFinished ? "Route voltooid" : "Nieuwe actie"}}</h1>
         <LoadingIcon v-if="loading" />
-        <div class="finished-comp" v-else-if="fPackage.routeFinished">
-          <TicketComp :ticket="fPackage.tickets[0]" />
-          <font-awesome-icon class="fc" icon="flag-checkered" />
+        <div v-if="fPackage.routeFinished" class="finished-comp">
+            <TicketComp :ticket="fPackage.tickets[0]" />
+            <font-awesome-icon class="fc" icon="flag-checkered" />
         </div>
-        <div v-else>
-          <div v-if="!fPackage.routeFinished">
-            <div class="form">
-              <CBSearchSuggestions
-                :options="personOptions"
-                :custom="true"
-                :valid="personValid"
-                @select-changed="personChanged"
-                :selectedOption="selectedPersonOption"
-              >
-                <span class="hw">Afgeleverd door: </span>
-              </CBSearchSuggestions>
-              <CBSearchSuggestions
-                :options="roomOptions"
-                :custom="true"
-                :valid="roomValid"
-                @select-changed="roomChanged"
-                :selectedOption="selectedRoomOption"
-              >
-                <span class="hw">Op locatie: </span>
-              </CBSearchSuggestions>
-
-              <div v-if="showPersonConfirmation" class="confirm-person">
+        <div v-else class="form">
+            <CBSearchSuggestions :options="personOptions"
+                                 :custom="true"
+                                 :valid="personValid"
+                                 @select-changed="personChanged"
+                                 :selectedOption="selectedPersonOption">
+                <span>Afgeleverd door: </span>
+            </CBSearchSuggestions>
+            <CBSearchSuggestions :options="roomOptions"
+                                 :custom="true"
+                                 :valid="roomValid"
+                                 @select-changed="roomChanged"
+                                 :selectedOption="selectedRoomOption">
+                <span>Op locatie: </span>
+            </CBSearchSuggestions>
+            <div v-if="showPersonConfirmation">
                 <hr />
-                <div class="container container-header modern-pink">
-                  Laatste stap
-                </div>
-                <CBSearchSuggestions
-                  :options="personOptions"
-                  :custom="true"
-                  :valid="personConfirmedValid"
-                  @select-changed="personConfirmedChanged"
-                  :selectedOption="selectedPersonConfirmedOption"
-                >
-                  <span>
-                    Ik bevestig dat het pakket in goede orde is afgeleverd
-                  </span>
+                <h2> Laatste stap </h2>
+                <CBSearchSuggestions :options="personOptions"
+                                     :custom="true"
+                                     :valid="personConfirmedValid"
+                                     @select-changed="personConfirmedChanged"
+                                     :selectedOption="selectedPersonConfirmedOption">
+                    <span> Ik bevestig dat het pakket in goede orde is afgeleverd </span>
                 </CBSearchSuggestions>
-              </div>
-
-              <ul v-if="errors">
-                <li v-for="e in errors" :key="e" class="error-text">{{ e }}</li>
-              </ul>
-              <SmallBtnFinish
-                class="finish"
-                @btn-clicked="addTicketAction()"
-                :text="'Toevoegen'"
-                :isLoading="adding"
-              />
             </div>
-          </div>
+
+            <ul v-if="errors">
+                <li v-for="e in errors" :key="e" class="error-text">{{e}}</li>
+            </ul>
+
+            <SmallBtnFinish class="finish" @btn-clicked="addTicketAction()" :text="'Toevoegen'" :isLoading="adding" />
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -114,16 +78,15 @@
         },
     })
     export default class CreateTicket extends Vue {
+        private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
+
+        @Prop() private fPackage!: Package;
         public ticket?: Ticket;
 
         // Default.
         private loading: Boolean = true;
         private adding: boolean = false;
-        @Prop() private fPackage!: Package;
         private showPersonConfirmation = false;
-
-        private emitter = getCurrentInstance()?.appContext.config.globalProperties
-            .emitter;
 
         // Errors.
         private errors: String[] = [];
@@ -265,85 +228,85 @@
 </script>
 
 <style scoped lang="scss">
-@import "@/styling/main.scss";
+    @import "@/styling/main.scss";
 
-.next-step-container {
-  color: $black-color;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: white;
-  overflow: hidden;
-  padding: 3em;
-  box-shadow: $shadow;
-  border-radius: $border-radius;
-  row-gap: 1em;
+    .next-step-container {
+        color: $black-color;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: white;
+        overflow: hidden;
+        padding: 3em;
+        box-shadow: $shadow;
+        border-radius: $border-radius;
+        row-gap: 1em;
 
-  @media only screen and (max-width: 600px) {
-    padding: 2em;
-  }
-}
+        @media only screen and (max-width: 600px) {
+            padding: 2em;
+        }
+    }
 
-.form {
-  margin-top: 2em;
-}
+    .form {
+        margin-top: 2em;
+    }
 
-.message {
-  text-decoration: underline;
-}
+    .message {
+        text-decoration: underline;
+    }
 
-.finish {
-  cursor: pointer;
-  align-self: flex-start;
-}
+    .finish {
+        cursor: pointer;
+        align-self: flex-start;
+    }
 
-.confirm-person {
-  display: flex;
-  flex-direction: column;
-  row-gap: 1em;
+    .confirm-person {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1em;
 
-  hr {
-    width: 100%;
-    height: 2px;
-    margin: 1.5em auto;
-    border: none;
-    background-color: rgba($color: #000000, $alpha: 0.1);
-  }
-}
+        hr {
+            width: 100%;
+            height: 2px;
+            margin: 1.5em auto;
+            border: none;
+            background-color: rgba($color: #000000, $alpha: 0.1);
+        }
+    }
 
-blockquote {
-  padding: 0.8em;
-  font-size: 0.8em;
-  margin: 0;
-  border-radius: $small-border-radius;
-}
+    blockquote {
+        padding: 0.8em;
+        font-size: 0.8em;
+        margin: 0;
+        border-radius: $small-border-radius;
+    }
 
-.hw {
-  min-width: 200px;
-}
+    .hw {
+        min-width: 200px;
+    }
 
-.finished-comp {
-  display: flex;
-  justify-content: left;
-  align-content: center;
-  padding: 2em;
-}
+    .finished-comp {
+        display: flex;
+        justify-content: left;
+        align-content: center;
+        padding: 2em;
+    }
 
-.fc {
-  font-size: 3em;
-  color: $modern-purple-color;
-  margin-left: 20%;
-}
+    .fc {
+        font-size: 3em;
+        color: $modern-purple-color;
+        margin-left: 20%;
+    }
 
-@media only screen and (max-width: 700px) {
-  .finished-comp {
-    display: flex;
-    flex-direction: column;
-  }
+    @media only screen and (max-width: 700px) {
+        .finished-comp {
+            display: flex;
+            flex-direction: column;
+        }
 
-  .fc {
-    font-size: 0px;
-  }
-}
+        .fc {
+            font-size: 0px;
+        }
+    }
 </style>

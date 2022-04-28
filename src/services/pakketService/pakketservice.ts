@@ -43,12 +43,12 @@ export class PakketService {
 
     public async getAll(): Promise<Array<Package>> {
         const { data } = await this.axiosInst.get(``);
-        return data.map((pkg) => new Package().deserialize(pkg));
+        return data.map((pkg) => Package.deserialize(pkg));
     }
 
     public async post(packageModel): Promise<Package> {
         const response = await http.post(`/api/packages`, packageModel);
-        return response.data;
+        return Package.deserialize(response.data);
     }
 
     public async get(id): Promise<Package> {

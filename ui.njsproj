@@ -73,13 +73,19 @@
     <Content Include="src\components\locationRegistration\AddRoom.vue" />
     <Content Include="src\components\location\LocationInfo.vue" />
     <Content Include="src\components\location\LocationModal.vue" />
-    <Content Include="src\components\location\LocationOverviewTable.vue" />
+    <Content Include="src\components\tables\LocationTable.vue" />
     <Content Include="src\components\MenuComp.vue" />
     <Content Include="src\components\MenuItem.vue" />
     <Content Include="src\components\NavigationBar.vue" />
     <Content Include="src\components\packageInfo\PackageDetails.vue" />
     <Content Include="src\components\packageInfo\PersonDetails.vue" />
     <Content Include="src\components\packageInfo\RoomDetails.vue" />
+    <Content Include="src\components\package\LocationProxy.vue">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="src\components\package\ReceiverProxy.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\components\PrintQR.vue" />
     <Content Include="src\components\QrReader.vue" />
     <Content Include="src\components\route\CreateTicket.vue" />
@@ -113,7 +119,7 @@
     <Content Include="src\views\HomePage.vue" />
     <Content Include="src\views\LocationOverview.vue" />
     <Content Include="src\views\Modal.vue" />
-    <Content Include="src\views\PackageList.vue">
+    <Content Include="src\components\tables\PackageTable.vue">
       <SubType>Code</SubType>
     </Content>
     <Content Include="src\views\PackagePage.vue" />
@@ -139,6 +145,8 @@
     <Folder Include="src\components\" />
     <Folder Include="src\components\locationRegistration\" />
     <Folder Include="src\components\location\" />
+    <Folder Include="src\components\tables\" />
+    <Folder Include="src\components\package\" />
     <Folder Include="src\components\packageInfo\" />
     <Folder Include="src\components\route\" />
     <Folder Include="src\components\standardUi\" />
@@ -162,9 +170,6 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\classes\helpers\SelectOption.ts" />
-    <TypeScriptCompile Include="src\classes\IPackage.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="src\classes\Location.ts" />
     <TypeScriptCompile Include="src\classes\Package.ts" />
     <TypeScriptCompile Include="src\classes\Person.ts" />

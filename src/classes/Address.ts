@@ -15,4 +15,14 @@ export default class Address {
         this.number = number;
         this.addition = addition;
     }
+
+    static deserialize(data: Object): Address {
+        return new Address(
+            City.deserialize(data["city"]),
+            data["street"],
+            data["postalCode"],
+            data["number"],
+            data["addition"]
+        );
+    }
 }
