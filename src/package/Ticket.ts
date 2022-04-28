@@ -1,15 +1,14 @@
-import Room from "@/classes/Room"
+import Room from "@/location/Room"
 import { dateConverter } from "@/classes/helpers/DateConverter"
-import ISerializable from "./helpers/ISerializable";
 
-export default class Ticket implements ISerializable<Ticket> {
+export default class Ticket {
     public id?: string;
     public locationId?: string;
     public finishedAt?: number;
     public completedByPersonId?: string;
     public receivedByPersonId?: string;
 
-    deserialize(data: Object): Ticket {
+    staic deserialize(data: Object): Ticket {
         this.id = data["id"];
         this.locationId = data["locationId"];
         this.finishedAt = data["finishedAt"];

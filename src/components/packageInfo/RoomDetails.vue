@@ -9,9 +9,9 @@
 
 <script lang="ts">
     import { Options, Vue } from "vue-class-component";
-    import Room from "@/classes/Room";
+    import Room from "@/location/Room";
     import LoadingIcon from '@/components/standardUi/LoadingIcon.vue'
-    import { roomService } from "../../services/locatieService/roomservice";
+    import { roomService } from "../../location/roomservice";
     import { Prop } from "vue-property-decorator";
 
     @Options({
@@ -25,7 +25,7 @@
         private room?: Room;
 
         async beforeMount() {
-            await roomService.getById(this.id)
+            roomService.getById(this.id)
                 .then((res) => {
                     this.room = res;
                     this.isLoaded = true;

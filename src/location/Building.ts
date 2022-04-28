@@ -1,4 +1,4 @@
-import Address from "@/classes/Address";
+import Address from "@/location/Address";
 
 export default class Building{
     public id: string;

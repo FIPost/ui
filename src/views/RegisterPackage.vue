@@ -83,18 +83,17 @@
     import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
     import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
     import RegisterPackageModel from "@/classes/requests/PackageRequest";
-    import { pakketService } from "@/services/pakketService/pakketservice";
-    import { roomService } from "@/services/locatieService/roomservice";
-    import { personeelService } from "@/services/personeelService/personeelService";
-    import { Person } from "@/classes/Person";
-    import Room from "@/classes/Room";
+    import { pakketService } from "@/package/pakketservice";
+    import { roomService } from "@/location/roomservice";
+    import { personeelService } from "@/employee/personeelService";
+    import { Person } from "@/employee/Person";
+    import Room from "@/location/Room";
     import PackageValidation from "@/classes/validation/PackageValidation";
     import SelectOption from "@/classes/helpers/SelectOption";
     import { getCurrentInstance } from "@vue/runtime-core";
     import { AxiosError } from "axios";
     import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
-    import { roomHelper } from "@/classes/Room";
-    import { Package } from "@/classes/Package";
+    import { Package } from "@/package/Package";
 
     @Options({
         components: {
@@ -247,7 +246,7 @@
                     this.allRooms = res;
                     this.allRooms.forEach((room) =>
                         this.rooms.push(
-                            new SelectOption(room.id, roomHelper.getLocationString(room))
+                            new SelectOption(room.id, "")
                         )
                     );
                     this.loadRoom = false;

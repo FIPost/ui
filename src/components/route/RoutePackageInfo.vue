@@ -17,7 +17,7 @@
     import { Options, Vue } from "vue-class-component";
     import { Prop } from "vue-property-decorator";
     import RouteComp from "@/components/route/RouteComp.vue";
-    import Ticket from "@/classes/Ticket";
+    import Ticket from "@/package/Ticket";
 
     @Options({
         components: {

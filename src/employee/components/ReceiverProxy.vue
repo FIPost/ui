@@ -6,22 +6,22 @@
 </template>
 
 <script lang="ts">
-    import { Vue, Options } from 'vue-class-component'
+    import { Vue } from 'vue-class-component'
     import { Prop } from 'vue-property-decorator'
-    import { roomService } from '../../services/locatieService/roomservice';
+    import { personeelService } from '@/employee/personeelService';
 
-    export default class LocationProxy extends Vue {
+    export default class ReceiverProxy extends Vue {
         @Prop() id!: string;
         private isLoaded: boolean = false;
         private text: string = "Empty";
 
         async mounted() {
-            roomService.getById(this.id)
+            personeelService.get(this.id)
                 .then((res) => {
                     this.text = res.name;
                     this.isLoaded = true;
                 })
-                .catch((err) =>
+                .catch ((err) =>
                     console.error(err)
                 );
         }
@@ -30,13 +30,8 @@
 
 <style scoped lang="scss">
     @keyframes fade-anim {
-        from {
-            background-color: lightgray;
-        }
-
-        to {
-            background-color: darkgray;
-        }
+        from{background-color: lightgray;}
+        to{background-color: darkgray;}
     }
 
     .fade {

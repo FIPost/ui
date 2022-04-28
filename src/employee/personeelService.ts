@@ -1,4 +1,4 @@
-import { Person } from '@/classes/Person';
+import { Person } from '@/employee/Person';
 import http from '@/services/http';
 
 export class PersoneelService {

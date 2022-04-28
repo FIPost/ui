@@ -13,7 +13,7 @@
     import { Options, Vue } from "vue-class-component";
     import { Prop } from "vue-property-decorator";
     import TicketComp from "@/components/route/TicketComp.vue";
-    import Ticket from "@/classes/Ticket";
+    import Ticket from "@/package/Ticket";
 
     @Options({
         components: {

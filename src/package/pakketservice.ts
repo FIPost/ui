@@ -1,4 +1,4 @@
-import { Package } from '@/classes/Package';
+import { Package } from '@/package/Package';
 import http from '@/services/http';
 import TicketRequest from '@/classes/requests/TicketRequest';
 import axios, { AxiosInstance } from 'axios';

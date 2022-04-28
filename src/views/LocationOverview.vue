@@ -20,10 +20,10 @@
 <script lang="ts">
     import { Options, Vue } from "vue-class-component";
     import BtnBack from "@/components/standardUi/BtnBack.vue";
-    import LocationTable from "@/components/tables/LocationTable.vue";
+    import LocationTable from "@/location/components/LocationTable.vue";
     import SearchContainerLocation from "@/components/SearchContainerLocation.vue";
-    import { roomService } from "../services/locatieService/roomservice";
-    import Room from "@/classes/Room";
+    import { roomService } from "../location/roomservice";
+    import Room from "@/location/Room";
     import LoadingIcon from '@/components/standardUi/LoadingIcon.vue'
     import LocationInfo from "@/components/location/LocationInfo.vue";
     import LocationModal from "@/components/location/LocationModal.vue";

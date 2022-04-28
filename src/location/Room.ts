@@ -1,6 +1,4 @@
-import Building from "@/classes/Building";
-import City from "@/classes/City";
-import Address from "@/classes/Address";
+import Building from "@/location/Building";
 
 export default class Room {
     public id: string;
@@ -25,14 +23,3 @@ export default class Room {
         return `${this.building.address.city.name}, ${this.building.name}, ${this.name}`;
     }
 }
-
-class RoomHelper {
-    getLocationString(room: Room): string {
-        return room ? `${room.building.address.city.name}, ${room.building.name}, ${room.name}` : "er ging iets mis";
-    }
-
-    getEmptyRoom(): Room {
-        return new Room("", "", new Building("", "", new Address(new City("", ""), "", "", 0, "")));
-    }
-}
-export const roomHelper = new RoomHelper();

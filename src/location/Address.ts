@@ -1,4 +1,4 @@
-import City from "./City";
+import City from "@/location/City";
 
 export default class Address {
     public city: City;

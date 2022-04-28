@@ -17,14 +17,14 @@
 
 <script lang="ts">
     import { Vue, Options } from "vue-class-component";
-    import PackageDetails from "@/components/packageInfo/PackageDetails.vue";
+    import PackageDetails from "@/package/components/PackageDetails.vue";
     import PrintQR from "@/components/PrintQR.vue";
     import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
     import CreateTicket from "@/components/route/CreateTicket.vue";
     import BtnBack from "@/components/standardUi/BtnBack.vue";
-    import { Package } from "@/classes/Package";
+    import { Package } from "@/package/Package";
     import { AxiosError } from "axios";
-    import { pakketService } from "@/services/pakketService/pakketservice";
+    import { pakketService } from "@/package/pakketservice";
     import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
     @Options({

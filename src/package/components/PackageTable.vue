@@ -30,9 +30,9 @@
 <script lang="ts">
     import { Vue, Options } from 'vue-class-component'
     import { Prop } from 'vue-property-decorator'
-    import { Package } from '@/classes/Package'
-    import ReceiverProxy from '@/components/package/ReceiverProxy.vue'
-    import LocationProxy from '@/components/package/LocationProxy.vue'
+    import { Package } from '@/package/Package'
+    import ReceiverProxy from '@/employee/components/ReceiverProxy.vue'
+    import LocationProxy from '@/location/components/LocationProxy.vue'
 
     @Options({
         components: {

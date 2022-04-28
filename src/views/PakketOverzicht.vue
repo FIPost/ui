@@ -22,16 +22,16 @@
     import { getCurrentInstance } from "@vue/runtime-core";
     import { AxiosError } from "axios";
 
-    import { pakketService } from "@/services/pakketService/pakketservice";
+    import { pakketService } from "@/package/pakketservice";
    
-    import { Package } from "@/classes/Package";
-    import Ticket from "@/classes/Ticket";
+    import { Package } from "@/package/Package";
+    import Ticket from "@/package/Ticket";
 
     import SearchContainer from "@/components/SearchContainer.vue";
     import BtnBack from "@/components/standardUi/BtnBack.vue";
     import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
     import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
-    import PackageTable from "@/components/tables/PackageTable.vue"
+    import PackageTable from "@/package/components/PackageTable.vue"
 
     @Options({
         components: {

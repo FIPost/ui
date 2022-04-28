@@ -20,10 +20,8 @@
 
 <script lang="ts">
     import { Vue } from "vue-class-component";
-    import Ticket from "@/classes/Ticket";
+    import Ticket from "@/package/Ticket";
     import { Prop } from "vue-property-decorator";
-    import { dateConverter } from "@/classes/helpers/DateConverter";
-    import { roomHelper } from "@/classes/Room";
 
     export default class TicketComp extends Vue {
         @Prop() public ticket: Ticket = {} as Ticket;

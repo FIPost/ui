@@ -23,7 +23,7 @@
 <script lang="ts">
     import { Options, Vue } from "vue-class-component";
     import { Prop } from "vue-property-decorator";
-    import Room from "@/classes/Room";
+    import Room from "@/location/Room";
 
     @Options({
     })

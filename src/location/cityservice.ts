@@ -1,4 +1,4 @@
-import City from '@/classes/City';
+import City from '@/location/City';
 import CityRequest from '@/classes/requests/CityRequest';
 import http from '@/services/http';
 

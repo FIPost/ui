@@ -54,19 +54,18 @@
     import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
     // Types.
-    import { Person } from "@/classes/Person";
-    import Room from "@/classes/Room";
-    import { roomHelper } from "@/classes/Room";
-    import Ticket from "@/classes/Ticket";
+    import { Person } from "@/employee/Person";
+    import Room from "@/location/Room";
+    import Ticket from "@/package/Ticket";
     import TicketRequest from "@/classes/requests/TicketRequest";
 
     // Services.
-    import { roomService } from "@/services/locatieService/roomservice";
-    import { personeelService } from "@/services/personeelService/personeelService";
+    import { roomService } from "@/location/roomservice";
+    import { personeelService } from "@/employee/personeelService";
     import { getCurrentInstance } from "@vue/runtime-core";
     import { Emit } from "vue-property-decorator";
-    import { pakketService } from "@/services/pakketService/pakketservice";
-    import { Package } from "@/classes/Package";
+    import { pakketService } from "@/package/pakketservice";
+    import { Package } from "@/package/Package";
     import { Prop } from "vue-property-decorator";
 
     @Options({

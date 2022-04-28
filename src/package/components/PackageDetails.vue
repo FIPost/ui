@@ -27,9 +27,9 @@
 </template>
 
 <script lang="ts">
-    import { Options, Vue } from "vue-class-component";
-    import { Prop } from "vue-property-decorator";
-    import { Package } from "@/classes/Package";
+    import { Options, Vue } from "vue-class-component"
+    import { Prop } from "vue-property-decorator"
+    import { Package } from "@/package/Package"
     import RoomDetails from "@/components/packageInfo/RoomDetails.vue"
 
     @Options({
