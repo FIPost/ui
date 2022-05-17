@@ -7,12 +7,6 @@
 
       <div class="search-fields">
         <Search @valueChanged="valueChanged" />
-        <ComboBox :options="options" placeholder="Selecteer een veld" />
-        <font-awesome-icon
-          @click="goToAddLocationPage()"
-          class="plus-location"
-          icon="plus-square"
-        />
       </div>
     </div>
   </div>
@@ -21,16 +15,14 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import Search from "./Search.vue";
-import ComboBox from "@/components/standardUi/ComboBox.vue";
 
 const SearchContainer = defineComponent({
   components: {
     Search,
-    ComboBox,
   },
   methods: {
     valueChanged(val) {
-      // Needs implementation.
+      //needs implementation
     },
     goToAddLocationPage() {
       this.$router.push("/locaties/nieuw");
@@ -47,7 +39,6 @@ const SearchContainer = defineComponent({
 export default SearchContainer;
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "@/styling/main.scss";
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="nav-container">
+  <div class="nav-container" style="z-index: 10;">
     <div class="nav-main">
       <div class="logo-container" @click="logoClicked()">
         <div class="logo"></div>

@@ -4,43 +4,89 @@
       <LoadingIcon v-if="loading" />
       <div v-else>
         <div class="container-subheader">{{ title }}</div>
-        <ComboBoxInput
-          @selectChange="assignCityToAddress"
-          :selectedOption="selectedCityOption"
-          :options="cities"
-          placeholder="selecteer een stad"
-          label="Stad:"
-          :valid="cityValid"
-        />
-
+        <div style="display: inline-block;">
+          <ComboBoxInput
+              @selectChange="assignCityToAddress"
+              :selectedOption="selectedCityOption"
+              :options="cities"
+              placeholder="selecteer een stad"
+              label="Stad:"
+              :valid="cityValid"
+          />
+        </div>
+        <div class="tooltip" style="display: inline-block" >
+          ?
+          <span class="tooltiptext" >Selecteer de stad waarin het gebouw zich bevindt</span>
+        </div>
+<br/>
+        <div style="display: inline-block;">
         <InputField
           label="Gebouw:"
           v-model:input="building.Name"
           :valid="nameValid"
           @update:input="nameChanged"
         />
+        </div>
+        <div class="tooltip" style="display: inline-block" >
+          ?
+          <span class="tooltiptext" >Vul de naam van het gebouw in</span>
+        </div>
+        <br/>
+
+        <div style="display: inline-block;">
         <InputField
           label="Straatnaam:"
           v-model:input="building.Address.Street"
           :valid="streetValid"
           @update:input="streetChanged"
         />
+        </div>
+        <div class="tooltip" style="display: inline-block" >
+          ?
+          <span class="tooltiptext" >Vul het adres van het gebouw in</span>
+        </div>
+        <br/>
+
+        <div style="display: inline-block;">
         <InputField
           label="Huisnummer:"
           v-model:input="building.Address.Number"
           :valid="numberValid"
           @update:input="numberChanged"
         />
+        </div>
+        <div class="tooltip" style="display: inline-block" >
+          ?
+          <span class="tooltiptext" >Vul het huisnummer in</span>
+        </div>
+        <br/>
+
+        <div style="display: inline-block;">
         <InputField
           label="Toevoeging:"
           v-model:input="building.Address.Addition"
         />
+        </div>
+        <div class="tooltip" style="display: inline-block" >
+          ?
+          <span class="tooltiptext" >Vul eventueel een huisnummer toevoeging</span>
+        </div>
+        <br/>
+
+        <div style="display: inline-block;">
         <InputField
           label="Postcode:"
           v-model:input="building.Address.PostalCode"
           :valid="postalCodeValid"
           @update:input="postalCodeChanged"
         />
+        </div>
+        <div class="tooltip" style="display: inline-block" >
+          ?
+          <span class="tooltiptext" >Vul de postcode van het gebouw in</span>
+        </div>
+        <br/>
+
 
         <div class="action-container">
           <SmallBtnFinish

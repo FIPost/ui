@@ -2,7 +2,16 @@
   <div id="overzicht">
     <btn-back />
     <h1>Pakketoverzicht</h1>
-    <SearchContainer />
+    <div class="component-container no-padding">
+      <div class="search-main">
+        <div class="search-fields">
+          <h3 class="text">Filter</h3>
+        </div>
+        <div class="search-fields">
+          <Search @valueChanged="valueChanged" />
+        </div>
+      </div>
+    </div>
     <LoadingIcon v-if="loading" />
     <div v-else>
       <TableComp :items="items" @cell-clicked="CellClicked" />
@@ -23,7 +32,6 @@
 import { Vue, Options } from "vue-class-component";
 import { pakketService } from "@/services/pakketService/pakketservice";
 import Package from "@/classes/Package";
-import SearchContainer from "@/components/SearchContainer.vue";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
@@ -34,14 +42,17 @@ import { TableCell } from "@/classes/table/TableCell";
 import { dateConverter } from "@/classes/helpers/DateConverter";
 import { roomHelper } from "@/classes/Room";
 import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
+import Search from "@/components/Search.vue";
+import ComboBox from "@/components/standardUi/ComboBox.vue";
 
 @Options({
   components: {
     TableComp,
-    SearchContainer,
     BtnBack,
     LoadingIcon,
     Pagination,
+    Search,
+    ComboBox,
   },
 })
 export default class PakketOverzicht extends Vue {
@@ -55,6 +66,9 @@ export default class PakketOverzicht extends Vue {
 
   private pageCount = 0;
   private visibleItemsPerPageCount = 20;
+
+  private filter:string = "";
+
 
   beforeMount() {
     this.GetPackages();
@@ -86,10 +100,22 @@ export default class PakketOverzicht extends Vue {
     }
   }
 
-  //Format objects to display in the table
-  GenerateTableObjects(packages: Package[]) {
+  valueChanged(val) {
+    this.filter = val;
+    this.GenerateTableObjects(this.allPackages);
+  }
+
+
+  GenerateTableObjects(_packages: Package[]) {
     this.items = new Array<Object>();
-    packages.forEach((value) => {
+    let filteredPackages = this.allPackages.filter(PKG => PKG.name.toLowerCase().includes(this.filter.toLowerCase())
+        || PKG.receiver.name.toLowerCase().includes(this.filter.toLowerCase())
+        || PKG.sender.toLowerCase().includes(this.filter.toLowerCase())
+        || PKG.tickets[0].completedByPerson.toLowerCase().includes(this.filter.toLowerCase())
+        || this.getDateString(PKG.tickets[0].finishedAt).toLowerCase().includes(this.filter.toLowerCase())
+        || roomHelper.getLocationString(PKG.collectionPoint).toLowerCase().includes(this.filter.toLowerCase())
+        || roomHelper.getLocationString(PKG.tickets[0].location).toLowerCase().includes(this.filter.toLowerCase()));
+    filteredPackages.forEach((value) => {
       this.items.push({
         Naam: {
           id: value.id,
@@ -155,4 +181,47 @@ export default class PakketOverzicht extends Vue {
 
 <style scoped lang="scss">
 @import "@/styling/main.scss";
+
+.search-main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 0.2rem;
+  justify-content: flex-start;
+  padding: 0.2rem;
+}
+
+.search-main div {
+  margin: 0 0.2rem;
+}
+
+.search-fields {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.75rem;
+
+  .text  {
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.qr {
+  background-image: url("../assets/QRIcoon.png");
+  background-size: contain;
+  width: 30px;
+  height: 30px;
+  margin: auto 15px;
+  cursor: pointer;
+}
+
+.stream {
+  width: 400px;
+  height: 400px;
+}
 </style>

@@ -1,8 +1,11 @@
 <template>
   <div>
     <btn-back />
-    <h1>Locatie Overzicht</h1>
-    <SearchContainerLocation />
+    <div style="padding: .5em; display: inline-block;margin-bottom: 10px">
+      <a style="font-weight: bolder; font-size: 26px;">Locatie Overzicht</a>
+      <a style="position:absolute; right: 2.5%;z-index: 5;"><font-awesome-icon @click="goToAddLocationPage()" class="plus-location" icon="plus-square"/></a>
+    </div>
+
     <location-overview-table />
   </div>
 </template>
@@ -19,10 +22,25 @@ import SearchContainerLocation from "@/components/SearchContainerLocation.vue";
     LocationOverviewTable,
     SearchContainerLocation
   },
+  methods: {
+    valueChanged(val) {
+      console.log(val);
+    },
+    goToAddLocationPage() {
+      this.$router.push("/locaties/nieuw");
+    },
+  }
 })
 export default class LocatieOverzicht extends Vue {}
 </script>
 
 <style scoped lang="scss">
 @import "@/styling/main.scss";
+
+.plus-location {
+  font-size: 30px;
+  margin: 0 20px;
+  cursor: pointer;
+  color: $green-color;
+}
 </style>
