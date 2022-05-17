@@ -40,7 +40,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: fipost/ui:${{ env.RELEASE_VERSION }}
+          tags: fipost/ui:${{ env.RELEASE_VERSION }} , fipost/ui:latest
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             "GATEWAY_URL=${{ secrets.GATEWAY_URL }}"
