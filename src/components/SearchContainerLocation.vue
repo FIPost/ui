@@ -22,6 +22,7 @@ const SearchContainer = defineComponent({
   },
   methods: {
     valueChanged(val) {
+      //needs implementation
     },
     goToAddLocationPage() {
       this.$router.push("/locaties/nieuw");

@@ -138,7 +138,7 @@ export default class LocationOverviewTable extends Vue {
     this.GenerateTableObjects(this.allRooms);
   }
 
-  GenerateTableObjects(rooms: Room[]) {
+  GenerateTableObjects(_rooms: Room[]) {
     this.items = new Array<Object>();
     let filteredRooms = this.allRooms.filter(room => room.name.toLowerCase().includes(this.filter.toLowerCase()) || room.building.name.toLowerCase().includes(this.filter.toLowerCase()) || room.building.address.street.toLowerCase().includes(this.filter.toLowerCase()) || room.building.address.city.name.toLowerCase().includes(this.filter.toLowerCase()));
     filteredRooms.forEach((value) => {

@@ -106,15 +106,15 @@ export default class PakketOverzicht extends Vue {
   }
 
 
-  GenerateTableObjects(packages: Package[]) {
+  GenerateTableObjects(_packages: Package[]) {
     this.items = new Array<Object>();
-    let filteredPackages = this.allPackages.filter(Package => Package.name.toLowerCase().includes(this.filter.toLowerCase())
-        || Package.receiver.name.toLowerCase().includes(this.filter.toLowerCase())
-        || Package.sender.toLowerCase().includes(this.filter.toLowerCase())
-        || Package.tickets[0].completedByPerson.toLowerCase().includes(this.filter.toLowerCase())
-        || this.getDateString(Package.tickets[0].finishedAt).toLowerCase().includes(this.filter.toLowerCase())
-        || roomHelper.getLocationString(Package.collectionPoint).toLowerCase().includes(this.filter.toLowerCase())
-        || roomHelper.getLocationString(Package.tickets[0].location).toLowerCase().includes(this.filter.toLowerCase()));
+    let filteredPackages = this.allPackages.filter(PKG => PKG.name.toLowerCase().includes(this.filter.toLowerCase())
+        || PKG.receiver.name.toLowerCase().includes(this.filter.toLowerCase())
+        || PKG.sender.toLowerCase().includes(this.filter.toLowerCase())
+        || PKG.tickets[0].completedByPerson.toLowerCase().includes(this.filter.toLowerCase())
+        || this.getDateString(PKG.tickets[0].finishedAt).toLowerCase().includes(this.filter.toLowerCase())
+        || roomHelper.getLocationString(PKG.collectionPoint).toLowerCase().includes(this.filter.toLowerCase())
+        || roomHelper.getLocationString(PKG.tickets[0].location).toLowerCase().includes(this.filter.toLowerCase()));
     filteredPackages.forEach((value) => {
       this.items.push({
         Naam: {
