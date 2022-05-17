@@ -7,12 +7,6 @@
 
       <div class="search-fields">
         <Search @valueChanged="valueChanged" />
-        <!--        <ComboBox :options="options" placeholder="Selecteer een veld" />-->
-        <!--        <font-awesome-icon-->
-        <!--          @click="goToAddLocationPage()"-->
-        <!--          class="plus-location"-->
-        <!--          icon="plus-square"-->
-        <!--        />-->
       </div>
     </div>
   </div>
@@ -59,7 +53,6 @@ import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
-import { defineComponent } from "vue";
 import Search from "@/components/Search.vue";
 
 @Options({
@@ -141,14 +134,10 @@ export default class LocationOverviewTable extends Vue {
     }
   }
   valueChanged(val) {
-    // Needs implementation.
-
-    // this.items = this.items.filter(room => room.name.toLowerCase().includes(val.toLowerCase()) || room.building.name.toLowerCase().includes((val.toLowerCase())) || room.building.address.city.name.toLowerCase().includes((val.toLowerCase())));
     this.filter = val;
     this.GenerateTableObjects(this.allRooms);
   }
 
-  //Format objects to display in the table
   GenerateTableObjects(rooms: Room[]) {
     this.items = new Array<Object>();
     let filteredRooms = this.allRooms.filter(room => room.name.toLowerCase().includes(this.filter.toLowerCase()) || room.building.name.toLowerCase().includes(this.filter.toLowerCase()) || room.building.address.street.toLowerCase().includes(this.filter.toLowerCase()) || room.building.address.city.name.toLowerCase().includes(this.filter.toLowerCase()));

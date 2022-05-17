@@ -6,7 +6,6 @@
       <a style="position:absolute; right: 2.5%;z-index: 5;"><font-awesome-icon @click="goToAddLocationPage()" class="plus-location" icon="plus-square"/></a>
     </div>
 
-<!--    <SearchContainerLocation />-->
     <location-overview-table />
   </div>
 </template>
@@ -25,7 +24,6 @@ import SearchContainerLocation from "@/components/SearchContainerLocation.vue";
   },
   methods: {
     valueChanged(val) {
-      // Needs implementation.
       console.log(val);
     },
     goToAddLocationPage() {

@@ -9,7 +9,6 @@
         </div>
         <div class="search-fields">
           <Search @valueChanged="valueChanged" />
-<!--          <ComboBox :options="options" placeholder="Selecteer een veld" />-->
         </div>
       </div>
     </div>
@@ -70,11 +69,6 @@ export default class PakketOverzicht extends Vue {
 
   private filter:string = "";
 
-  // private options: Array<String> = new Array<String>(
-  //     "Stad",
-  //     "Gebouw",
-  //     "Ruimte"
-  // );
 
   beforeMount() {
     this.GetPackages();
@@ -107,15 +101,11 @@ export default class PakketOverzicht extends Vue {
   }
 
   valueChanged(val) {
-    // Needs implementation.
-
-    // this.items = this.items.filter(room => room.name.toLowerCase().includes(val.toLowerCase()) || room.building.name.toLowerCase().includes((val.toLowerCase())) || room.building.address.city.name.toLowerCase().includes((val.toLowerCase())));
     this.filter = val;
     this.GenerateTableObjects(this.allPackages);
   }
 
 
-  //Format objects to display in the table
   GenerateTableObjects(packages: Package[]) {
     this.items = new Array<Object>();
     let filteredPackages = this.allPackages.filter(Package => Package.name.toLowerCase().includes(this.filter.toLowerCase())
