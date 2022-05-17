@@ -6,6 +6,9 @@ import { faCheckCircle, faSortDown, faSortUp, faSearch, faFlagCheckered, faCheck
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import mitt from 'mitt';
 
+import 'bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 library.add(faCheckCircle, faSortDown, faSortUp, faSearch, faFlagCheckered, faCheck, faPlusSquare, faHome, faPenSquare, faMinusSquare)
 
 const app = createApp(App);

@@ -2,7 +2,7 @@
   <div class="search-container">
     <input v-model="inputValue" placeholder="Zoeken..." />
     <div class="icon-container">
-      <font-awesome-icon class="s-btn" icon="search" size="1x" />
+      <font-awesome-icon class="s-btn" icon="search" size="1x" style="display:none"/>
     </div>
   </div>
 </template>

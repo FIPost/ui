@@ -1,5 +1,5 @@
 <template>
-  <div class="component-container no-padding">
+  <div class="container">
     <div class="search-main">
       <div class="search-fields">
         <h3 class="text">Filter</h3>

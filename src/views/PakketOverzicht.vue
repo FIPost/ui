@@ -1,7 +1,16 @@
 <template>
-    <div id="overzicht">
-        <btn-back />
-        <h1>Pakketoverzicht</h1>
+    <div id="overzicht" class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Packages</li>
+            </ol>
+        </nav>
+
+        <header>
+            <h1>Pakketoverzicht</h1>
+        </header>
+
         <SearchContainer />
         <LoadingIcon v-if="!isLoaded" />
         <div v-else>

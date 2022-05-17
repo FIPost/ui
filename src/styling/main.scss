@@ -1,21 +1,64 @@
+//--------------------------------------------------
+// FIPOST GLOBAL SCSS FILE
+//--------------------------------------------------
+
+/* CONTENT:
+    - Variables
+    - Classes
+    - Table Classes
+    - List Classes
+    - Container Classes
+    - Text Classes
+*/
+
+//--------------------------------------------------
+// 1. Variables
+//--------------------------------------------------
+
+//Fonts
 $font-family: "Metropolis", Avenir, Helvetica, Arial, sans-serif;
+
+
+//Colors
 $fontys-purple-color: #663366;
-$gray-color: #9D9D9D;
-$background-color: #F3F4F7;
-$pink-color: #E40286;
 $fontys-purple: #663366;
-$green-color: #42B883;
-$text-green: #16402D;
-$black-color: #051821;
+$modern-purple-color: rgb(79,60,201);
+
+$background-color: #F3F4F7;
+$background-yellow: #EACF73;
+
 $light-black-color: #232627;
+$black-color: #051821;
+$gray-color: #9D9D9D;
+$pink-color: #E40286;
+$green-color: #42B883;
+
+$text-green: #16402D;
+$text-yellow: #7C7540;
+
+$gradient: linear-gradient(90deg, rgba(193,71,153,1) 0%, rgba(79,60,201,1) 100%);
+
+
+//Shadow
 $shadow: 0px 3px 6px rgba(0,0,0,0.16);
 $shadow-small: 0px 1px 3px rgba(0,0,0,0.16);
-$modern-purple-color: rgb(79,60,201);
+
+
+//Border
 $border-radius: 0.8em;
 $small-border-radius: 0.5em;
-$gradient: linear-gradient(90deg, rgba(193,71,153,1) 0%, rgba(79,60,201,1) 100%); 
-$background-yellow: #EACF73;
-$text-yellow: #7C7540;
+
+//--------------------------------------------------
+// 2. Classes
+//--------------------------------------------------
+
+.header {
+    font-family: $font-family;
+    font-size: 2em;
+    font-weight: 600;
+    text-align: left;
+    border-bottom: 1px solid black;
+}
 
 .card {
     background-color: white;
@@ -24,6 +67,47 @@ $text-yellow: #7C7540;
     text-align: left;
     padding: .35em .65em;
 }
+
+.gap-1 {
+    row-gap: 1em;
+}
+
+.d-none {
+    display: none;
+}
+
+input {
+    font-size: 12px;
+    font-family: $font-family;
+}
+
+.svg {
+    width: 100px;
+    height: 100px;
+    margin-top: 20px;
+    opacity: 80%;
+    filter: brightness(100%);
+}
+
+.action-container {
+    margin-top: 2rem;
+}
+
+//--------------------------------------------------
+//  Layout Classes
+//--------------------------------------------------
+
+.row {
+    display: flex;
+}
+
+.col {
+
+}
+
+//--------------------------------------------------
+// Table Classes
+//--------------------------------------------------
 
 .table {
     width: 100%;
@@ -35,6 +119,10 @@ $text-yellow: #7C7540;
     background-color: whitesmoke;
 }
 
+//--------------------------------------------------
+// List Classes
+//--------------------------------------------------
+
 .listGroup {
     list-style: none;
     margin: 0;
@@ -43,37 +131,46 @@ $text-yellow: #7C7540;
     flex-direction: column;
 }
 
-.gap-1 {
-    row-gap: 1em;
-}
-
 .listItem {
     display: flex;
     flex-wrap: wrap;
 }
 
+//--------------------------------------------------
+// Container Classes
+//--------------------------------------------------
+
+.container {
+    padding: 16px 8px;
+}
+
+.container-fluid {
+    padding: 8px 16px;
+}
+
 .component-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  text-align: left;
-  background: white;
-  overflow: hidden;
-  padding: 3em;
-  margin-bottom: 1rem;
-  box-shadow: $shadow;
-  border-radius: $border-radius;
-  @media only screen and (max-width: 600px) {
-    padding: 2em;
-  }
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: left;
+    background: white;
+    overflow: hidden;
+    padding: 3em;
+    margin-bottom: 1rem;
+    box-shadow: $shadow;
+    border-radius: $border-radius;
 
-  &.overflow {
-    overflow: auto;
-  }
+    @media only screen and (max-width: 600px) {
+        padding: 2em;
+    }
 
-  &.no-padding {
-    padding: 0;
-  }
+    &.overflow {
+        overflow: auto;
+    }
+
+    &.no-padding {
+        padding: 0;
+    }
 }
 
 .container-header {
@@ -103,40 +200,41 @@ $text-yellow: #7C7540;
   }
 }
 
-.light {
-  font-family: "Avenir";
-  // color: $gray-color;
+//--------------------------------------------------
+// Background Classes
+//--------------------------------------------------
+
+.bg-primary {
+    background-color: $fontys-purple
 }
 
-.error-text {
-  color: #ff3e60;
-  font-weight: normal;
+.bg-dark {
+    background-color: darkslategrey
 }
 
-input {
-  font-size: 12px;
-  font-family: $font-family;
+.bg-error {
+    background-color: red;
 }
 
-.svg {
-  width: 100px;
-  height: 100px;
-  margin-top: 20px;
-  opacity: 80%;
-  filter: brightness(100%);
-}
-
-.action-container {
-  margin-top: 2rem;
-}
+//--------------------------------------------------
+// Text Classes
+//--------------------------------------------------
 
 .modern-pink {
-  color: $pink-color;
-}
-.modern-purple {
-  color: $modern-purple-color;
+    color: $pink-color;
 }
 
-h1 {
-  line-height: 1.1em;
+.modern-purple {
+    color: $modern-purple-color;
 }
+
+.text-light {
+  color: $gray-color;
+}
+
+.text-error {
+  color: #ff3e60;
+}
+
+//--------------------------------------------------
+//  END OF FILE

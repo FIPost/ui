@@ -1,7 +1,20 @@
 <template>
-    <div class="align-left">
-        <BtnBack class="button-back" />
-        <div class="component-container">
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="/#/overzicht">Packages</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Register</li>
+            </ol>
+        </nav>
+
+        <header>
+            <h1>Pakket Registreren</h1>
+        </header>
+
+        <PackageRegistrationForm />
+
+        <div class="component-container" style="display: none">
             <h1>{{ !overview ? "Pakket Registreren" : "Overzicht" }}</h1>
             <LoadingIcon v-if="loadPers || loadRoom" />
             <div v-else>
@@ -93,6 +106,7 @@
     import { getCurrentInstance } from "@vue/runtime-core";
     import { AxiosError } from "axios";
     import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+    import PackageRegistrationForm from "@/package/components/PackageRegistrationForm.vue"
 
     @Options({
         components: {
@@ -101,6 +115,7 @@
             SmallBtnFinish,
             CBSearchSuggestions,
             LoadingIcon,
+            PackageRegistrationForm
         },
     })
     export default class RegisterPackage extends Vue {
@@ -333,26 +348,5 @@
 </script>
 
 <style scoped lang="scss">
-    @import "@/styling/main.scss";
-
-    .align-left {
-        text-align: left;
-    }
-
-    .margin-button {
-        margin-right: 5%;
-    }
-
-    hr {
-        opacity: 0.4;
-        margin: 0px 0;
-    }
-
-    .group {
-        margin-bottom: 2em;
-    }
-
-    p {
-        margin-bottom: 1em;
-    }
+    
 </style>

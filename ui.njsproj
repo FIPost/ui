@@ -113,6 +113,9 @@
     <Content Include="src\components\svg\RegisterSvg.vue" />
     <Content Include="src\components\svg\ScanSvg.vue" />
     <Content Include="src\components\svg\SearchSvg.vue" />
+    <Content Include="src\package\components\PackageRegistrationForm.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\styling\main.scss" />
     <Content Include="src\views\AddLocation.vue" />
     <Content Include="src\views\HomePage.vue" />

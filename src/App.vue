@@ -27,7 +27,7 @@
         public stayOnExit = true;
 
         public showModal(): void {
-            this.modalVisible = true;
+            //this.modalVisible = true;
         }
 
         public closeModal(): void {
@@ -54,7 +54,7 @@
                     this.stayOnExit = false;
                     this.body = "Probeer het later opnieuw."
                 }
-                this.modalVisible = true;
+                //this.modalVisible = true;
             });
         }
     }
@@ -125,7 +125,7 @@
         font-weight: 100;
         font-style: normal;
     }
-
+    /*
     #app {
         font-family: $font-family;
         padding-top: 1em;
@@ -135,4 +135,5 @@
         color: $black-color;
         padding: 1em;
     }
+        */
 </style>

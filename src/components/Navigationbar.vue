@@ -1,18 +1,14 @@
 <template>
-    <div class="nav-container">
-        <div class="nav-main">
-            <div class="logo-container" @click="logoClicked()">
-                <div class="logo"></div>
-            </div>
-            <div class="other">
-
-            </div>
+    <nav class="navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">
+                <img alt="IPostLogo" src="../assets/logo.png" style="height: 30px;"/>
+            </a>
         </div>
-    </div>
+    </nav>
 </template>
 
 <script lang="ts">
-    import { defineComponent } from "vue";
     import { Options, Vue } from "vue-class-component";
 
     @Options({

@@ -1,18 +1,54 @@
 <template>
-    <div>
-        <btn-back />
-        <h1>Locatie Overzicht</h1>
-        <SearchContainerLocation />
-        <LoadingIcon v-if="!isLoaded" />
-        <div v-else>
-            <LocationTable :items="rooms" />
-            <Pagination v-if="allRooms.length > visibleItemsPerPageCount"
-                        :page-count="pageCount"
-                        :visible-items-per-page-count="visibleItemsPerPageCount"
-                        :visible-pages-count="Math.min(pageCount, 5)"
-                        @nextPage="loadPage('next')"
-                        @previousPage="loadPage('previous')"
-                        @loadPage="loadPage" />
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Locations</li>
+            </ol>
+        </nav>
+        
+        <header>
+            <h1>Locatie Overzicht</h1>
+        </header>
+
+        <main class="container">
+            <nav class="row mb-2">
+                <form class="border rounded-3 p-2">
+                    <section class="row">
+                        <label class="col-1 col-form-label">Zoek</label>
+                        <div class="col-auto me-auto">
+                            <input type="search" class="form-control" placeholder="Zoeken..." />
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-success"><font-awesome-icon icon="plus-square" class="me-1" />Toevoegen</button>
+                        </div>
+                    </section>
+                </form>
+            </nav>
+
+            <section class="row">
+                <aside class="col-2 border rounded-3">
+                    Filters
+                </aside>
+                <section class="col-10">
+                    <LocationTable class="col-10" :items="rooms" />
+                </section>
+            </section>
+        </main>
+
+        <div class="d-none">
+            <SearchContainerLocation />
+            <LoadingIcon v-if="!isLoaded" />
+            <div v-else>
+                <LocationTable :items="rooms" />
+                <Pagination v-if="allRooms.length > visibleItemsPerPageCount"
+                            :page-count="pageCount"
+                            :visible-items-per-page-count="visibleItemsPerPageCount"
+                            :visible-pages-count="Math.min(pageCount, 5)"
+                            @nextPage="loadPage('next')"
+                            @previousPage="loadPage('previous')"
+                            @loadPage="loadPage" />
+            </div>
         </div>
     </div>
 </template>
@@ -71,5 +107,5 @@
 </script>
 
 <style scoped lang="scss">
-    @import "@/styling/main.scss";
+    
 </style>

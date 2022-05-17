@@ -1,24 +1,22 @@
 <template>
-    <div class="card">
-        <table class="table table-striped">
-            <caption>locations in system</caption>
-            <thead>
-                <tr>
-                    <th>Stad</th>
-                    <th>Gebouw</th>
-                    <th>Ruimte</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="item in items" :key="item.id">
-                    <td>{{item.building.address.city.name}}</td>
-                    <td>{{item.building.name}}, {{item.building.address.street}}, {{item.building.address.number}}</td>
-                    <td>{{item.name}}</td>
-                    <td><font-awesome-icon icon="pen-square" /></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="table table-striped border rounded-3">
+        <caption class="d-none">locations in system</caption>
+        <thead>
+            <tr>
+                <th>Stad</th>
+                <th>Gebouw</th>
+                <th>Ruimte</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in items" :key="item.id">
+                <td>{{item.building.address.city.name}}</td>
+                <td>{{item.building.name}}, {{item.building.address.street}}, {{item.building.address.number}}</td>
+                <td>{{item.name}}</td>
+                <td><font-awesome-icon icon="pen-square" /></td>
+            </tr>
+        </tbody>
+    </table>
 </template>
 
 <script lang="ts">
@@ -34,5 +32,4 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/styling/main.scss";
 </style>
