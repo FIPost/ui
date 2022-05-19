@@ -20,7 +20,10 @@
                             <input type="search" class="form-control" placeholder="Zoeken..." />
                         </div>
                         <div class="col-auto">
-                            <button type="button" class="btn btn-success"><font-awesome-icon icon="plus-square" class="me-1" />Toevoegen</button>
+                            <button type="button" class="btn btn-success" @click="goToRegisterLocation">
+                            <font-awesome-icon icon="plus-square" class="me-1" />
+                                Toevoegen
+                            </button>
                         </div>
                     </section>
                 </form>
@@ -87,7 +90,7 @@
         private visibleItemsPerPageCount = 10;
         private pageCount = 0;
 
-        public loadPage(value: number) {
+        loadPage(value: number): void {
             const pageIndex = (value - 1) * this.visibleItemsPerPageCount;
             this.rooms = this.allRooms.slice(
                 pageIndex,
@@ -95,13 +98,18 @@
             );
         }
 
+        goToRegisterLocation(): void {
+            this.$router.push("/locaties/nieuw");
+        }
+
         async beforeMount() {
-            roomService.getAll()
-                .then((res) => {
-                    this.rooms = res;
-                    console.log(this.rooms);
-                    this.isLoaded = true;
-                });
+            this.rooms = getCurrentInstance()?.appContext.config.globalProperties.$repo.getAllRooms();
+            //roomService.getAll()
+            //    .then((res) => {
+            //        this.rooms = res;
+            //        console.log(this.rooms);
+            //        this.isLoaded = true;
+            //    });
         }
     }
 </script>

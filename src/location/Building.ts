@@ -1,5 +1,10 @@
 import Address from "@/location/Address";
 
+export interface BuildingRequest {
+    name: string;
+    address: Address;
+}
+
 export default class Building{
     public id: string;
     public name: string;

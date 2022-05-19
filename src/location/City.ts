@@ -1,3 +1,7 @@
+export interface CityRequest {
+    name: string;
+}
+
 export default class City{
     public id: string;
     public name: string;

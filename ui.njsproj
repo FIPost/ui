@@ -172,6 +172,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="src\classes\helpers\SelectOption.ts" />
+    <TypeScriptCompile Include="src\location\LocationRepository.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\package\Package.ts" />
     <TypeScriptCompile Include="src\employee\Person.ts" />
     <TypeScriptCompile Include="src\classes\requests\AddressRequest.ts" />

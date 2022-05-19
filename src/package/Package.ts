@@ -1,5 +1,12 @@
 import { Ticket } from "@/package/Ticket";
 
+export interface PackageRequest {
+    sender: string;
+    receiverId: string;
+    name: string;
+    collectionPointId: string;
+}
+
 export class Package {
     id: string;
     receiverId: string;

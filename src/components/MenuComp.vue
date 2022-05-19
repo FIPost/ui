@@ -1,10 +1,10 @@
 <template>
     <div class="container">
         <h1 class="border-bottom">Start</h1>
-        <div class="row">
-            <MenuItem class="col-2" @click="goToUrl('/registratie')" :source="getImgUrl('register.png')">Registreren</MenuItem>
-            <MenuItem class="col-2" @click="goToUrl('/overzicht')" :source="getImgUrl('search.png')">Zoeken</MenuItem>
-            <MenuItem class="col-2" @click="goToUrl('/locaties')" :source="getImgUrl('map.png')">Locaties</MenuItem>
+        <div class="row justify-content-center gap-1">
+            <MenuItem class="col-3" @click="goToUrl('/registratie')" :source="getImgUrl('register.png')">Registreren</MenuItem>
+            <MenuItem class="col-3" @click="goToUrl('/overzicht')" :source="getImgUrl('search.png')">Zoeken</MenuItem>
+            <MenuItem class="col-3" @click="goToUrl('/locaties')" :source="getImgUrl('map.png')">Locaties</MenuItem>
         </div>
     </div>
 </template>

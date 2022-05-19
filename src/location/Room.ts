@@ -1,5 +1,10 @@
 import Building from "@/location/Building";
 
+export interface RoomRequest {
+    name: string;
+    buildingId: string;
+}
+
 export default class Room {
     public id: string;
     public name: string;

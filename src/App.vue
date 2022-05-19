@@ -61,7 +61,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import "@/styling/main.scss";
+    //@import "@/styling/main.scss";
 
     @font-face {
         font-family: "Metropolis";

@@ -1,4 +1,4 @@
-import { Package } from '@/package/Package';
+import { Package, PackageRequest } from '@/package/Package';
 import http from '@/services/http';
 import TicketRequest from '@/classes/requests/TicketRequest';
 import axios from 'axios';
@@ -46,7 +46,7 @@ export class PakketService {
         return data.map((pkg) => Package.deserialize(pkg));
     }
 
-    public async post(packageModel): Promise<Package> {
+    public async post(packageModel: PackageRequest): Promise<Package> {
         const response = await http.post(`/api/packages`, packageModel);
         return Package.deserialize(response.data);
     }

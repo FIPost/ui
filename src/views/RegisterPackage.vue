@@ -8,7 +8,7 @@
             </ol>
         </nav>
 
-        <header>
+        <header class="border-bottom mb-1">
             <h1>Pakket Registreren</h1>
         </header>
 
@@ -214,21 +214,21 @@
 
         async registerPackage() {
             // Call to backend. Package is filled by emitters.
-            this.loadPostRequest = true;
-            pakketService
-                .post(this.fpackage)
-                .then((res) => {
-                    this.loadPostRequest = false;
-                    var result = res;
-                    this.$router.push({
-                        name: "PackagePage",
-                        params: { id: result.id },
-                    });
-                })
-                .catch((err: AxiosError) => {
-                    this.emitter.emit("err", err);
-                    this.loadPostRequest = false;
-                });
+            //this.loadPostRequest = true;
+            //pakketService
+            //    .post(this.fpackage)
+            //    .then((res) => {
+            //        this.loadPostRequest = false;
+            //        var result = res;
+            //        this.$router.push({
+            //            name: "PackagePage",
+            //            params: { id: result.id },
+            //        });
+            //    })
+            //    .catch((err: AxiosError) => {
+            //        this.emitter.emit("err", err);
+            //        this.loadPostRequest = false;
+            //    });
         }
 
         receiverChanged(input: SelectOption): void {
