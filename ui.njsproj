@@ -184,6 +184,9 @@
     <TypeScriptCompile Include="src\classes\requests\RoomRequest.ts" />
     <TypeScriptCompile Include="src\classes\requests\TicketRequest.ts" />
     <TypeScriptCompile Include="src\location\Room.ts" />
+    <TypeScriptCompile Include="src\package\PackageRepository.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="src\package\Ticket.ts" />
     <TypeScriptCompile Include="src\classes\validation\PackageValidation.ts" />
     <TypeScriptCompile Include="src\main.ts" />

@@ -8,7 +8,9 @@ import mitt from 'mitt';
 
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { DevLocationRepository, ILocationRepository } from './location/LocationRepository'
+import { LocalLocationRepository } from './location/LocationRepository'
+import { LocalPackageRepository } from './package/PackageRepository'
+import { LocalEmployeeRepository } from './employee/EmployeeRepository'
 
 library.add(faCheckCircle, faSortDown, faSortUp, faSearch, faFlagCheckered, faCheck, faPlusSquare, faHome, faPenSquare, faMinusSquare)
 
@@ -17,9 +19,10 @@ const app = createApp(App);
 const emitter = mitt();
 app.config.globalProperties.emitter = emitter;
 
-//Create a global access point for repo
-const repo: ILocationRepository = new DevLocationRepository();
-app.config.globalProperties.$repo = repo;
+//Create a global access points for repo
+app.config.globalProperties.$locationRepo = new LocalLocationRepository();
+app.config.globalProperties.$packageRepo = new LocalPackageRepository();
+app.config.globalProperties.$employeeRepo = new LocalEmployeeRepository();
 
 app.use(router)
 app.component('font-awesome-icon', FontAwesomeIcon)

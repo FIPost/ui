@@ -1,31 +1,38 @@
 <template>
-    <div class="card">
-        <table class="table table-striped">
-            <caption class="d-none">packages in system</caption>
-            <thead>
-                <tr>
-                    <th>Naam</th>
-                    <th>Ontvanger</th>
-                    <th>Status</th>
-                    <th>Laatste verandering</th>
-                    <th>Uitgevoerd door</th>
-                    <th>Huidige locatie</th>
-                    <th>Eind locatie</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="clickable" v-for="item in items" :key="item.id" @click="onRowClicked(item.id)">
-                    <td>{{item.name}}</td>
-                    <td><ReceiverProxy :id="item.receiverId" /></td>
-                    <td><span class="badge" :class="item.routeFinished ? 'bg-success' : 'bg-warning text-dark'">{{item.getStatus()}}</span></td>
-                    <td>{{convertDate(item.getLastTicket().finishedAt)}}</td>
-                    <td><ReceiverProxy :id="item.getLastTicket().completedByPersonId" /></td>
-                    <td><LocationProxy :id="item.getLastTicket().locationId" /></td>
-                    <td><LocationProxy :id="item.collectionPointId" /></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="table table-striped">
+        <caption class="d-none">packages in system</caption>
+        <thead>
+            <tr>
+                <th>Naam</th>
+                <th>Ontvanger</th>
+                <th>Status</th>
+                <th>Laatste verandering</th>
+                <th>Uitgevoerd door</th>
+                <th>Huidige locatie</th>
+                <th>Eind locatie</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="item in items" :key="item.id" @click="onRowClicked(item.id)" style="cursor:pointer;">
+                <td>{{item.name}}</td>
+                <td><ReceiverProxy :id="item.receiverId" /></td>
+                <td><span class="badge" :class="item.routeFinished ? 'bg-success' : 'bg-warning text-dark'">{{item.getStatus()}}</span></td>
+                <td>
+                    <span v-if="item.getLastTicket()">{{convertDate(item.getLastTicket().finishedAt)}}</span>
+                    <span v-else>No Ticket</span>
+                </td>
+                <td>
+                    <ReceiverProxy v-if="item.getLastTicket()" :id="item.getLastTicket().completedByPersonId" />
+                    <span v-else>No Ticket</span>
+                </td>
+                <td>
+                    <LocationProxy v-if="item.getLastTicket()" :id="item.getLastTicket().locationId" />
+                    <span v-else>No Ticket</span>
+                </td>
+                <td><LocationProxy :id="item.collectionPointId" /></td>
+            </tr>
+        </tbody>
+    </table>
 </template>
 
 <script lang="ts">
@@ -56,48 +63,5 @@
 </script>
 
 <style scoped lang="scss">
-    @import "@/styling/main.scss";
     
-    .badge {
-        padding: .35em .65em;
-        border-radius: 5px;
-
-        color: white;
-
-        font-size: .75em;
-        font-weight: bold;
-        text-align: center;
-
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: clip;
-    }
-
-    .bg-primary {
-        background-color: blue;
-    }
-
-    .bg-secondary {
-        background-color: dimgrey;
-    }
-
-    .bg-warning {
-        background-color: orange;
-    }
-
-    .bg-success {
-        background-color: green;
-    }
-
-    .text-dark {
-        color: black;
-    }
-
-    .clickable {
-        cursor: pointer;
-    }
-
-    .clickable:hover {
-        background-color: ghostwhite !important;
-    }
 </style>

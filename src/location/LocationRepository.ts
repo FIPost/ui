@@ -1,4 +1,5 @@
 import axios, { AxiosInstance } from "axios";
+import Address from "./Address";
 import Building, { BuildingRequest } from "./Building";
 import City, { CityRequest } from "./City";
 import Room, { RoomRequest } from "./Room";
@@ -25,13 +26,26 @@ export interface ILocationRepository {
     DeleteRoom(id: string): Promise<Room>;
 }
 
-export class DevLocationRepository implements ILocationRepository {
+export class LocalLocationRepository implements ILocationRepository {
     private cities: Array<City> = new Array<City>();
-    private buldings: Array<Building> = new Array<Building>();
+    private buildings: Array<Building> = new Array<Building>();
     private rooms: Array<Room> = new Array<Room>();
 
     constructor() {
-        //TODO: add default values
+        this.cities.push(
+            new City("0", "City_0"),
+            new City("1", "City_1")
+        );
+
+        this.buildings.push(
+            new Building("0", "Building_0", new Address(this.cities[0], "Street_0", "PC_0", 0, "0")),
+            new Building("1", "Building_1", new Address(this.cities[1], "Street_1", "PC_1", 1, "1"))
+        );
+
+        this.rooms.push(
+            new Room("0", "Room_0", this.buildings[0]),
+            new Room("1", "Room_1", this.buildings[1])
+        );
     }
 
     async GetAllCities(): Promise<City[]> {
@@ -39,7 +53,7 @@ export class DevLocationRepository implements ILocationRepository {
     }
 
     async GetAllBuildings(): Promise<Building[]> {
-        return this.buldings;
+        return this.buildings;
     }
 
     async GetAllRooms(): Promise<Room[]> {

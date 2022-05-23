@@ -1,27 +1,41 @@
 <template>
     <div class="container">
-        <nav aria-label="breadcrumb">
+        <nav class="row" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Packages</li>
             </ol>
         </nav>
 
-        <header>
-            <h1>Pakketoverzicht</h1>
+        <header class="row">
+            <h1>Pakket overzicht</h1>
         </header>
 
-        <SearchContainer />
+        <form class="row border rounded-3 p-2 mb-2 bg-light">
+            <label class="col-1 col-form-label">Zoek</label>
+            <div class="col-auto me-auto">
+                <input type="search" class="form-control" placeholder="Zoeken..." />
+            </div>
+            <div class="col-auto">
+                <button type="button" class="btn btn-success" @click="goToRegisterLocation">
+                    <font-awesome-icon icon="plus-square" class="me-1" />
+                    Toevoegen
+                </button>
+            </div>
+        </form>
+
         <LoadingIcon v-if="!isLoaded" />
-        <div v-else>
-            <PackageTable :items="packages" />
-            <Pagination v-if="allPackages.length > visibleItemsPerPageCount"
-                        :page-count="pageCount"
-                        :visible-items-per-page-count="visibleItemsPerPageCount"
-                        :visible-pages-count="Math.min(pageCount, 5)"
-                        @loadPage="loadPage"
-                        @nextPage="loadPage('next')"
-                        @previousPage="loadPage('previous')" />
+        <div v-else class="row">
+            <section class="col border rounded-3 p-0 pt-2">
+                <PackageTable :items="filteredPackages" />
+                <Pagination v-if="packages.length > visibleItemsPerPageCount"
+                            :page-count="pageCount"
+                            :visible-items-per-page-count="visibleItemsPerPageCount"
+                            :visible-pages-count="Math.min(pageCount, 5)"
+                            @loadPage="loadPage"
+                            @nextPage="loadPage('next')"
+                            @previousPage="loadPage('previous')" />
+            </section>
         </div>
     </div>
 </template>
@@ -31,8 +45,6 @@
     import { getCurrentInstance } from "@vue/runtime-core";
     import { AxiosError } from "axios";
 
-    import { pakketService } from "@/package/pakketservice";
-   
     import { Package } from "@/package/Package";
 
     import SearchContainer from "@/components/SearchContainer.vue";
@@ -51,11 +63,12 @@
         },
     })
     export default class PakketOverzicht extends Vue {
+        private packageRepo = getCurrentInstance()?.appContext.config.globalProperties.$packageRepo;
         private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
         private isLoaded: boolean = false;
 
-        private allPackages: Array<Package> = [];
         private packages: Array<Package> = [];
+        private filteredPackages: Array<Package> = [];
 
         private pageCount = 0;
         private visibleItemsPerPageCount = 20;
@@ -65,12 +78,11 @@
         }
 
         private async GetPackages() {
-            pakketService
-                .getAll()
-                .then((res: Package[]) => {
-                    this.allPackages = res;
-                    console.log(this.allPackages);
-                    this.pageCount = Math.ceil(this.allPackages.length / this.visibleItemsPerPageCount);
+            this.packageRepo
+                .GetAllPackages()
+                .then((res: Array<Package>) => {
+                    this.packages = res;
+                    this.pageCount = Math.ceil(this.packages.length / this.visibleItemsPerPageCount);
                     this.loadPage(1);
                     this.isLoaded = true;
                 })
@@ -81,7 +93,7 @@
 
         public loadPage(value: number): void {
             const pageIndex = (value - 1) * this.visibleItemsPerPageCount;
-            this.packages = this.allPackages.slice(pageIndex, pageIndex + this.visibleItemsPerPageCount);
+            this.filteredPackages = this.packages.slice(pageIndex, pageIndex + this.visibleItemsPerPageCount);
         }
     }
 </script>

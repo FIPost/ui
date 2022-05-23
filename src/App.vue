@@ -9,10 +9,11 @@
 
 <script lang="ts">
     import { Vue, Options } from "vue-class-component";
-    import Navigationbar from "@/components/Navigationbar.vue";
-    import Modal from "@/views/Modal.vue";
     import { getCurrentInstance } from "vue";
     import { AxiosError } from "axios";
+
+    import Navigationbar from "@/components/Navigationbar.vue";
+    import Modal from "@/views/Modal.vue";
 
 
     @Options({
@@ -61,7 +62,11 @@
 </script>
 
 <style lang="scss" scoped>
-    //@import "@/styling/main.scss";
+    @import "@/styling/main.scss";
+
+    body {
+        background-color: #000000 !important;
+    }
 
     @font-face {
         font-family: "Metropolis";

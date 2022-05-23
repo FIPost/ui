@@ -1,18 +1,18 @@
 <template>
-    <table class="table table-striped border rounded-3">
+    <table class="table table-striped">
         <caption class="d-none">locations in system</caption>
         <thead>
             <tr>
+                <th>Ruimte</th>
                 <th>Stad</th>
                 <th>Gebouw</th>
-                <th>Ruimte</th>
             </tr>
         </thead>
         <tbody>
             <tr v-for="item in items" :key="item.id">
+                <td>{{item.name}}</td>
                 <td>{{item.building.address.city.name}}</td>
                 <td>{{item.building.name}}, {{item.building.address.street}}, {{item.building.address.number}}</td>
-                <td>{{item.name}}</td>
                 <td><font-awesome-icon icon="pen-square" /></td>
             </tr>
         </tbody>

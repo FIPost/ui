@@ -3,7 +3,8 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Locations</li>
+                <li class="breadcrumb-item"><a href="/#/locaties">Locations</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Register</li>
             </ol>
         </nav>
 
@@ -49,19 +50,6 @@
             <button type="submit" class="btn btn-primary">Aanmaken</button>
         </form>
     </div>
-
-    <div class="page-wrapper">
-        <div class="component-container">
-            <div class="container-header">Locatie toevoegen</div>
-            <p>Selecteer wat u wilt toevoegen:</p>
-            <ComboBox :options="locationOptions"
-                      @selectChange="selectedLocationChange"
-                      placeholder="selecteer een optie" />
-            <AddCity v-if="selectedLocation == 'Stad'" />
-            <AddBuilding v-if="selectedLocation == 'Gebouw'" />
-            <AddRoom v-if="selectedLocation == 'Ruimte'" />
-        </div>
-    </div>
 </template>
 
 
@@ -88,16 +76,6 @@
     })
     export default class AddLocation extends Vue {
         private loc: object = {};
-        private selectedLocation: String = "";
-        private locationOptions: Array<String> = new Array<String>(
-            "Stad",
-            "Gebouw",
-            "Ruimte"
-        );
-
-        selectedLocationChange(input: string): void {
-            this.selectedLocation = input;
-        }
 
         addLocation() {
             console.log(this.loc);

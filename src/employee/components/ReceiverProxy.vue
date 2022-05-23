@@ -8,20 +8,24 @@
 <script lang="ts">
     import { Vue } from 'vue-class-component'
     import { Prop } from 'vue-property-decorator'
-    import { personeelService } from '@/employee/personeelService';
+    import { getCurrentInstance } from "@vue/runtime-core";
 
     export default class ReceiverProxy extends Vue {
         @Prop() id!: string;
+
+        private employeeRepo = getCurrentInstance()?.appContext.config.globalProperties.$employeeRepo;
+
         private isLoaded: boolean = false;
         private text: string = "Empty";
 
         async mounted() {
-            personeelService.get(this.id)
+            this.employeeRepo
+                .GetEmployeeByID(this.id)
                 .then((res) => {
                     this.text = res.name;
                     this.isLoaded = true;
                 })
-                .catch ((err) =>
+                .catch((err) =>
                     console.error(err)
                 );
         }
@@ -30,8 +34,13 @@
 
 <style scoped lang="scss">
     @keyframes fade-anim {
-        from{background-color: lightgray;}
-        to{background-color: darkgray;}
+        from {
+            background-color: lightgray;
+        }
+
+        to {
+            background-color: darkgray;
+        }
     }
 
     .fade {
