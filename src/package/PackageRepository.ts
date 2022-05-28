@@ -15,11 +15,16 @@ export class LocalPackageRepository implements IPackageRepository {
 
     constructor() {
         this.packages.push(
-            new Package("0", "0", "0", "0", "0", "0", false, new Array<Ticket>()),
-            new Package("1", "1", "1", "1", "1", "1", false, new Array<Ticket>()),
-            new Package("2", "2", "2", "2", "2", "2", false, new Array<Ticket>()),
-            new Package("3", "3", "3", "3", "3", "3", false, new Array<Ticket>()),
-            new Package("4", "4", "4", "4", "4", "4", false, new Array<Ticket>())
+            new Package("0", "0", "0", "0", "0", "0", false, new Array<Ticket>(
+                new Ticket("0", "0", 0, "0", ""))),
+            new Package("1", "1", "1", "1", "1", "1", false, new Array<Ticket>(
+                new Ticket("1", "1", 11111111, "1", ""))),
+            new Package("2", "2", "2", "2", "2", "2", false, new Array<Ticket>(
+                new Ticket("2", "2", 22222222, "2", ""))),
+            new Package("3", "3", "3", "3", "3", "3", false, new Array<Ticket>(
+                new Ticket("3", "3", 33333333, "3", ""))),
+            new Package("4", "4", "4", "4", "4", "4", false, new Array<Ticket>(
+                new Ticket("4", "4", 44444444, "4", "")))
         );
     }
 

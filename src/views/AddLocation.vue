@@ -54,31 +54,55 @@
 
 
 <script lang="ts">
-    import { Options, Vue } from "vue-class-component";
-    import InputField from "@/components/standardUi/InputField.vue";
-    import BtnFinish from "@/components/standardUi/BtnFinish.vue";
-    import AddCity from "@/components/locationRegistration/AddCity.vue";
-    import AddBuilding from "@/components/locationRegistration/AddBuilding.vue";
-    import AddRoom from "@/components/locationRegistration/AddRoom.vue";
-    import ComboBox from "@/components/standardUi/ComboBox.vue";
-    import BtnBack from "@/components/standardUi/BtnBack.vue";
+    import { Options, Vue } from "vue-class-component"
+    import { getCurrentInstance } from "vue"
+
+    import Room from '@/location/Room'
+    import Building from "../location/Building";
+    import Address from "../location/Address";
+    import City from "../location/City";
 
     @Options({
         components: {
-            ComboBox,
-            InputField,
-            BtnFinish,
-            AddCity,
-            AddBuilding,
-            AddRoom,
-            BtnBack,
+
         },
     })
     export default class AddLocation extends Vue {
-        private loc: object = {};
+        private locationRepo = getCurrentInstance()?.appContext.config.globalProperties.$locationRepo;
 
-        addLocation() {
+        private loc: object = {};
+        private requestSend: boolean = false;
+
+        private addLocation(): void {
+            if (this.requestSend) {
+                throw new Error("Request was already send, please wait for response and try again");
+            }
+
             console.log(this.loc);
+
+            // validate form
+
+            // this.sendRequest(this.loc);
+        }
+
+        private async sendRequest(location) {
+            this.requestSend = true;
+
+            // build location
+            const city: City = new City("", location.city);
+            const address: Address = new Address(city, location.street, location.zip, location.number, "");
+            const building: Building = new Building("", "", address);
+            const room: Room = new Room("", location.name, building);
+
+            await this.locationRepo.AddRoom(room)
+                .then(res => {
+                    // handle response completed
+                })
+                .catch(err => {
+                    // handle response failed
+                });
+
+            this.requestSend = false;
         }
     }
 </script>

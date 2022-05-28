@@ -73,6 +73,9 @@
     <Content Include="src\components\locationRegistration\AddRoom.vue" />
     <Content Include="src\components\location\LocationInfo.vue" />
     <Content Include="src\components\location\LocationModal.vue" />
+    <Content Include="src\components\Placeholder.vue">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="src\employee\EmployeeRepository.ts">
       <SubType>Code</SubType>
     </Content>

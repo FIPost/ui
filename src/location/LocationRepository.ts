@@ -60,16 +60,19 @@ export class LocalLocationRepository implements ILocationRepository {
         return this.rooms;
     }
 
-    GetCityByID(id: string): Promise<City> {
+    async GetCityByID(id: string): Promise<City> {
         throw new Error("Method not implemented.");
     }
 
-    GetBuildingByID(id: string): Promise<Building> {
+    async GetBuildingByID(id: string): Promise<Building> {
         throw new Error("Method not implemented.");
     }
 
-    GetRoomByID(id: string): Promise<Room> {
-        throw new Error("Method not implemented.");
+    async GetRoomByID(id: string): Promise<Room> {
+        const res = this.rooms.find(room => room.id == id);
+        if (!res)
+            throw new Error(`Room not found with id: ${id}`);
+        return res;
     }
 
     CreateCity(city: CityRequest): Promise<City> {

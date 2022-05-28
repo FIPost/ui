@@ -26,6 +26,6 @@ export class LocalEmployeeRepository implements IEmployeeRepository {
         const res = this.employees.find(employee => employee.id == id);
         if (!res)
             throw new Error(`employee not found with id: ${id}`);
-        return res
+        return res;
     }
 }
