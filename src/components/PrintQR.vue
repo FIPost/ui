@@ -211,8 +211,8 @@ import { Vue } from "vue-class-component";
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 export default class PrintQR extends Vue {
-  @Prop() public packageId: String = "";
-  @Prop() public address: String = "";
+  @Prop() public packageId!: string;
+  @Prop() public address: string = "";
 
   onClick(): void {
     const address = this.address;

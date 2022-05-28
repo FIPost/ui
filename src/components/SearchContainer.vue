@@ -1,11 +1,11 @@
 <template>
-  <div class="component-container no-padding">
+  <div class="container">
     <div class="search-main">
       <div class="search-fields">
         <h3 class="text">Filter</h3>
       </div>
       <div class="search-fields">
-        <Search @valueChanged="valueChanged" />
+        <SearchBar @valueChanged="valueChanged" />
         <ComboBox :options="options" placeholder="Selecteer een veld" />
       </div>
     </div>
@@ -14,12 +14,12 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Search from "./Search.vue";
+import SearchBar from "./SearchBar.vue";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
 
 const SearchContainer = defineComponent({
   components: {
-    Search,
+    SearchBar,
     ComboBox,
   },
   methods: {

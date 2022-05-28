@@ -1,115 +1,101 @@
 <template>
-  <div>
-    <btn-back />
-    <LoadingIcon v-if="isLoading" />
-    <div class="page" v-else>
-      <div class="pi-item-container">
-        <CreateTicket @new-ticket="reloadPage" :fPackage="packageM" />
-        <RoutePackageInfo :tickets="packageM.tickets" />
-      </div>
-      <div class="pi-item-container">
-        <PrintQR :packageId="packageId" :address="buildAddressString()" />
-        <PackageDetails :packageM="packageM" />
-      </div>
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="/#/overzicht">Packages</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{{packageID}}</li>
+            </ol>
+        </nav>
+
+        <header>
+            <h1>Pakket: {{packageID}}</h1>
+        </header>
+
+        <nav class="row border rounded-3 p-2 mb-2 bg-light">
+            <div class="d-flex flex-row-reverse">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" href="">Actions</button>
+                <ul class="dropdown-menu">
+                    <li><button type="button" class="dopdown-item">Print QR</button></li>
+                </ul>
+            </div>
+        </nav>
+
+        <LoadingIcon v-if="isLoading" />
+        <div class="page" v-else>
+            <div class="pi-item-container">
+                <!--<CreateTicket @new-ticket="reloadPage" :fPackage="pkg" />-->
+                <!--<RoutePackageInfo :tickets="pkg.tickets" />-->
+            </div>
+            <div class="pi-item-container">
+                <!--<PrintQR :packageId="pkg.id" />-->
+                <!--<PackageDetails :pkg="pkg" />-->
+            </div>
+        </div>
+
+        <div v-if="pkg" class="row">
+            <ul class="list-group">
+                <li class="list-group-item">Ontvanger: {{pkg.receiverId}}</li>
+                <li class="list-group-item">Afhaalpunt: {{pkg.collectionPointId}}</li>
+                <li class="list-group-item">Zender: {{pkg.sender}}</li>
+                <li class="list-group-item">Naam: {{pkg.name}}</li>
+                <li class="list-group-item">Status: {{pkg.status}}</li>
+                <li class="list-group-item">Afgeleverd: {{pkg.routeFinished}}</li>
+            </ul>
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import PackageDetails from "@/components/packageInfo/PackageDetails.vue";
-import PrintQR from "@/components/PrintQR.vue";
-import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
-import CreateTicket from "@/components/route/CreateTicket.vue";
-import BtnBack from "@/components/standardUi/BtnBack.vue";
-import Package from "@/classes/Package";
-import { AxiosError } from "axios";
-import { pakketService } from "@/services/pakketService/pakketservice";
-import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+    import { Vue, Options } from "vue-class-component";
+    import { getCurrentInstance } from "vue";
 
-@Options({
-  components: {
-    PackageDetails,
-    PrintQR,
-    RoutePackageInfo,
-    CreateTicket,
-    BtnBack,
-    LoadingIcon,
-  },
-})
-export default class PackagePage extends Vue {
-  private packageId: String = "";
-  private packageM: Package = new Package();
+    import { Package } from "@/package/Package";
 
-  private isLoading: Boolean = true;
-  private error: Boolean = false;
+    import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+    import PackageDetails from "@/package/components/PackageDetails.vue";
+    import PrintQR from "@/components/PrintQR.vue";
+    import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
+    import CreateTicket from "@/components/route/CreateTicket.vue";
 
-  private ticketKey: number = 0;
-  private addressData: String = "";
+    @Options({
+        components: {
+            PackageDetails,
+            PrintQR,
+            RoutePackageInfo,
+            CreateTicket,
+            LoadingIcon,
+        },
+    })
+    export default class PackagePage extends Vue {
+        private packageID: string = "empty";
+        private packageRepo = getCurrentInstance()?.appContext.config.globalProperties.$packageRepo;
 
-  private async reloadPage() {
-    this.isLoading = true;
-    await this.getPackage();
-  }
+        private pkg?: Package;
 
-  async mounted() {
-    this.packageId = this.$router.currentRoute.value.params.id.toString();
-    await this.getPackage();
-  }
+        private isLoading: Boolean = true;
 
-  private async getPackage() {
-    pakketService
-      .get(this.packageId)
-      .then((res) => {
-        this.packageM = res;
-        this.isLoading = false;
-      })
-      .catch((err: AxiosError) => {
-        this.error = true;
-        this.isLoading = false;
-      });
-  }
+        async reloadPage() {
+            this.isLoading = true;
+            await this.getPackage();
+        }
 
-  buildAddressString() {
-    if (this.packageM.collectionPoint) {
-      this.addressData =
-        this.packageM.collectionPoint.building.address.street.toString() +
-        " " +
-        this.packageM.collectionPoint.building.name +
-        ", " +
-        this.packageM.collectionPoint.name +
-        " " +
-        this.packageM.collectionPoint.building.address.city.name;
-      return this.addressData;
+        async beforeMount() {
+            this.packageID = this.$router.currentRoute.value.params.id.toString();
+            this.getPackage();
+        }
+
+        async getPackage() {
+            this.packageRepo
+                .GetPackageByID(this.packageID)
+                .then((res) => {
+                    this.pkg = res;
+                    this.isLoading = false;
+                });
+        }
     }
-    return "Er ging iets mis bij het ophalen van de locatie";
-  }
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import "@/styling/main.scss";
-
-.page {
-  display: flex;
-  flex-wrap: wrap;
-  column-gap: 1em;
-
-  .pi-item-container {
-    width: 48%;
-    display: flex;
-    flex-direction: column;
-    row-gap: 15px;
-  }
-
-  @media only screen and (max-width: 865px) {
-    flex-direction: column;
-    row-gap: 15px;
-
-    .pi-item-container {
-      width: 90%;
-    }
-  }
-}
 </style>

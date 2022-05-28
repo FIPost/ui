@@ -1,356 +1,312 @@
 <template>
-  <div>
-    <div class="next-step-container">
-      <div v-if="fPackage == null">
-        <div>
-          Er ging iets mis bij het ophalen van de pakketgegevens. Probeer het
-          later opnieuw.
-        </div>
-      </div>
-      <div v-else>
-        <div
-          v-if="fPackage.routeFinished"
-          class="container container-header modern-purple"
-        >
-          Route voltooid
-        </div>
-        <div v-else class="container container-header">Nieuwe actie</div>
-
+    <div class="card">
+        <h1>{{fPackage.routeFinished ? "Route voltooid" : "Nieuwe actie"}}</h1>
         <LoadingIcon v-if="loading" />
-        <div class="finished-comp" v-else-if="fPackage.routeFinished">
-          <TicketComp :ticket="fPackage.tickets[0]" />
-          <font-awesome-icon class="fc" icon="flag-checkered" />
-        </div>
-        <div v-else>
-          <div v-if="!fPackage.routeFinished">
-            <div class="form">
-              <CBSearchSuggestions
-                :options="personOptions"
-                :custom="true"
-                :valid="personValid"
-                @select-changed="personChanged"
-                :selectedOption="selectedPersonOption"
-              >
-                <span class="hw">Afgeleverd door: </span>
-              </CBSearchSuggestions>
-              <CBSearchSuggestions
-                :options="roomOptions"
-                :custom="true"
-                :valid="roomValid"
-                @select-changed="roomChanged"
-                :selectedOption="selectedRoomOption"
-              >
-                <span class="hw">Op locatie: </span>
-              </CBSearchSuggestions>
-
-              <div v-if="showPersonConfirmation" class="confirm-person">
+        <!--<div v-if="fPackage.routeFinished" class="finished-comp">
+            {{fPackage}}-->
+            <!--<TicketComp :ticket="fPackage.tickets[0]" />-->
+            <!--<font-awesome-icon class="fc" icon="flag-checkered" />
+        </div>-->
+        <div v-else class="form">
+            <CBSearchSuggestions :options="personOptions"
+                                 :custom="true"
+                                 :valid="personValid"
+                                 @select-changed="personChanged"
+                                 :selectedOption="selectedPersonOption">
+                <span>Afgeleverd door: </span>
+            </CBSearchSuggestions>
+            <CBSearchSuggestions :options="roomOptions"
+                                 :custom="true"
+                                 :valid="roomValid"
+                                 @select-changed="roomChanged"
+                                 :selectedOption="selectedRoomOption">
+                <span>Op locatie: </span>
+            </CBSearchSuggestions>
+            <div v-if="showPersonConfirmation">
                 <hr />
-                <div class="container container-header modern-pink">
-                  Laatste stap
-                </div>
-                <CBSearchSuggestions
-                  :options="personOptions"
-                  :custom="true"
-                  :valid="personConfirmedValid"
-                  @select-changed="personConfirmedChanged"
-                  :selectedOption="selectedPersonConfirmedOption"
-                >
-                  <span>
-                    Ik bevestig dat het pakket in goede orde is afgeleverd
-                  </span>
+                <h2> Laatste stap </h2>
+                <CBSearchSuggestions :options="personOptions"
+                                     :custom="true"
+                                     :valid="personConfirmedValid"
+                                     @select-changed="personConfirmedChanged"
+                                     :selectedOption="selectedPersonConfirmedOption">
+                    <span> Ik bevestig dat het pakket in goede orde is afgeleverd </span>
                 </CBSearchSuggestions>
-              </div>
-
-              <ul v-if="errors">
-                <li v-for="e in errors" :key="e" class="error-text">{{ e }}</li>
-              </ul>
-              <SmallBtnFinish
-                class="finish"
-                @btn-clicked="addTicketAction()"
-                :text="'Toevoegen'"
-                :isLoading="adding"
-              />
             </div>
-          </div>
+
+            <ul v-if="errors">
+                <li v-for="e in errors" :key="e" class="error-text">{{e}}</li>
+            </ul>
+
+            <SmallBtnFinish class="finish" @btn-clicked="addTicketAction()" :text="'Toevoegen'" :isLoading="adding" />
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from "vue-class-component";
-import { AxiosError } from "axios";
+    import { Options, Vue } from "vue-class-component";
+    import { AxiosError } from "axios";
 
-// Components.
-import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
-import SelectOption from "@/classes/helpers/SelectOption";
-import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
-import TicketComp from "@/components/route/TicketComp.vue";
-import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
+    // Components.
+    import CBSearchSuggestions from "@/components/standardUi/CBSearchSuggestions.vue";
+    import SelectOption from "@/classes/helpers/SelectOption";
+    import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
+    import TicketComp from "@/components/route/TicketComp.vue";
+    import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
-// Types.
-import Person from "@/classes/Person";
-import Room from "@/classes/Room";
-import { roomHelper } from "@/classes/Room";
-import Ticket from "@/classes/Ticket";
-import TicketRequest from "@/classes/requests/TicketRequest";
+    // Types.
+    import { Person } from "@/employee/Person";
+    import Room from "@/location/Room";
+    import { Ticket } from "@/package/Ticket";
+    import TicketRequest from "@/classes/requests/TicketRequest";
 
-// Services.
-import { roomService } from "@/services/locatieService/roomservice";
-import { personeelService } from "@/services/personeelService/personeelService";
-import { getCurrentInstance } from "@vue/runtime-core";
-import { Emit } from "vue-property-decorator";
-import { pakketService } from "@/services/pakketService/pakketservice";
-import Package from "@/classes/Package";
-import { Prop } from "vue-property-decorator";
+    // Services.
+    import { roomService } from "@/location/roomservice";
+    import { personeelService } from "@/employee/personeelService";
+    import { getCurrentInstance } from "@vue/runtime-core";
+    import { Emit } from "vue-property-decorator";
+    import { pakketService } from "@/package/pakketservice";
+    import { Package } from "@/package/Package";
+    import { Prop } from "vue-property-decorator";
 
-@Options({
-  components: {
-    SmallBtnFinish,
-    CBSearchSuggestions,
-    LoadingIcon,
-    TicketComp,
-  },
-})
-export default class CreateTicket extends Vue {
-  public ticket: Ticket = {
-    id: "",
-    location: roomHelper.getEmptyRoom(),
-    finishedAt: 0,
-    completedByPerson: "",
-    receivedByPerson: "",
-  } as Ticket;
+    @Options({
+        components: {
+            SmallBtnFinish,
+            CBSearchSuggestions,
+            LoadingIcon,
+            TicketComp,
+        },
+    })
+    export default class CreateTicket extends Vue {
+        private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
 
-  // Default.
-  private loading: Boolean = true;
-  private adding: boolean = false;
-  @Prop()
-  private fPackage!: Package;
-  private showPersonConfirmation = false;
+        @Prop() private fPackage!: Package;
+        public ticket?: Ticket;
 
-  private emitter = getCurrentInstance()?.appContext.config.globalProperties
-    .emitter;
+        // Default.
+        private loading: Boolean = true;
+        private adding: boolean = false;
+        private showPersonConfirmation = false;
 
-  // Errors.
-  private errors: String[] = [];
+        // Errors.
+        private errors: String[] = [];
 
-  // Employee data.
-  private selectedPersonOption: SelectOption = new SelectOption("", "");
-  private selectedPersonConfirmedOption: SelectOption = new SelectOption(
-    "",
-    ""
-  );
-  private personOptions: Array<SelectOption> = new Array<SelectOption>();
-  private persons: Array<Person> = new Array<Person>();
-  private personValid: Boolean = true;
-  private personConfirmedValid: Boolean = true;
-
-  private personChanged(personOption: SelectOption) {
-    this.selectedPersonOption = personOption;
-    this.personValid = true;
-    this.errors = [];
-  }
-
-  private personConfirmedChanged(personOption: SelectOption) {
-    this.selectedPersonConfirmedOption = personOption;
-    this.personConfirmedValid = true;
-    this.errors = [];
-  }
-
-  // Room data.
-  private selectedRoomOption: SelectOption = new SelectOption("", "");
-  private roomOptions: Array<SelectOption> = new Array<SelectOption>();
-  private rooms: Array<Room> = new Array<Room>();
-  private roomValid: Boolean = true;
-  private roomChanged(roomOption: SelectOption) {
-    this.selectedRoomOption = roomOption;
-    this.roomValid = true;
-    this.errors = [];
-    if (
-      this.fPackage.collectionPoint != null &&
-      roomOption.id == this.fPackage.collectionPoint.id
-    ) {
-      this.showPersonConfirmation = true;
-    } else {
-      this.showPersonConfirmation = false;
-    }
-  }
-
-  private async runValidation() {
-    this.errors = [];
-    if (this.persons.some((p) => p.id == this.selectedPersonOption.id)) {
-      this.personValid = true;
-    } else {
-      this.errors.push("Deze persoon kon niet gevonden worden.");
-      this.personValid = false;
-    }
-
-    if (this.showPersonConfirmation) {
-      if (
-        this.persons.some((p) => p.id == this.selectedPersonConfirmedOption.id)
-      ) {
-        this.personConfirmedValid = true;
-      } else {
-        this.errors.push("Deze persoon kon niet gevonden worden.");
-        this.personConfirmedValid = false;
-      }
-    }
-
-    if (this.rooms.some((r) => r.id == this.selectedRoomOption.id)) {
-      this.roomValid = true;
-    } else {
-      this.errors.push("Deze ruimte kon niet gevonden worden.");
-      this.roomValid = false;
-    }
-  }
-
-  private async addTicketAction() {
-    if (!this.adding) {
-      this.adding = true;
-      await this.runValidation();
-      if (this.errors.length < 1) {
-        await pakketService
-          .createTicket({
-            locationId: this.selectedRoomOption.id,
-            packageId: this.fPackage.id,
-            completedByPersonId: this.selectedPersonOption.id,
-            receivedByPersonId: this.showPersonConfirmation
-              ? this.selectedPersonConfirmedOption.id
-              : "",
-          } as TicketRequest)
-          .then((res) => {
-            this.adding = false;
-          })
-          .catch((err) => {});
-        this.newTicket();
-      } else {
-        this.adding = false;
-      }
-    }
-  }
-
-  @Emit("new-ticket")
-  newTicket() {}
-
-  async mounted() {
-    await roomService
-      .getAll()
-      .then((res) => {
-        this.rooms = res;
-        this.rooms.forEach((room) =>
-          this.roomOptions.push(
-            new SelectOption(
-              room.id,
-              room.building.address.city.name +
-                ", " +
-                room.building.name +
-                ", " +
-                room.name
-            )
-          )
+        // Employee data.
+        private selectedPersonOption: SelectOption = new SelectOption("", "");
+        private selectedPersonConfirmedOption: SelectOption = new SelectOption(
+            "",
+            ""
         );
-      })
-      .catch((err: AxiosError) => {
-        this.emitter.emit("err", err);
-      });
+        private personOptions: Array<SelectOption> = new Array<SelectOption>();
+        private persons: Array<Person> = new Array<Person>();
+        private personValid: Boolean = true;
+        private personConfirmedValid: Boolean = true;
 
-    await personeelService
-      .getAll()
-      .then((res) => {
-        this.persons = res;
-        this.persons.forEach((receiver) =>
-          this.personOptions.push(new SelectOption(receiver.id, receiver.name))
-        );
-      })
-      .catch((err: AxiosError) => {
-        this.emitter.emit("err", err);
-      });
-    this.loading = false;
-  }
-}
+        private personChanged(personOption: SelectOption) {
+            this.selectedPersonOption = personOption;
+            this.personValid = true;
+            this.errors = [];
+        }
+
+        private personConfirmedChanged(personOption: SelectOption) {
+            this.selectedPersonConfirmedOption = personOption;
+            this.personConfirmedValid = true;
+            this.errors = [];
+        }
+
+        // Room data.
+        private selectedRoomOption: SelectOption = new SelectOption("", "");
+        private roomOptions: Array<SelectOption> = new Array<SelectOption>();
+        private rooms: Array<Room> = new Array<Room>();
+        private roomValid: Boolean = true;
+        private roomChanged(roomOption: SelectOption) {
+            this.selectedRoomOption = roomOption;
+            this.roomValid = true;
+            this.errors = [];
+            if (
+                this.fPackage.collectionPointId != null &&
+                roomOption.id == this.fPackage.collectionPointId
+            ) {
+                this.showPersonConfirmation = true;
+            } else {
+                this.showPersonConfirmation = false;
+            }
+        }
+
+        private async runValidation() {
+            this.errors = [];
+            if (this.persons.some((p) => p.id == this.selectedPersonOption.id)) {
+                this.personValid = true;
+            } else {
+                this.errors.push("Deze persoon kon niet gevonden worden.");
+                this.personValid = false;
+            }
+
+            if (this.showPersonConfirmation) {
+                if (
+                    this.persons.some((p) => p.id == this.selectedPersonConfirmedOption.id)
+                ) {
+                    this.personConfirmedValid = true;
+                } else {
+                    this.errors.push("Deze persoon kon niet gevonden worden.");
+                    this.personConfirmedValid = false;
+                }
+            }
+
+            if (this.rooms.some((r) => r.id == this.selectedRoomOption.id)) {
+                this.roomValid = true;
+            } else {
+                this.errors.push("Deze ruimte kon niet gevonden worden.");
+                this.roomValid = false;
+            }
+        }
+
+        private async addTicketAction() {
+            if (!this.adding) {
+                this.adding = true;
+                await this.runValidation();
+                if (this.errors.length < 1) {
+                    await pakketService
+                        .createTicket({
+                            locationId: this.selectedRoomOption.id,
+                            packageId: this.fPackage.id,
+                            completedByPersonId: this.selectedPersonOption.id,
+                            receivedByPersonId: this.showPersonConfirmation
+                                ? this.selectedPersonConfirmedOption.id
+                                : "",
+                        } as TicketRequest)
+                        .then((res) => {
+                            this.adding = false;
+                        })
+                        .catch((err) => { });
+                    this.newTicket();
+                } else {
+                    this.adding = false;
+                }
+            }
+        }
+
+        @Emit("new-ticket")
+        newTicket() { }
+
+        async mounted() {
+            await roomService
+                .getAll()
+                .then((res) => {
+                    this.rooms = res;
+                    this.rooms.forEach((room) =>
+                        this.roomOptions.push(
+                            new SelectOption(
+                                room.id,
+                                room.building.address.city.name +
+                                ", " +
+                                room.building.name +
+                                ", " +
+                                room.name
+                            )
+                        )
+                    );
+                })
+                .catch((err: AxiosError) => {
+                    this.emitter.emit("err", err);
+                });
+
+            await personeelService
+                .getAll()
+                .then((res) => {
+                    this.persons = res;
+                    this.persons.forEach((receiver) =>
+                        this.personOptions.push(new SelectOption(receiver.id, receiver.name))
+                    );
+                })
+                .catch((err: AxiosError) => {
+                    this.emitter.emit("err", err);
+                });
+            this.loading = false;
+        }
+    }
 </script>
 
 <style scoped lang="scss">
-@import "@/styling/main.scss";
+    @import "@/styling/main.scss";
 
-.next-step-container {
-  color: $black-color;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  background: white;
-  overflow: hidden;
-  padding: 3em;
-  box-shadow: $shadow;
-  border-radius: $border-radius;
-  row-gap: 1em;
+    .next-step-container {
+        color: $black-color;
+        text-align: left;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: white;
+        overflow: hidden;
+        padding: 3em;
+        box-shadow: $shadow;
+        border-radius: $border-radius;
+        row-gap: 1em;
 
-  @media only screen and (max-width: 600px) {
-    padding: 2em;
-  }
-}
+        @media only screen and (max-width: 600px) {
+            padding: 2em;
+        }
+    }
 
-.form {
-  margin-top: 2em;
-}
+    .form {
+        margin-top: 2em;
+    }
 
-.message {
-  text-decoration: underline;
-}
+    .message {
+        text-decoration: underline;
+    }
 
-.finish {
-  cursor: pointer;
-  align-self: flex-start;
-}
+    .finish {
+        cursor: pointer;
+        align-self: flex-start;
+    }
 
-.confirm-person {
-  display: flex;
-  flex-direction: column;
-  row-gap: 1em;
+    .confirm-person {
+        display: flex;
+        flex-direction: column;
+        row-gap: 1em;
 
-  hr {
-    width: 100%;
-    height: 2px;
-    margin: 1.5em auto;
-    border: none;
-    background-color: rgba($color: #000000, $alpha: 0.1);
-  }
-}
+        hr {
+            width: 100%;
+            height: 2px;
+            margin: 1.5em auto;
+            border: none;
+            background-color: rgba($color: #000000, $alpha: 0.1);
+        }
+    }
 
-blockquote {
-  padding: 0.8em;
-  font-size: 0.8em;
-  margin: 0;
-  border-radius: $small-border-radius;
-}
+    blockquote {
+        padding: 0.8em;
+        font-size: 0.8em;
+        margin: 0;
+        border-radius: $small-border-radius;
+    }
 
-.hw {
-  min-width: 200px;
-}
+    .hw {
+        min-width: 200px;
+    }
 
-.finished-comp {
-  display: flex;
-  justify-content: left;
-  align-content: center;
-  padding: 2em;
-}
+    .finished-comp {
+        display: flex;
+        justify-content: left;
+        align-content: center;
+        padding: 2em;
+    }
 
-.fc {
-  font-size: 3em;
-  color: $modern-purple-color;
-  margin-left: 20%;
-}
+    .fc {
+        font-size: 3em;
+        color: $modern-purple-color;
+        margin-left: 20%;
+    }
 
-@media only screen and (max-width: 700px) {
-  .finished-comp {
-    display: flex;
-    flex-direction: column;
-  }
+    @media only screen and (max-width: 700px) {
+        .finished-comp {
+            display: flex;
+            flex-direction: column;
+        }
 
-  .fc {
-    font-size: 0px;
-  }
-}
+        .fc {
+            font-size: 0px;
+        }
+    }
 </style>

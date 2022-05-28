@@ -1,5 +1,5 @@
 import http from '@/services/http';
-import Building from "@/classes/Building"
+import Building from "@/location/Building"
 import BuildingRequest from '@/classes/requests/BuildingRequest';
 
 export default class BuildingService {

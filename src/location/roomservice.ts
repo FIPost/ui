@@ -1,5 +1,5 @@
 import http from '@/services/http';
-import Room from "@/classes/Room";
+import Room from "@/location/Room";
 import RoomRequest from "@/classes/requests/RoomRequest";
 
 export default class RoomService {
@@ -9,16 +9,13 @@ export default class RoomService {
   }
 
   public async getAll(): Promise<Array<Room>> {
-    const response = await http.get(`/api/locations/rooms`);
-    return response.data;
+      const response = await http.get(`/api/locations/rooms`);
+      return response.data.map((room) => Room.deserialize(room));
   }
 
   public async getById(id: string): Promise<Room> {
-    if(!id) {
-      throw new Error("");
-    }
-    const response = await http.get(`/api/locations/rooms/${id}`);
-    return response.data;
+      const response = await http.get(`/api/locations/rooms/${id}`);
+      return Room.deserialize(response.data);
   }
 
   public async update(room: RoomRequest, id: string) {

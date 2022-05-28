@@ -2,27 +2,25 @@
   <div class="search-container">
     <input v-model="inputValue" placeholder="Zoeken..." />
     <div class="icon-container">
-      <font-awesome-icon class="s-btn" icon="search" size="1x" />
+      <font-awesome-icon class="s-btn" icon="search" size="1x" style="display:none"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+    import { Options, Vue } from "vue-class-component";
+    import { Prop, Watch } from "vue-property-decorator";
 
-const Search = defineComponent({
-  data() {
-    return {
-      inputValue: "",
-    };
-  },
-  watch: {
-    inputValue(newValue, oldValue) {
-      this.$emit("valueChanged", newValue);
-    },
-  },
-});
-export default Search;
+    @Options({
+
+    })
+    export default class SearchBar extends Vue {
+        @Prop() private inputValue: string = "";
+
+        @Watch('inputValue') private inputValueChanged(val, _oldVal) {
+            this.$emit("valueChanged", val);
+        }
+    }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
