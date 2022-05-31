@@ -10,14 +10,14 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
-import Navigationbar from "@/components/Navigationbar.vue";
+import NavBar from "@/components/NavBar.vue";
 import Modal from "@/views/Modal.vue";
 import { getCurrentInstance } from "vue";
 import { AxiosError } from "axios";
 
 @Options({
   components: {
-    Navigationbar,
+    NavBar,
     Modal,
   },
 })

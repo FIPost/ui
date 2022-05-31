@@ -3,7 +3,7 @@
     <div class="container-group">
       <div class="header">Start</div>
       <hr />
-      <Menu />
+      <MenuContainer />
     </div>
      <div class="container-group">
       <div class="header">Dashboard</div>
@@ -14,15 +14,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Menu from "@/components/Menu.vue";
-import LocationSvg from "@/components/svg/LocationSvg.vue";
-import RegisterSvg from "@/components/svg/RegisterSvg.vue";
-import ScanSvg from "@/components/svg/ScanSvg.vue";
-import SearchSvg from "@/components/svg/SearchSvg.vue";
+import MenuContainer from "@/components/MenuContainer.vue";
 
-const Home = defineComponent({
+const HomePage = defineComponent({
   components: {
-    Menu
+    MenuContainer
   },
   data() {
     return {};
@@ -42,7 +38,7 @@ const Home = defineComponent({
     },
   },
 });
-export default Home;
+export default HomePage;
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

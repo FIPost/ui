@@ -10,19 +10,19 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 
-const Search = defineComponent({
+const SearchBar = defineComponent({
   data() {
     return {
       inputValue: "",
     };
   },
   watch: {
-    inputValue(newValue, oldValue) {
+    inputValue(newValue, _oldValue) {
       this.$emit("valueChanged", newValue);
     },
   },
 });
-export default Search;
+export default SearchBar;
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
