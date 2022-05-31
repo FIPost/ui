@@ -69,7 +69,7 @@
         </div>
         <div class="tooltip" style="display: inline-block" >
           ?
-          <span class="tooltiptext" >Vul eventueel een huisnummer toevoeging</span>
+          <span class="tooltiptext" >Vul eventueel een toevoeging in</span>
         </div>
         <br/>
 

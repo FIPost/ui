@@ -8,6 +8,7 @@
      <div class="container-group">
       <div class="header">Dashboard</div>
       <hr />
+        <Webcam />
     </div>
   </div>
 </template>
@@ -15,10 +16,12 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import MenuContainer from "@/components/MenuContainer.vue";
+import Webcam from "@/components/Webcam.vue";
 
 const HomePage = defineComponent({
   components: {
-    MenuContainer
+    MenuContainer,
+        Webcam,
   },
   data() {
     return {};

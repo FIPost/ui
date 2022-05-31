@@ -13,7 +13,7 @@
       </div>
       <div class="tooltip" style="display: inline-block" >
         ?
-        <span class="tooltiptext" >Vul de naam van het stad in</span>
+        <span class="tooltiptext" >Vul de naam van de stad in</span>
       </div>
       <br/>
 
