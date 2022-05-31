@@ -17,7 +17,7 @@ const SearchBar = defineComponent({
     };
   },
   watch: {
-    inputValue(newValue, oldValue) {
+    inputValue(newValue, _oldValue) {
       this.$emit("valueChanged", newValue);
     },
   },
