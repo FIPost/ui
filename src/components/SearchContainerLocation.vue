@@ -6,7 +6,7 @@
       </div>
 
       <div class="search-fields">
-        <Search @valueChanged="valueChanged" />
+        <SearchBar @valueChanged="valueChanged" />
       </div>
     </div>
   </div>
@@ -14,11 +14,11 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Search from "./Search.vue";
+import SearchBar from "./SearchBar.vue";
 
 const SearchContainer = defineComponent({
   components: {
-    Search,
+    SearchBar,
   },
   methods: {
     valueChanged(val) {

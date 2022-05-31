@@ -42,7 +42,7 @@ import { TableCell } from "@/classes/table/TableCell";
 import { dateConverter } from "@/classes/helpers/DateConverter";
 import { roomHelper } from "@/classes/Room";
 import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
-import Search from "@/components/Search.vue";
+import SearchBar from "@/components/SearchBar.vue";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
 
 @Options({
@@ -51,7 +51,7 @@ import ComboBox from "@/components/standardUi/ComboBox.vue";
     BtnBack,
     LoadingIcon,
     Pagination,
-    Search,
+    SearchBar,
     ComboBox,
   },
 })

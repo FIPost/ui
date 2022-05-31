@@ -25,7 +25,7 @@
 import { defineComponent } from "vue";
 import MenuItem from "@/components/MenuItem.vue";
 
-const Menu = defineComponent({
+const MenuContainer = defineComponent({
   components: {
     MenuItem,
   },
@@ -57,7 +57,7 @@ const Menu = defineComponent({
     },
   },
 });
-export default Menu;
+export default MenuContainer;
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

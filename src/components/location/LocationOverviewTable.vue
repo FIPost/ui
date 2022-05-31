@@ -53,7 +53,7 @@ import { AxiosError } from "axios";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
-import Search from "@/components/Search.vue";
+import SearchBar from "@/components/SearchBar.vue";
 
 @Options({
   components: {
@@ -62,7 +62,7 @@ import Search from "@/components/Search.vue";
     LoadingIcon,
     LocationInfo,
     LocationModal,
-    Search,
+    SearchBar,
   },
 })
 

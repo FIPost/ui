@@ -13,14 +13,14 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-const Navigationbar = defineComponent({
+const NavBar = defineComponent({
   methods: {
     logoClicked() : void {
       this.$router.push('/');
     }
   }
 });
-export default Navigationbar;
+export default NavBar;
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
