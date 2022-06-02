@@ -26,10 +26,10 @@ export class RemoteLocationRepository implements ILocationRepository {
         return new Location(
             room.data["id"],
             room.data["name"],
-            city.data["name"],
-            address["street"],
-            address["number"],
-            address["postalCode"]
+            room["building"]["address"]["city"]["name"],
+            room["building"]["address"]["street"],
+            room["building"]["address"]["number"],
+            room["building"]["address"]["postalCode"]
         );
     }
 

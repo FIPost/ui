@@ -5,7 +5,7 @@ import { Package } from "../Package";
 import { IPackageRepository } from "./PackageRepository";
 
 
-export class RemotePackageRepo implements IPackageRepository {
+export class RemotePackageRepository implements IPackageRepository {
     private axiosInst: AxiosInstance;
 
     constructor() {
@@ -26,7 +26,7 @@ export class RemotePackageRepo implements IPackageRepository {
 
     async CreatePackage(employeeID: string, locationID: string, pkg: Package): Promise<void> {
         // Create request
-        let request: PackageRequest = new PackageRequest;
+        const request: PackageRequest = new PackageRequest;
         request.Sender = pkg.sender;
         request.ReceiverId = pkg.receiverId;
         request.Name = pkg.name;
@@ -40,7 +40,7 @@ export class RemotePackageRepo implements IPackageRepository {
 
     async UpdatePackageLocation(employeeID: string, pkgID: string, locationID: string): Promise<void> {
         // Create request
-        let request: TicketRequest = new TicketRequest;
+        const request: TicketRequest = new TicketRequest;
         request.locationId = locationID;
         request.packageId = pkgID;
         request.completedByPersonId = employeeID;
@@ -51,7 +51,7 @@ export class RemotePackageRepo implements IPackageRepository {
 
     async UpdatePackageDeliverd(employeeID: string, pkgID: string, receiverID: string): Promise<void> {
         // Create request
-        let request: TicketRequest = new TicketRequest;
+        const request: TicketRequest = new TicketRequest;
         request.packageId = pkgID;
         request.completedByPersonId = employeeID;
         request.receivedByPersonId = receiverID;

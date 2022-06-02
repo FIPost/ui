@@ -1,34 +1,35 @@
 <template>
-    <table class="table table-striped">
-        <caption class="d-none">locations in system</caption>
-        <thead>
-            <tr>
-                <th>Ruimte</th>
-                <th>Stad</th>
-                <th>Gebouw</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="item in items" :key="item.id">
-                <td>{{item.name}}</td>
-                <td>{{item.building.address.city.name}}</td>
-                <td>{{item.building.name}}, {{item.building.address.street}}, {{item.building.address.number}}</td>
-                <td><font-awesome-icon icon="pen-square" /></td>
-            </tr>
-        </tbody>
-    </table>
+  <table class="table table-striped">
+    <caption class="d-none">
+      locations in system
+    </caption>
+    <thead>
+      <tr>
+        <th>Ruimte</th>
+        <th>Stad</th>
+        <th>Gebouw</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="item in items" :key="item.id">
+        <td>{{ item.name }}</td>
+        <td>{{ item.city }}</td>
+        <td>{{ item.street }}, {{ item.house }}</td>
+        <td><font-awesome-icon icon="pen-square" /></td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 
 <script lang="ts">
-    import { Options, Vue } from "vue-class-component";
-    import { Prop } from "vue-property-decorator";
-    import Room from "@/location/Room";
+import { Options, Vue } from "vue-class-component";
+import { Prop } from "vue-property-decorator";
+import { Location } from "@/location/Location";
 
-    @Options({
-    })
-    export default class LocationTable extends Vue {
-        @Prop() items!: Array<Room>;
-    }
+@Options({})
+export default class LocationTable extends Vue {
+  @Prop() items!: Array<Location>;
+}
 </script>
 
 <style lang="scss" scoped>
