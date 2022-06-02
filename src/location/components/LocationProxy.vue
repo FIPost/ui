@@ -25,7 +25,7 @@
         async mounted() {
             await new Promise(f => setTimeout(f, 1000));
             this.locationRepo
-                .GetRoomByID(this.id)
+                .GetLocationByID(this.id)
                 .then((res) => {
                     this.LoadWithText(res.name);
                 })
