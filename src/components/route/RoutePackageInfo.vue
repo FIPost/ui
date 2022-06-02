@@ -20,7 +20,7 @@
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
 import RouteComp from "@/components/route/RouteComp.vue";
-import Ticket from "@/classes/Ticket";
+import { Ticket } from "@/package/Ticket";
 import { Prop } from "vue-property-decorator";
 
 @Options({

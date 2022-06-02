@@ -13,7 +13,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Person from "@/classes/Person";
+import { Person } from "@/employee/Person";
 
 @Options({
   props: {

@@ -64,8 +64,7 @@ import { Options, Vue } from "vue-class-component";
 import PersonDetails from "@/components/packageInfo/PersonDetails.vue";
 import RoomDetails from "@/components/packageInfo/RoomDetails.vue";
 import StatusBadge from "@/components/standardUi/StatusBadge.vue";
-import Room, { roomHelper } from "@/classes/Room";
-import Package from "@/classes/Package";
+import { Package } from "@/package/Package";
 import { dateConverter } from "@/classes/helpers/DateConverter";
 
 @Options({
@@ -79,10 +78,8 @@ import { dateConverter } from "@/classes/helpers/DateConverter";
   },
 })
 export default class PackageDetails extends Vue {
-  private packageM: Package = new Package();
+  private packageM!: Package;
   private lastTicketIndex: number = 0;
-  private createdAtRoom: Room = roomHelper.getEmptyRoom();
-  private deliveryRoom: Room = roomHelper.getEmptyRoom();
 
   async mounted() {
     if (this.packageM.tickets != null) {

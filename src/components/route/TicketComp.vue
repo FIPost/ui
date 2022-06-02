@@ -22,10 +22,10 @@
 
 <script lang="ts">
 import { Vue } from "vue-class-component";
-import Ticket from "@/classes/Ticket";
+import { Ticket } from "@/package/Ticket";
 import { Prop } from "vue-property-decorator";
 import { dateConverter } from "@/classes/helpers/DateConverter";
-import { roomHelper } from "@/classes/Room";
+import Room from "@/location/Room";
 
 export default class TicketComp extends Vue {
   @Prop()
@@ -33,7 +33,7 @@ export default class TicketComp extends Vue {
 
   private destinationReached() {
     if (this.ticket) {
-      if (this.ticket.receivedByPerson) {
+      if (this.ticket.receivedByPersonId) {
         return true;
       }
     }
@@ -45,8 +45,8 @@ export default class TicketComp extends Vue {
   }
 
   private getLocationString(): string {
-    var room = this.ticket.location;
-    return roomHelper.getLocationString(room);
+    var room = this.ticket.locationId;
+    return this.ticket.locationId;
   }
 }
 </script>

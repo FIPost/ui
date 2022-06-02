@@ -22,9 +22,9 @@ import PrintQR from "@/components/PrintQR.vue";
 import RoutePackageInfo from "@/components/route/RoutePackageInfo.vue";
 import CreateTicket from "@/components/route/CreateTicket.vue";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
-import Package from "@/classes/Package";
+import { Package } from "@/package/Package";
 import { AxiosError } from "axios";
-import { pakketService } from "@/services/pakketService/pakketservice";
+import { pakketService } from "@/package/pakketservice";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 @Options({
@@ -39,7 +39,7 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 })
 export default class PackagePage extends Vue {
   private packageId: String = "";
-  private packageM: Package = new Package();
+  private packageM?: Package;
 
   private isLoading: Boolean = true;
   private error: Boolean = false;
@@ -71,15 +71,15 @@ export default class PackagePage extends Vue {
   }
 
   buildAddressString() {
-    if (this.packageM.collectionPoint) {
+    if (this.packageM) {
       this.addressData =
-        this.packageM.collectionPoint.building.address.street.toString() +
+        this.packageM.collectionPointId +
         " " +
-        this.packageM.collectionPoint.building.name +
+        this.packageM.collectionPointId +
         ", " +
-        this.packageM.collectionPoint.name +
+        this.packageM.collectionPointId +
         " " +
-        this.packageM.collectionPoint.building.address.city.name;
+        this.packageM.collectionPointId;
       return this.addressData;
     }
     return "Er ging iets mis bij het ophalen van de locatie";

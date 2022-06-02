@@ -1,6 +1,6 @@
-export default interface TicketRequest {
-  locationId: String;
-  packageId: String;
-  completedByPersonId: String;
-  receivedByPersonId: String;
+export default class TicketRequest {
+  locationId: string = "";
+  packageId: string = "";
+  completedByPersonId: string = "";
+  receivedByPersonId: string = "";
 }

@@ -1,4 +1,4 @@
-import City from "./City";
+import City from "@/location/City";
 
 export default class Address {
     public city: City;
@@ -14,5 +14,15 @@ export default class Address {
         this.postalCode = postalCode;
         this.number = number;
         this.addition = addition;
+    }
+
+    static deserialize(data: Object): Address {
+        return new Address(
+            City.deserialize(data["city"]),
+            data["street"],
+            data["postalCode"],
+            data["number"],
+            data["addition"]
+        );
     }
 }

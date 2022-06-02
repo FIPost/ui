@@ -30,8 +30,8 @@
 
 <script lang="ts">
 import { Vue, Options } from "vue-class-component";
-import { pakketService } from "@/services/pakketService/pakketservice";
-import Package from "@/classes/Package";
+import { pakketService } from "@/package/pakketservice";
+import { Package } from "@/package/Package";
 import BtnBack from "@/components/standardUi/BtnBack.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";
@@ -40,7 +40,6 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import TableComp from "@/components/standardUi/TableComponent.vue";
 import { TableCell } from "@/classes/table/TableCell";
 import { dateConverter } from "@/classes/helpers/DateConverter";
-import { roomHelper } from "@/classes/Room";
 import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
 import SearchBar from "@/components/SearchBar.vue";
 import ComboBox from "@/components/standardUi/ComboBox.vue";
@@ -109,12 +108,12 @@ export default class PakketOverzicht extends Vue {
   GenerateTableObjects(_packages: Package[]) {
     this.items = new Array<Object>();
     let filteredPackages = this.allPackages.filter(PKG => PKG.name.toLowerCase().includes(this.filter.toLowerCase())
-        || PKG.receiver.name.toLowerCase().includes(this.filter.toLowerCase())
+        || PKG.receiverId
         || PKG.sender.toLowerCase().includes(this.filter.toLowerCase())
-        || PKG.tickets[0].completedByPerson.toLowerCase().includes(this.filter.toLowerCase())
+        || PKG.tickets[0].completedByPersonId
         || this.getDateString(PKG.tickets[0].finishedAt).toLowerCase().includes(this.filter.toLowerCase())
-        || roomHelper.getLocationString(PKG.collectionPoint).toLowerCase().includes(this.filter.toLowerCase())
-        || roomHelper.getLocationString(PKG.tickets[0].location).toLowerCase().includes(this.filter.toLowerCase()));
+        || PKG.collectionPointId
+    );
     filteredPackages.forEach((value) => {
       this.items.push({
         Naam: {
@@ -124,8 +123,8 @@ export default class PakketOverzicht extends Vue {
         } as TableCell,
         Ontvanger: {
           id: value.id,
-          displayName: value.receiver
-            ? value.receiver.name
+          displayName: value.receiverId
+            ? value.receiverId
             : "Kon niet worden opgehaald",
           type: ColumnType.PERSON,
         } as TableCell,
@@ -137,7 +136,7 @@ export default class PakketOverzicht extends Vue {
         "Huidige locatie": {
           id: value.id,
           displayName: value.tickets[0]
-            ? roomHelper.getLocationString(value.tickets[0].location)
+            ? value.tickets[0].locationId
             : "Kon niet worden opgehaald",
           type: ColumnType.LOCATION,
         } as TableCell,
@@ -151,14 +150,14 @@ export default class PakketOverzicht extends Vue {
         "Uitgevoerd door": {
           id: value.id,
           displayName: value.tickets[0]
-            ? value.tickets[0].completedByPerson
+            ? value.tickets[0].completedByPersonId
             : "Kon niet gevonden worden",
           type: ColumnType.PERSON,
         } as TableCell,
         Eindlocatie: {
           id: value.id,
-          displayName: value.collectionPoint
-            ? roomHelper.getLocationString(value.collectionPoint)
+          displayName: value.collectionPointId
+            ? value.collectionPointId
             : "Kon niet gevonden worden",
           type: ColumnType.LOCATION,
         } as TableCell,
