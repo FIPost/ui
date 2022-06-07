@@ -14,7 +14,7 @@
         <form class="row border rounded-3 p-2 mb-2 bg-light">
             <label class="col-1 col-form-label">Zoek</label>
             <div class="col-auto me-auto">
-                <input type="search" class="form-control" placeholder="Zoeken..." />
+                <input type="search" class="form-control" placeholder="Zoeken..." @input="e => filterItems(e.target.value)" />
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-success" @click="goToRegisterLocation">
@@ -74,17 +74,18 @@
         private visibleItemsPerPageCount = 20;
 
         async beforeMount() {
-            this.GetPackages();
+            this.GetPackages()
+                .then(res =>{
+                    this.loadPage(1);
+                    this.isLoaded = true;
+                });
         }
 
         private async GetPackages() {
-            this.packageRepo
+            await this.packageRepo
                 .GetAllPackages()
                 .then((res: Array<Package>) => {
                     this.packages = res;
-                    this.pageCount = Math.ceil(this.packages.length / this.visibleItemsPerPageCount);
-                    this.loadPage(1);
-                    this.isLoaded = true;
                 })
                 .catch((err: AxiosError) => {
                     this.emitter.emit("err", err);
@@ -92,8 +93,18 @@
         }
 
         public loadPage(value: number): void {
+            this.pageCount = Math.ceil(this.packages.length / this.visibleItemsPerPageCount);
             const pageIndex = (value - 1) * this.visibleItemsPerPageCount;
             this.filteredPackages = this.packages.slice(pageIndex, pageIndex + this.visibleItemsPerPageCount);
+        }
+
+        public filterItems(filter: string){
+            console.log(filter);
+            if(filter.length < 1) this.filteredPackages = this.packages;
+            this.filteredPackages = this.packages.filter((item) => {
+                return item.id.includes(filter) ||
+                item.name.includes(filter); 
+            })
         }
     }
 </script>
