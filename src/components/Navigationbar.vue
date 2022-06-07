@@ -1,5 +1,5 @@
 <template>
-    <nav class="navbar navbar-expand-lg shadow-sm mb-2 bg-light">
+    <nav class="navbar navbar-light navbar-expand-lg shadow-sm mb-2 bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">
                 <img alt="IPostLogo" src="../assets/logo.png" style="height: 30px;"/>
