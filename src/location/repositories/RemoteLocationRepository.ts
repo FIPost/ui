@@ -14,22 +14,26 @@ export class RemoteLocationRepository implements ILocationRepository {
 
     async GetAllLocations(): Promise<Location[]> {
         const { data } = await this.axiosInst.get(`/rooms`);
-        return data.map((city) => Location.deserialize(city));
+        return data.map((loc) => new Location(
+            loc.id,
+            loc.name,
+            loc.building.address.city.name,
+            loc.building.address.street,
+            loc.building.address.number,
+            loc.building.address.postalCode
+        ));
     }
 
     async GetLocationByID(id: string): Promise<Location> {
         const room = await this.axiosInst.get(`/rooms/${id}`);
-        const building = await this.axiosInst.get(`/buildings/${room.data[""]}`)
-        const address = building.data["address"];
-        const city = await this.axiosInst.get(`/Cities/${address["city"]}`);
 
         return new Location(
-            room.data["id"],
-            room.data["name"],
-            room["building"]["address"]["city"]["name"],
-            room["building"]["address"]["street"],
-            room["building"]["address"]["number"],
-            room["building"]["address"]["postalCode"]
+            room.data.id,
+            room.data.name,
+            room.data.building.address.city.name,
+            room.data.building.address.street,
+            room.data.building.address.number,
+            room.data.building.address.postalCode
         );
     }
 
