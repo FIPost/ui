@@ -1,6 +1,6 @@
 /* THIS CLASS IS DEPRICATED, please use the dedicated repository interface */
 
-import City from '@/location/City';
+import City from '@/location/depricated/City';
 import CityRequest from '@/classes/requests/CityRequest';
 import http from '@/services/http';
 

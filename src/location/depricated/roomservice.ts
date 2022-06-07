@@ -1,7 +1,7 @@
 /* THIS CLASS IS DEPRICATED, please use the dedicated repository interface */
 
 import http from '@/services/http';
-import Room from "@/location/Room";
+import Room from "@/location/depricated/Room";
 import RoomRequest from "@/classes/requests/RoomRequest";
 
 export default class RoomService {

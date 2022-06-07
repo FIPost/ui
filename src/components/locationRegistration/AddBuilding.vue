@@ -127,11 +127,11 @@ import ComboBoxInput from "@/components/standardUi/ComboBoxInput.vue";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 
 import BuildingRequest from "@/classes/requests/BuildingRequest";
-import Building from "@/location/Building";
-import City from "@/location/City";
+import Building from "@/location/depricated/Building";
+import City from "@/location/depricated/City";
 
-import { buildingService } from "@/location/buildingservice";
-import { cityService } from "@/location/cityservice";
+import { buildingService } from "@/location/depricated/buildingservice";
+import { cityService } from "@/location/depricated/cityservice";
 import { getCurrentInstance } from "@vue/runtime-core";
 import SelectOption from "@/classes/helpers/SelectOption";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";

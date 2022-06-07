@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import Room from "@/location/Room";
+import Room from "@/location/depricated/Room";
 
 @Options({
   props: {

@@ -1,4 +1,4 @@
-import Building from "@/location/Building";
+import Building from "@/location/depricated/Building";
 
 export interface RoomRequest {
     name: string;

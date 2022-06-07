@@ -1,4 +1,4 @@
-import Address from "@/location/Address";
+import Address from "@/location/depricated/Address";
 
 export interface BuildingRequest {
     name: string;

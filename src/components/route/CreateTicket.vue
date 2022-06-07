@@ -91,12 +91,12 @@ import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 
 // Types.
 import { Person } from "@/employee/Person";
-import Room from "@/location/Room";
+import Room from "@/location/depricated/Room";
 import { Ticket } from "@/package/Ticket";
 import TicketRequest from "@/classes/requests/TicketRequest";
 
 // Services.
-import { roomService } from "@/location/roomservice";
+import { roomService } from "@/location/depricated/roomservice";
 import { personeelService } from "@/employee/personeelService";
 import { getCurrentInstance } from "@vue/runtime-core";
 import { Emit } from "vue-property-decorator";

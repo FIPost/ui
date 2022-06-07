@@ -51,7 +51,7 @@ import InputField from "@/components/standardUi/InputField.vue";
 import SmallBtnFinish from "@/components/standardUi/SmallBtnFinish.vue";
 import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
 import CityRequest from "@/classes/requests/CityRequest";
-import { cityService } from "@/location/cityservice";
+import { cityService } from "@/location/depricated/cityservice";
 import LinkOrStayModal from "@/components/standardUi/LinkOrStayModal.vue";
 import { getCurrentInstance } from "@vue/runtime-core";
 import { AxiosError } from "axios";

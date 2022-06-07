@@ -25,7 +25,7 @@ import { Vue } from "vue-class-component";
 import { Ticket } from "@/package/Ticket";
 import { Prop } from "vue-property-decorator";
 import { dateConverter } from "@/classes/helpers/DateConverter";
-import Room from "@/location/Room";
+import Room from "@/location/depricated/Room";
 
 export default class TicketComp extends Vue {
   @Prop()

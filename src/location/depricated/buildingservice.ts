@@ -1,7 +1,7 @@
 /* THIS CLASS IS DEPRICATED, please use the dedicated repository interface */
 
 import http from '@/services/http';
-import Building from "@/location/Building"
+import Building from "@/location/depricated/Building"
 import BuildingRequest from '@/classes/requests/BuildingRequest';
 
 export default class BuildingService {

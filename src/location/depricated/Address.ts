@@ -1,4 +1,4 @@
-import City from "@/location/City";
+import City from "@/location/depricated/City";
 
 export default class Address {
     public city: City;

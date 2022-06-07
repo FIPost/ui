@@ -40,7 +40,7 @@
     import BtnBack from "@/components/standardUi/BtnBack.vue";
     import LocationTable from "@/location/components/LocationTable.vue";
     import SearchContainerLocation from "@/components/SearchContainerLocation.vue";
-    import { roomService } from "../location/roomservice";
+    import { roomService } from "../location/depricated/roomservice";
     import { Location } from "@/location/Location";
     import LoadingIcon from '@/components/standardUi/LoadingIcon.vue'
     import LocationInfo from "@/components/location/LocationInfo.vue";
