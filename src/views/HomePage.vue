@@ -6,7 +6,7 @@
 
 <script lang="ts">
     import { Options, Vue } from "vue-class-component";
-    import MenuComp from "@/components/MenuComp.vue";
+    import MenuComp from "@/components/menu/MenuComp.vue";
 
     @Options({
         components: {

@@ -1,7 +1,7 @@
 <template>
     <div class="card">
         <h2 class="card-title text-center"><slot /></h2>
-        <img class="mx-auto" :src="source" alt="icon" />
+        <img class="w-50 mx-auto" :src="source" alt="icon" />
     </div>
 </template>
 
@@ -13,7 +13,7 @@
 
     })
     export default class MenuItem extends Vue {
-        @Prop() private source: string = "";
+        @Prop() private source!: string;
     }
 </script>
 

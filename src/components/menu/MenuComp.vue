@@ -11,7 +11,7 @@
 
 <script lang="ts">
     import { Options, Vue } from 'vue-class-component'
-    import MenuItem from '@/components/MenuItem.vue'
+    import MenuItem from '@/components/menu/MenuItem.vue'
 
     @Options({
         components: {
