@@ -14,7 +14,7 @@
         <form class="row border rounded-3 p-2 mb-2 bg-light">
             <label class="col-1 col-form-label">Zoek</label>
             <div class="col-auto me-auto">
-                <input type="search" class="form-control" placeholder="Zoeken..." />
+                <input type="search" class="form-control" placeholder="Zoeken..." v-model="filter" />
             </div>
             <div class="col-auto">
                 <button type="button" class="btn btn-success" @click="goToRegisterLocation">
@@ -29,67 +29,88 @@
                 Filters
             </aside>
             <section class="col border rounded-3 p-0 pt-2">
-                <LocationTable class="col-10" :items="locations" />
+                <LocationTable class="col-10" :items="visibleLocations" />
             </section>
         </section>
     </div>
 </template>
 
 <script lang="ts">
-    import { Options, Vue } from "vue-class-component";
-    import BtnBack from "@/components/standardUi/BtnBack.vue";
-    import LocationTable from "@/location/components/LocationTable.vue";
-    import SearchContainerLocation from "@/components/SearchContainerLocation.vue";
-    import { roomService } from "../location/depricated/roomservice";
-    import { Location } from "@/location/Location";
+    import { Options, Vue } from "vue-class-component"
+    import { Watch } from "vue-property-decorator"
+    import { getCurrentInstance } from "@vue/runtime-core"
+    import { AxiosError } from "axios"
+    
+    // Models
+    import { Location } from "@/location/Location"
+
+    // Components
     import LoadingIcon from '@/components/standardUi/LoadingIcon.vue'
-    import LocationInfo from "@/components/location/LocationInfo.vue";
-    import LocationModal from "@/components/location/LocationModal.vue";
-    import { getCurrentInstance } from "@vue/runtime-core";
+    import LocationTable from "@/location/components/LocationTable.vue"
     import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
 
     @Options({
         components: {
-            BtnBack,
             LocationTable,
-            SearchContainerLocation,
             LoadingIcon,
             Pagination,
-            LocationInfo,
-            LocationModal,
         },
     })
     export default class LocatieOverzicht extends Vue {
-        private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
         private locationRepo = getCurrentInstance()?.appContext.config.globalProperties.$locationRepo;
+        private emitter = getCurrentInstance()?.appContext.config.globalProperties.emitter;
         private isLoaded: boolean = false;
 
-        private allLocations: Array<Location> = [];
         private locations: Array<Location> = [];
 
-        private visibleItemsPerPageCount = 10;
-        private pageCount = 0;
+        private filter: string = "";
+        private filteredLocations: Array<Location> = [];
 
-        loadPage(value: number): void {
+        private currentPage: number = 1;
+        private pageCount: number = 0;
+        private visibleItemsPerPageCount: number = 10;
+        private visibleLocations: Array<Location> = [];
+
+        async beforeMount() {
+            await this.GetLocations()
+                .then(res => {
+                    this.filteredLocations = this.locations;
+                    this.loadPage(this.currentPage);
+                    this.isLoaded = true;
+                });
+        }
+
+        private async GetLocations(){
+            await this.locationRepo.GetAllLocations()
+                .then((res: Array<Location>) => this.locations = res)
+                .catch((err: AxiosError) => console.error(err.message));
+        }
+
+        private loadPage(value: number): void {
+            this.pageCount = Math.ceil(this.filteredLocations.length / this.visibleItemsPerPageCount);
             const pageIndex = (value - 1) * this.visibleItemsPerPageCount;
-            this.locations = this.allLocations.slice(
+            this.visibleLocations = this.filteredLocations.slice(
                 pageIndex,
                 pageIndex + this.visibleItemsPerPageCount
             );
         }
 
-        goToRegisterLocation(): void {
-            this.$router.push("/locaties/nieuw");
+        @Watch('filter') 
+        private filterItems(filter: string): void {
+            if(filter.length < 1) {
+                this.filteredLocations = this.locations;
+            }
+            else {
+                this.filteredLocations = this.locations.filter((item) => {
+                    return item.name.includes(filter); 
+                });
+            }
+
+            this.loadPage(this.currentPage);
         }
 
-        async beforeMount() {
-            this.locationRepo
-                .GetAllLocations()
-                .then((res) => {
-                    this.locations = res;
-                    console.log(this.locations);
-                    this.isLoaded = true;
-                });
+        private goToRegisterLocation(): void {
+            this.$router.push("/locaties/nieuw");
         }
     }
 </script>
