@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <h2 class="card-title text-center"><slot /></h2>
+        <h2 class="card-title text-center text-truncate"><slot /></h2>
         <img class="w-50 mx-auto" :src="source" alt="icon" />
     </div>
 </template>
