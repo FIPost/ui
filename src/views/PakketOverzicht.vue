@@ -42,6 +42,7 @@
 
 <script lang="ts">
     import { Vue, Options } from "vue-class-component";
+    import { Watch } from "vue-property-decorator";
     import { getCurrentInstance } from "@vue/runtime-core";
     import { AxiosError } from "axios";
 
@@ -50,7 +51,6 @@
     import LoadingIcon from "@/components/standardUi/LoadingIcon.vue";
     import Pagination from "@/components/standardUi/Pagination/BasePagination.vue";
     import PackageTable from "@/package/components/PackageTable.vue"
-import { Watch } from "vue-property-decorator";
 
     @Options({
         components: {
