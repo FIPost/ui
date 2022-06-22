@@ -2,6 +2,7 @@
   <div class="route-package-info-container" @click="toggle()">
     <div class="title">
       <div class="container-header text">Geschiedenis</div>
+      <font-awesome-icon icon="file-export" class="export" @click="exportpackagehistory()"/>
       <div v-if="mobile" class="arrow">
         <div v-if="toggled">
           <font-awesome-icon icon="sort-up" size="2x" />
@@ -22,6 +23,8 @@ import { Options, Vue } from "vue-class-component";
 import RouteComp from "@/components/route/RouteComp.vue";
 import { Ticket } from "@/package/Ticket";
 import { Prop } from "vue-property-decorator";
+import download from 'downloadjs'
+import json2xls from 'json2xls';
 
 @Options({
   components: {
@@ -39,6 +42,10 @@ export default class RoutePackageInfo extends Vue {
     if (this.mobile) {
       this.toggled = !this.toggled;
     }
+  }
+
+  exportpackagehistory(){
+    // download(this.tickets, "apidata.json", "text/plain");
   }
 
   created() {
@@ -85,6 +92,16 @@ export default class RoutePackageInfo extends Vue {
 
 .arrow {
   color: $modern-purple-color;
+}
+
+.export:hover{
+  cursor: pointer;
+}
+
+.export{
+  width: 30px;
+  height: 30px;
+  color: #663366;
 }
 </style>
 

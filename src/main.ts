@@ -3,7 +3,7 @@ import App from './App.vue'
 import router from '@/router/index'
 
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faCheckCircle, faSortDown, faSortUp, faSearch, faFlagCheckered, faCheck, faPlusSquare, faHome, faPenSquare, faMinusSquare } from '@fortawesome/free-solid-svg-icons'
+import { faFileExport, faCheckCircle, faSortDown, faSortUp, faSearch, faFlagCheckered, faCheck, faPlusSquare, faHome, faPenSquare, faMinusSquare } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 import mitt from 'mitt';
@@ -18,7 +18,7 @@ import { RemoteLocationRepository } from './location/repositories/RemoteLocation
 import { RemotePackageRepository } from './package/repositories/RemotePackageRepository'
 import { RemoteEmployeeRepository } from './employee/repositories/RemoteEmployeeRepository'
 
-library.add(faCheckCircle, faSortDown, faSortUp, faSearch, faFlagCheckered, faCheck, faPlusSquare, faHome, faPenSquare, faMinusSquare)
+library.add(faFileExport, faCheckCircle, faSortDown, faSortUp, faSearch, faFlagCheckered, faCheck, faPlusSquare, faHome, faPenSquare, faMinusSquare)
 
 const app = createApp(App);
 
